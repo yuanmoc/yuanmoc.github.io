@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>博客 on YUANMOC</title>
+    <link>https://yuanmoc.github.io/posts/</link>
+    <description>Recent content in 博客 on YUANMOC</description>
+    <generator>Hugo -- gohugo.io</generator><atom:link href="https://yuanmoc.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用hugo搭建博客</title>
+      <link>https://yuanmoc.github.io/posts/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/</guid>
+      <description>在 MAC M1 PRO 上安装hugo并搭建博客 # 安装hugo # (如果是其他机器，请按照官网安装教程 点击直达地址)
+brew install hugo 查看版本号 # hugo version 创建站点 # hugo new site myblog 目录结构
+hugo-book ├── archetypes 内容模版目录 │ └── default.md 模版文件 ├── config.toml 配置文件(也可以是config.yaml) ├── content 内容目录 ├── data 数据目录 ├── layouts 网站模版目录 ├── static 静态文件目录 └── themes 主题目录 添加模板 # 这里使用的是hugo-book，可以在官网查找合适的模板 点击直达
+git clone https://github.com/alex-shpak/hugo-book.git themes/hugo-book 把默认模板的模板内容复制出来并运行测试
+cp themes/hugo-book/exampleSite/* ./ # 删除其他国际化内容，就留一个中文 rm -rf content content.bn content.ru content.</description>
+    </item>
+    
+  </channel>
+</rss>

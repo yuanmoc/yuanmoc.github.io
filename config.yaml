@@ -6,7 +6,7 @@ theme: hugo-book
 
 # Book configuration
 disablePathToLower: true
-enableGitInfo: false
+enableGitInfo: true
 
 publishDir: docs
 
@@ -104,3 +104,9 @@ params:
   # /!\ This is an experimental feature, might be removed or changed at any time
   # (Optional, experimental, default false) Enables a drop-down menu for translations only if a translation is present.
   BookTranslatedOnly: false
+
+  utteranc:
+    enable: true
+    repo: "yuanmoc/blogtalks" ##换成自己得
+    issueTerm: "pathname"
+    theme: "github-light"
