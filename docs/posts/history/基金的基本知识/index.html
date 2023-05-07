@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="zh" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="基金的基本知识 # 基金类型 # 基本有货币基金、债券基金和股票基金，其中货币基金的风险最近，同时收益也是最近的；债券基金的风险相对来说是中等的，同时收益也是中等的；最后股票基金是风险最大的，同时，收益也是最大的。
+指数基金 # 巴菲特推荐的基金是指数基金，指数基金是一种特殊的股票基金，它可复制和追踪指数；指数基金追踪指数，按照指数的规则来选股；且是被动投资，无人为因素干扰，透明度高，规则清晰，长期可靠。
+一些基本的描述说明
+1、基金的手续费用：
+指数基金：0.06%-0.08% / 年
+普通基金：0.12%-0.2% / 年
+2、基金代码
+A股基金：6位数字（如：510880 上证红利）
+港股基金：5位数字（如：02828 恒生）
+美股基金：3-5位英文字符（如：apy 标普500）
+3、基金的净值
+一只基金，净值1.5元。是每一份这样的基金份额，其中包含的股票等金融资产，市值 为1.5元。
+如：1元净值和2元净值的基金，买100元基金，1元的净值基金可以买到100股，而2元净值的基金只能买到50股。
+国内的基金净值一般都是1-3元一股的。
+4、场内和场外基金
+场内基金是可以在证券交易所进行买卖交易的基金，场外基金是可以直接在基金交易平台进行申赎的基金。
+5、连接基金
+是基金公司开发的特殊产品，方便没有场内股票账户的投资者也可以投资场内的基金。联接基金也是指数基金。
+6、LOF基金
+是同时可以在场内和场外购买到的基金，它在场内和场外的基金代码都是一致的。
+7、A股/H股
+A股：国内企业在内地上市
+H股：国内企业在香港上市
+8、交易规则
+下午3点是交易的分隔线，3点之前申购和赎回是当天的基金收盘净值成交，3点之后申购和赎回是第二天交易日基金的收盘的净值成交。
+9、交易日和交易时间
+交易日：非节假日的周一到周五
+交易时间：上午9.30 - 11.30 下午13.00 - 15.00
+10、基金性质
+LOF基金：开放型基金，可以随时买入和卖出 FOF基金：投资基金的基金 QDII基金：投资海外股票的基金 基金后面带A：适合长期投资，短期卖出费用很高 基金后面带C：适合短期投资，长期卖出费用很高
+指数类型 # 1、上证50指数
+专门投资大型企业，是从上海交证券易所选择的50家企业。
+参考：华夏上证50ETF 代码510050，易方达上证50 代码110003
+2、沪深300指数
+专门投资大中型企业，是从深圳和上海证券交易所选择的300家企业。
+参考：华泰柏瑞沪深300ETF 代码510300，嘉实沪深300ETF联接160706
+3、中证500指数
+专门投资中小型企业，是从深圳和上海证券交易所选择规模处于301-800位的500家中小型企业。
+参考：南方中证500ETF 代码510500，南方中证500ETF联接 代码 160119">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light dark"><meta property="og:title" content="基金的基本知识" />
+<meta property="og:description" content="基金的基本知识 # 基金类型 # 基本有货币基金、债券基金和股票基金，其中货币基金的风险最近，同时收益也是最近的；债券基金的风险相对来说是中等的，同时收益也是中等的；最后股票基金是风险最大的，同时，收益也是最大的。
+指数基金 # 巴菲特推荐的基金是指数基金，指数基金是一种特殊的股票基金，它可复制和追踪指数；指数基金追踪指数，按照指数的规则来选股；且是被动投资，无人为因素干扰，透明度高，规则清晰，长期可靠。
+一些基本的描述说明
+1、基金的手续费用：
+指数基金：0.06%-0.08% / 年
+普通基金：0.12%-0.2% / 年
+2、基金代码
+A股基金：6位数字（如：510880 上证红利）
+港股基金：5位数字（如：02828 恒生）
+美股基金：3-5位英文字符（如：apy 标普500）
+3、基金的净值
+一只基金，净值1.5元。是每一份这样的基金份额，其中包含的股票等金融资产，市值 为1.5元。
+如：1元净值和2元净值的基金，买100元基金，1元的净值基金可以买到100股，而2元净值的基金只能买到50股。
+国内的基金净值一般都是1-3元一股的。
+4、场内和场外基金
+场内基金是可以在证券交易所进行买卖交易的基金，场外基金是可以直接在基金交易平台进行申赎的基金。
+5、连接基金
+是基金公司开发的特殊产品，方便没有场内股票账户的投资者也可以投资场内的基金。联接基金也是指数基金。
+6、LOF基金
+是同时可以在场内和场外购买到的基金，它在场内和场外的基金代码都是一致的。
+7、A股/H股
+A股：国内企业在内地上市
+H股：国内企业在香港上市
+8、交易规则
+下午3点是交易的分隔线，3点之前申购和赎回是当天的基金收盘净值成交，3点之后申购和赎回是第二天交易日基金的收盘的净值成交。
+9、交易日和交易时间
+交易日：非节假日的周一到周五
+交易时间：上午9.30 - 11.30 下午13.00 - 15.00
+10、基金性质
+LOF基金：开放型基金，可以随时买入和卖出 FOF基金：投资基金的基金 QDII基金：投资海外股票的基金 基金后面带A：适合长期投资，短期卖出费用很高 基金后面带C：适合短期投资，长期卖出费用很高
+指数类型 # 1、上证50指数
+专门投资大型企业，是从上海交证券易所选择的50家企业。
+参考：华夏上证50ETF 代码510050，易方达上证50 代码110003
+2、沪深300指数
+专门投资大中型企业，是从深圳和上海证券交易所选择的300家企业。
+参考：华泰柏瑞沪深300ETF 代码510300，嘉实沪深300ETF联接160706
+3、中证500指数
+专门投资中小型企业，是从深圳和上海证券交易所选择规模处于301-800位的500家中小型企业。
+参考：南方中证500ETF 代码510500，南方中证500ETF联接 代码 160119" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yuanmoc.github.io/posts/history/%E5%9F%BA%E9%87%91%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2020-10-18T23:35:55+00:00" />
+<meta property="article:modified_time" content="2020-10-18T23:35:55+00:00" />
+<title>基金的基本知识 | YUANMOC</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/book.min.33a48f5432973b8ff9a82679d9e45d67f2c15d4399bd2829269455cfe390b5e8.css" integrity="sha256-M6SPVDKXO4/5qCZ52eRdZ/LBXUOZvSgpJpRVz&#43;OQteg=" crossorigin="anonymous">
+  <script defer src="/flexsearch.min.js"></script>
+  <script defer src="/zh.search.min.bcd4c6c0afaad634b7158fe062bd1b5025ef549d3a8e1b80668f1e8aedea8f0d.js" integrity="sha256-vNTGwK&#43;q1jS3FY/gYr0bUCXvVJ06jhuAZo8eiu3qjw0=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>YUANMOC</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="搜索" aria-label="搜索" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-74286b56e7b99aa3cfac52c55eb97834" class="toggle"  />
+    <label for="section-74286b56e7b99aa3cfac52c55eb97834" class="flex justify-between">
+      <a role="button" class="">文档笔记</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-eb0f5223a522dd98c2608944d8591bd7" class="toggle"  />
+    <label for="section-eb0f5223a522dd98c2608944d8591bd7" class="flex justify-between">
+      <a role="button" class="">Java</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/%E6%96%87%E6%A1%A3%E7%AC%94%E8%AE%B0/java/test/" class="">测试</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-9a0e942fd76c38c5301548a2b901f29c" class="toggle"  />
+    <label for="section-9a0e942fd76c38c5301548a2b901f29c" class="flex justify-between">
+      <a role="button" class="">Spring</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-416782b8caea9c48e0932ec01f628422" class="toggle"  />
+    <label for="section-416782b8caea9c48e0932ec01f628422" class="flex justify-between">
+      <a role="button" class="">数据库</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-237795881f3f8a8cb3543c2915069ce6" class="toggle"  />
+    <label for="section-237795881f3f8a8cb3543c2915069ce6" class="flex justify-between">
+      <a role="button" class="">算法</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-561070938b635b15571e14a6af3bb967" class="toggle"  />
+    <label for="section-561070938b635b15571e14a6af3bb967" class="flex justify-between">
+      <a role="button" class="">架构</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-f149dbcae8f463483817cbbe388a4496" class="toggle"  />
+    <label for="section-f149dbcae8f463483817cbbe388a4496" class="flex justify-between">
+      <a role="button" class="">方法论</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-473eaddd3a92a7dc4b230603ef07e994" class="toggle"  />
+    <label for="section-473eaddd3a92a7dc4b230603ef07e994" class="flex justify-between">
+      <a role="button" class="">工具&amp;部署</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-00b995767d8191cdedb015981436796e" class="toggle"  />
+    <label for="section-00b995767d8191cdedb015981436796e" class="flex justify-between">
+      <a role="button" class="">团队&amp;产品</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-5e9eb52f77b1e6a6c6e7b1b2f7159627" class="toggle"  />
+    <label for="section-5e9eb52f77b1e6a6c6e7b1b2f7159627" class="flex justify-between">
+      <a role="button" class="">面试</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="/posts/"  >
+        博客
+      </a>
+  </li>
+  
+  <li>
+    <a href="https://github.com/yuanmoc"  target="_blank" rel="noopener">
+        Github
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>基金的基本知识</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#基金的基本知识">基金的基本知识</a>
+      <ul>
+        <li><a href="#基金类型">基金类型</a></li>
+        <li><a href="#指数基金">指数基金</a></li>
+        <li><a href="#指数类型">指数类型</a></li>
+        <li><a href="#投资购买">投资购买</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+<article class="markdown">
+  <h1>
+    <a href="/posts/history/%E5%9F%BA%E9%87%91%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/">基金的基本知识</a>
+  </h1>
+  
+  <h5>2020-10-18 23:35:55</h5>
+
+
+
+  
+
+  
+  <div>
+    
+      <a href="/tags/2023-05-07%E4%BB%8Ehalo%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB/">2023-05-07从halo博客迁移</a>
+  </div>
+  
+
+
+
+<h1 id="基金的基本知识">
+  基金的基本知识
+  <a class="anchor" href="#%e5%9f%ba%e9%87%91%e7%9a%84%e5%9f%ba%e6%9c%ac%e7%9f%a5%e8%af%86">#</a>
+</h1>
+<h2 id="基金类型">
+  基金类型
+  <a class="anchor" href="#%e5%9f%ba%e9%87%91%e7%b1%bb%e5%9e%8b">#</a>
+</h2>
+<p>基本有货币基金、债券基金和股票基金，其中货币基金的风险最近，同时收益也是最近的；债券基金的风险相对来说是中等的，同时收益也是中等的；最后股票基金是风险最大的，同时，收益也是最大的。</p>
+<h2 id="指数基金">
+  指数基金
+  <a class="anchor" href="#%e6%8c%87%e6%95%b0%e5%9f%ba%e9%87%91">#</a>
+</h2>
+<p>巴菲特推荐的基金是指数基金，指数基金是一种特殊的股票基金，它可复制和追踪指数；指数基金追踪指数，按照指数的规则来选股；且是被动投资，无人为因素干扰，透明度高，规则清晰，长期可靠。</p>
+<p>一些基本的描述说明</p>
+<p>1、基金的手续费用：</p>
+<p>指数基金：0.06%-0.08% / 年</p>
+<p>普通基金：0.12%-0.2% / 年</p>
+<p>2、基金代码</p>
+<p>A股基金：6位数字（如：510880 上证红利）</p>
+<p>港股基金：5位数字（如：02828 恒生）</p>
+<p>美股基金：3-5位英文字符（如：apy 标普500）</p>
+<p>3、基金的净值</p>
+<p>一只基金，净值1.5元。是每一份这样的基金份额，其中包含的股票等金融资产，市值 为1.5元。</p>
+<p>如：1元净值和2元净值的基金，买100元基金，1元的净值基金可以买到100股，而2元净值的基金只能买到50股。</p>
+<p>国内的基金净值一般都是1-3元一股的。</p>
+<p>4、场内和场外基金</p>
+<p>场内基金是可以在证券交易所进行买卖交易的基金，场外基金是可以直接在基金交易平台进行申赎的基金。</p>
+<p>5、连接基金</p>
+<p>是基金公司开发的特殊产品，方便没有场内股票账户的投资者也可以投资场内的基金。联接基金也是指数基金。</p>
+<p>6、LOF基金</p>
+<p>是同时可以在场内和场外购买到的基金，它在场内和场外的基金代码都是一致的。</p>
+<p>7、A股/H股</p>
+<p>A股：国内企业在内地上市</p>
+<p>H股：国内企业在香港上市</p>
+<p>8、交易规则</p>
+<p>下午3点是交易的分隔线，3点之前申购和赎回是当天的基金收盘净值成交，3点之后申购和赎回是第二天交易日基金的收盘的净值成交。</p>
+<p>9、交易日和交易时间</p>
+<p>交易日：非节假日的周一到周五</p>
+<p>交易时间：上午9.30 - 11.30     下午13.00 - 15.00</p>
+<p>10、基金性质</p>
+<p>LOF基金：开放型基金，可以随时买入和卖出
+FOF基金：投资基金的基金
+QDII基金：投资海外股票的基金
+基金后面带A：适合长期投资，短期卖出费用很高
+基金后面带C：适合短期投资，长期卖出费用很高</p>
+<h2 id="指数类型">
+  指数类型
+  <a class="anchor" href="#%e6%8c%87%e6%95%b0%e7%b1%bb%e5%9e%8b">#</a>
+</h2>
+<p>1、上证50指数</p>
+<p>专门投资大型企业，是从上海交证券易所选择的50家企业。</p>
+<p>参考：华夏上证50ETF 代码510050，易方达上证50 代码110003</p>
+<p>2、沪深300指数</p>
+<p>专门投资大中型企业，是从深圳和上海证券交易所选择的300家企业。</p>
+<p>参考：华泰柏瑞沪深300ETF 代码510300，嘉实沪深300ETF联接160706</p>
+<p>3、中证500指数</p>
+<p>专门投资中小型企业，是从深圳和上海证券交易所选择规模处于301-800位的500家中小型企业。</p>
+<p>参考：南方中证500ETF 代码510500，南方中证500ETF联接 代码 160119</p>
+<p>4、红利指数</p>
+<p>上证红利：从上海证券交易所选现金分红最高的50家公司。</p>
+<p>参考：场内红利ETF 代码510880，</p>
+<p>中证红利：从深圳和上海证券交易所选100家现金分红最高的100家公司。</p>
+<p>参考：场外富国中证红利 代码100032</p>
+<p>红利机会指数：选100只高股息率股票，但是对股票的盈利能力有要求。</p>
+<p>参考：华宝标普中国A股红利机会(LOF) 代码501029</p>
+<p>5、恒生指数</p>
+<p>专门 投资香港上市大型企业</p>
+<p>参考：场内华夏恒生ETF，场外华夏恒生ETF联接</p>
+<p>6、H股指数</p>
+<p>专门投资香港上市内地企业</p>
+<p>参考：场内易方达H股ETF 代码510900，场外易方达H股ETF联接 代码110031</p>
+<h2 id="投资购买">
+  投资购买
+  <a class="anchor" href="#%e6%8a%95%e8%b5%84%e8%b4%ad%e4%b9%b0">#</a>
+</h2>
+<p>使用平台：支付宝的基金平台</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+  <div>
+    <a class="flex align-center" href="https://github.com/yuanmoc/yuanmoc.github.io/edit/main/content/posts/history/%e5%9f%ba%e9%87%91%e7%9a%84%e5%9f%ba%e6%9c%ac%e7%9f%a5%e8%af%86.md" target="_blank" rel="noopener">
+      <img src="/svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>编辑本页</span>
+    </a>
+  </div>
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+
+
+<script src="https://utteranc.es/client.js"
+        repo="yuanmoc/blogtalks"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#基金的基本知识">基金的基本知识</a>
+      <ul>
+        <li><a href="#基金类型">基金类型</a></li>
+        <li><a href="#指数基金">指数基金</a></li>
+        <li><a href="#指数类型">指数类型</a></li>
+        <li><a href="#投资购买">投资购买</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

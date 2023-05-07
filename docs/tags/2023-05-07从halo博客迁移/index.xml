@@ -1,0 +1,1108 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>2023-05-07从halo博客迁移 on YUANMOC</title>
+    <link>https://yuanmoc.github.io/tags/2023-05-07%E4%BB%8Ehalo%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB/</link>
+    <description>Recent content in 2023-05-07从halo博客迁移 on YUANMOC</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sat, 29 Apr 2023 10:53:24 +0000</lastBuildDate><atom:link href="https://yuanmoc.github.io/tags/2023-05-07%E4%BB%8Ehalo%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Multipass虚拟机使用</title>
+      <link>https://yuanmoc.github.io/posts/history/multipass%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%BD%BF%E7%94%A8/</link>
+      <pubDate>Sat, 29 Apr 2023 10:53:24 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/multipass%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%BD%BF%E7%94%A8/</guid>
+      <description>使用brew安装
+brew install --cask multipass 可选的安装:(图形界面)
+brew install --cask microsoft-remote-desktop 创建虚拟机
+multipass launch --name vm01 --mem 2G --disk 40G --cpus 2 &amp;ndash;name, -n, 指出虚拟机实例的名称, 默认为primary
+&amp;ndash;mem, -m, 虚拟机所用的物理内存, 默认为1GB
+&amp;ndash;disk, -d, 磁盘大小, 默认为5GB
+&amp;ndash;cpus, -c, 使用的CPU核数, 默认为1
+impish, 使用的Ubuntu版本, 采用multipass find可以找出所有支持的版本, 最新版为22.04.
+图形界面
+有一些开发环境不得不用图形界面, 这里也采用了官网推荐的一个方法4, 通过迂回的方式安装并显示图形界面. 因为需要安装软件包, 这里需要先进行镜像的配置, 主要的方法就参考清华镜像了5, 这里需要注意: 如果你用的也是arm架构的话, 镜像源需要采用的是ubuntu-port sudo apt update sudo apt install ubuntu-desktop xrdp 设置密码
+sudo passwd root 然后使用 microsoft-remote-desktop 连接虚拟机
+使用虚拟机
+multipass exec vm01 -- lsb_release -a multipass shell vm01 常用命令</description>
+    </item>
+    
+    <item>
+      <title>My Sql存储过程中 Cursor的使用</title>
+      <link>https://yuanmoc.github.io/posts/history/MySQL%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B%E4%B8%ADCursor%E7%9A%84%E4%BD%BF%E7%94%A8/</link>
+      <pubDate>Wed, 26 Apr 2023 15:53:23 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/MySQL%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B%E4%B8%ADCursor%E7%9A%84%E4%BD%BF%E7%94%A8/</guid>
+      <description> BEGIN DECLARE _done INT DEFAULT false; DECLARE _name,_pwd VARCHAR(50); -- 定义游标，并将sql结果集赋值到游标中 DECLARE my_cursor CURSOR FOR (SELECT userName,pwd from sys_user_menu WHERE menuId=22); -- 声明当游标遍历完后将标志变量置成某个值 DECLARE CONTINUE HANDLER FOR NOT found SET _done=true; -- 打开游标 OPEN my_cursor; -- 声明开始循环 my_loop:LOOP -- 将游标中的值赋值给变量 FETCH my_cursor INTO _name,_pwd; -- 判断是否结束循环，一定要放到FETCH之后，如果放到fetch之前， -- 先判断done，这个时候done的值还是之前的循环的值，因此就会导致循环一次 IF _done THEN LEAVE my_loop; END IF; -- SELECT _doctor; INSERT INTO sys_user (userName,pwd) VALUES (_name,_pwd); -- 结束循环 END LOOP my_loop; -- 关闭游标 CLOSE my_cursor; END </description>
+    </item>
+    
+    <item>
+      <title>Esik分词 Pingyin分词的使用</title>
+      <link>https://yuanmoc.github.io/posts/history/ESik%E5%88%86%E8%AF%8D&#43;pingyin%E5%88%86%E8%AF%8D%E7%9A%84%E4%BD%BF%E7%94%A8/</link>
+      <pubDate>Fri, 21 Apr 2023 16:29:39 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/ESik%E5%88%86%E8%AF%8D&#43;pingyin%E5%88%86%E8%AF%8D%E7%9A%84%E4%BD%BF%E7%94%A8/</guid>
+      <description>1、在线联网安装 # 插件的版本与ES的版本要一致
+# 安装IK分词器拼音插件(Github官网) elasticsearch-plugin install https://github.com/medcl/elasticsearch-analysis-pinyin/releases/download/v6.7.0/elasticsearch-analysis-pinyin-6.7.0.zip # 安装IK分词器插件(Github官网) elasticsearch-plugin install https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v6.7.0/elasticsearch-analysis-ik-v6.7.0.zip 2、离线安装 # # 安装IK分词器拼音插件 mkdir $ES_PATH/pinyin cd $ES_PATH/pinyin # 下载 wget install https://github.com/medcl/elasticsearch-analysis-pinyin/releases/download/v6.7.0/elasticsearch-analysis-pinyin-6.7.0.zip # 解压 unzip elasticsearch-analysis-pinyin-6.7.0.zip -d ./ # 安装IK分词器插件 mkdir $ES_PATH/ik cd $ES_PATH/ik # 下载 wget install https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v6.7.0/elasticsearch-analysis-ik-v6.7.0.zip # 解压 unzip elasticsearch-analysis-ik-v6.7.0.zip -d ./ 3、测试 # 测试pingyin分词
+# Kibana方式 GET _analyze { &amp;#34;text&amp;#34;:&amp;#34;刘德华&amp;#34;, &amp;#34;analyzer&amp;#34;:&amp;#34;pinyin&amp;#34; } # 返回拼音表示安装完成 { &amp;#34;tokens&amp;#34; : [ { &amp;#34;token&amp;#34; : &amp;#34;liu&amp;#34;, &amp;#34;start_offset&amp;#34; : 0, &amp;#34;end_offset&amp;#34; : 0, &amp;#34;type&amp;#34; : &amp;#34;word&amp;#34;, &amp;#34;position&amp;#34; : 0 }, { &amp;#34;token&amp;#34; : &amp;#34;de&amp;#34;, &amp;#34;start_offset&amp;#34; : 0, &amp;#34;end_offset&amp;#34; : 0, &amp;#34;type&amp;#34; : &amp;#34;word&amp;#34;, &amp;#34;position&amp;#34; : 1 }, { &amp;#34;token&amp;#34; : &amp;#34;hua&amp;#34;, &amp;#34;start_offset&amp;#34; : 0, &amp;#34;end_offset&amp;#34; : 0, &amp;#34;type&amp;#34; : &amp;#34;word&amp;#34;, &amp;#34;position&amp;#34; : 2 }, { &amp;#34;token&amp;#34; : &amp;#34;ldh&amp;#34;, &amp;#34;start_offset&amp;#34; : 0, &amp;#34;end_offset&amp;#34; : 0, &amp;#34;type&amp;#34; : &amp;#34;word&amp;#34;, &amp;#34;position&amp;#34; : 2 } ] } 测试ik ik_max_word分词，还有 ik_smart 的</description>
+    </item>
+    
+    <item>
+      <title>Es的基本使用</title>
+      <link>https://yuanmoc.github.io/posts/history/ES%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/</link>
+      <pubDate>Wed, 19 Apr 2023 16:47:01 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/ES%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/</guid>
+      <description>创建索引 # 创建文档
+POST /{索引库名} { &amp;#34;settings&amp;#34;: { &amp;#34;number_of_shards&amp;#34;: 1, &amp;#34;number_of_replicas&amp;#34;: 0 }, &amp;#34;mappings&amp;#34;: { &amp;#34;properties&amp;#34;: { &amp;#34;color&amp;#34;: { &amp;#34;type&amp;#34;: &amp;#34;keyword&amp;#34; }, &amp;#34;make&amp;#34;: { &amp;#34;type&amp;#34;: &amp;#34;keyword&amp;#34; } } } } 修改映射
+PUT /{索引名称}/_mapping { &amp;#34;properties&amp;#34;:{ &amp;#34;name&amp;#34;:{ &amp;#34;type&amp;#34;:&amp;#34;text&amp;#34; }, &amp;#34;age&amp;#34;:{ &amp;#34;type&amp;#34;:&amp;#34;integer&amp;#34; } } } 查看映射 GET /{索引库名}/_mapping
+插入 # 添加文档
+POST /{索引库名}/_doc { &amp;#34;name&amp;#34;:&amp;#34;李四&amp;#34;, &amp;#34;age&amp;#34;:29, &amp;#34;address&amp;#34;:&amp;#34;天津&amp;#34; } 批量处理 针对不同的操作类型，第二行的请求体是不一样的 （1）index 和 create 第二行是source数据体 （2）delete 没有第二行 （3）update 第二行可以是partial doc，upsert或者是script
+POST /{索引库名}/_bulk {&amp;#34;create&amp;#34;:{&amp;#34;_index&amp;#34;:&amp;#34;索引名&amp;#34;, &amp;#34;_id&amp;#34;:&amp;#34;文档&amp;#34;}} // 动作 {&amp;#34;field1&amp;#34;:&amp;#34;value1&amp;#34;} //请求体 删除文档 : DELETE /{索引库名}/_doc/文档id</description>
+    </item>
+    
+    <item>
+      <title>Git提交规范</title>
+      <link>https://yuanmoc.github.io/posts/history/Git%E6%8F%90%E4%BA%A4%E8%A7%84%E8%8C%83/</link>
+      <pubDate>Tue, 11 Apr 2023 11:31:04 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/Git%E6%8F%90%E4%BA%A4%E8%A7%84%E8%8C%83/</guid>
+      <description>Git提交规范 # 格式：
+&amp;lt;type&amp;gt;(&amp;lt;scope&amp;gt;): &amp;lt;subject&amp;gt; [&amp;lt;ISSUE_ID&amp;gt;] &amp;lt;body&amp;gt; &amp;lt;footer&amp;gt; 例子：
+feat(user): Add user registration [777] Use Tencent cloud verification code to verify mobile phone and add user registration function https://github.com/one-user/a-project/issues/777 以下是字段说明 # type [必须] # 用于说明 commit 的类别，只允许使用下面几种标识：
+feat：新功能（feature） fix：修补bug docs：文档（documentation） style： 格式（不影响代码运行的变动） refactor：重构（即不是新增功能，也不是修改bug的代码变动） perf：优化 test：增加测试 chore：构建过程或辅助工具的变动 revert：撤销上一次的 commit
+scope [必须] # 用于说明修改的范围，基本上有有以下几种情形：
+all：表示大范围的修改 loation：表示小范围的修改 module：表示修改了某个模块 例如：feat(user): add user login
+subject [必须] # 用于表示本次提交修改的简要说明，尽量简短
+ISSUE_ID [可选] # 添加在 git issues 中需求或者 bug 修复对应的 issues 记录ID</description>
+    </item>
+    
+    <item>
+      <title>Pyppeeter的基本使用</title>
+      <link>https://yuanmoc.github.io/posts/history/pyppeeter%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/</link>
+      <pubDate>Wed, 23 Nov 2022 21:53:55 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/pyppeeter%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/</guid>
+      <description>背景 # 抓包时，遇到一些网页的信息与渲染页面上的不一样，原因是抓到的数据还没有渲染，所以不一样。 pyppeeter就可以解决这个问题，还可以进行一些页面上的自动化操作。从而达到我想要的效果，在这里记录下来基本的使用方法。
+基本使用 # 安装
+pip3 install pyppeteer
+import asyncio from pyppeteer import launch async def test(): browser = await launch(headless=False, args=[&amp;#39;--disable-infobars&amp;#39;]) page = await browser.newPage() await page.setViewport({&amp;#39;width&amp;#39;:1366,&amp;#39;height&amp;#39;:768}) # 是否启用JS，enabled设为False，则无渲染效果 await page.setJavaScriptEnabled(enabled=True) response = await page.goto(&amp;#39;https://baidu.com/&amp;#39;) #获取status、headers、url # print(response.status) # print(response.headers) # print(response.url) #获取当前页标题 # print(await page.title()) #获取当前页内容 await asyncio.sleep(2) print(await page.content()) #文本类型 # print(await response.text()) # cookie操作 # print(await page.cookies()) # 获取cookie,[{&amp;#39;name&amp;#39;:xx,&amp;#39;value&amp;#39;:xxx...},...] # page.deleteCookie() 删除cookie # page.</description>
+    </item>
+    
+    <item>
+      <title>Python使用execjs调用js方法</title>
+      <link>https://yuanmoc.github.io/posts/history/python%E4%BD%BF%E7%94%A8execjs%E8%B0%83%E7%94%A8js%E6%96%B9%E6%B3%95/</link>
+      <pubDate>Sat, 12 Nov 2022 14:54:30 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/python%E4%BD%BF%E7%94%A8execjs%E8%B0%83%E7%94%A8js%E6%96%B9%E6%B3%95/</guid>
+      <description>背景： 在使用python抓包时，要使用到js的相关解密方法，使用python写相关解密方法实现会有一些问题，有时js的加密方法是混淆过的，无法直译过来，所以直接调用js的方法是最方便的。
+下面是execjs使用的相关记录：
+1、先在本地安装node环境，因为在使用的时候会调用到。
+brew install node 2、编写方法调用js
+安装要使用到的crypto-js模块
+npm install crypto-js 编写方法调用
+import execjs node = execjs.get() ctx = node.compile(&amp;#34;&amp;#34;&amp;#34; const CryptoJS = require(&amp;#39;crypto-js&amp;#39;); //引用AES源码js function decrypt(data) { const SECRET_KEY = &amp;#39;pengzhihui&amp;#39; const encryptedHexStr = CryptoJS.enc.Base64.parse(data); const str = CryptoJS.enc.Utf8.stringify(encryptedHexStr); const decrypt = CryptoJS.AES.decrypt(str, SECRET_KEY); const decryptedStr = decrypt.toString(CryptoJS.enc.Utf8); return JSON.parse(decryptedStr) } &amp;#34;&amp;#34;&amp;#34;) res = ctx.call(&amp;#39;decrypt&amp;#39;, detail) </description>
+    </item>
+    
+    <item>
+      <title>Function编程传递三个参数</title>
+      <link>https://yuanmoc.github.io/posts/history/Function%E7%BC%96%E7%A8%8B%E4%BC%A0%E9%80%92%E4%B8%89%E4%B8%AA%E5%8F%82%E6%95%B0/</link>
+      <pubDate>Fri, 11 Nov 2022 10:04:21 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/Function%E7%BC%96%E7%A8%8B%E4%BC%A0%E9%80%92%E4%B8%89%E4%B8%AA%E5%8F%82%E6%95%B0/</guid>
+      <description>Function 编程传递三个参数 # java 内置的Function 类有两个参数Function和三个参数BiFunction的，但是有时就需要传递更多的参数，才能达到我们使用的场景。以下记录两个传递多少参数的用法。
+比如计算三个数相加
+a + b + c 自己编写一个@FunctionalInterface，支持接收多个参数 # @FunctionalInterface public interface ThreeParamFunction&amp;lt;T, U, K, R&amp;gt; { R apply(T t, U u, K k); } ThreeParamFunction&amp;lt;Integer, Integer, Integer, Integer&amp;gt; threeParamFunction = (a,b,c) -&amp;gt; { return a + b + c; } Integer add = threeParamFunction.apply(1,2,3); // 6 使用多个@FunctionalInterface来拼接 # BiFunction &amp;lt;Integer, Integer, Function&amp;lt;Integer, Integer&amp;gt;&amp;gt; multiAdder = (a, b) -&amp;gt; c -&amp;gt; { return a + b + c; }; Integer add = multiAdder.</description>
+    </item>
+    
+    <item>
+      <title>使用python将百度网盘批量转存并分享</title>
+      <link>https://yuanmoc.github.io/posts/history/%E4%BD%BF%E7%94%A8python%E5%B0%86%E7%99%BE%E5%BA%A6%E7%BD%91%E7%9B%98%E6%89%B9%E9%87%8F%E8%BD%AC%E5%AD%98%E5%B9%B6%E5%88%86%E4%BA%AB/</link>
+      <pubDate>Sun, 16 Oct 2022 13:56:56 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/%E4%BD%BF%E7%94%A8python%E5%B0%86%E7%99%BE%E5%BA%A6%E7%BD%91%E7%9B%98%E6%89%B9%E9%87%8F%E8%BD%AC%E5%AD%98%E5%B9%B6%E5%88%86%E4%BA%AB/</guid>
+      <description>前言 # 需要将一批百度网盘资源批量保存到自己的网盘，并分享出来使用，传统手动转存和分享的方式太慢了，所以编写了以下程序快速达到目的。
+代码 # import base64 import requests import re import time import random import math from urllib.parse import unquote import ddddocr class BaiDuPan(object): def __init__(self): # 创建session并设置初始登录Cookie self.session = requests.session() self.session.cookies[&amp;#39;BAIDUID&amp;#39;] = &amp;#39;&amp;#39; self.session.cookies[&amp;#39;BDUSS&amp;#39;] = &amp;#39;&amp;#39; self.session.cookies[&amp;#39;STOKEN&amp;#39;] = &amp;#39;&amp;#39; self.headers = { &amp;#39;Host&amp;#39;: &amp;#39;pan.baidu.com&amp;#39;, &amp;#39;User-Agent&amp;#39;: &amp;#39;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36&amp;#39;, } self.login_info = { &amp;#39;bdstoken&amp;#39;: &amp;#39;&amp;#39;, &amp;#39;username&amp;#39;: &amp;#39;&amp;#39; } &amp;#39;&amp;#39;&amp;#39; 验证Cookie是否已登录 返回值errno代表的意思： 0 有效的Cookie；1 init方法中未配置登录Cookie；2 无效的Cookie &amp;#39;&amp;#39;&amp;#39; def verifyCookie(self): if(self.</description>
+    </item>
+    
+    <item>
+      <title>清理linux系统的缓存空间</title>
+      <link>https://yuanmoc.github.io/posts/history/%E6%B8%85%E7%90%86linux%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%BC%93%E5%AD%98%E7%A9%BA%E9%97%B4/</link>
+      <pubDate>Sun, 09 Oct 2022 22:46:27 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/%E6%B8%85%E7%90%86linux%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%BC%93%E5%AD%98%E7%A9%BA%E9%97%B4/</guid>
+      <description>背景： jenkins 在2核4G机器上编译vue项目时，经常会把jenkins的进程给down掉，原因是内存不足。
+解决方案：
+1、添加了2G swap交换内存，在内存不够时，可以使用swap的内存。虽然说性能不好，但是总比没有强。
+如何在contos7上添加swap内存空间
+2、在编译前，先把缓存中的内存清理出来，留有足够的内存用来编译，编译后再清理一下。
+echo &amp;#34;开始清除缓存&amp;#34; sync;sync;sync #写入硬盘，防止数据丢失 sleep 10#延迟10秒 echo 3 &amp;gt; /proc/sys/vm/drop_caches 其他常用排查服务器整体负载的命令：
+1、top 查看整体负载情况
+top
+2、查找cpu占用率最高的N个进程
+ps auxw | head -1;ps auxw |sort -rn -k3 |head -11
+3、 根据内存使用定位
+ps auxw |sort -rn -k4 |head -11</description>
+    </item>
+    
+    <item>
+      <title>Contos7添加swap内存</title>
+      <link>https://yuanmoc.github.io/posts/history/contos7%E6%B7%BB%E5%8A%A0swap%E5%86%85%E5%AD%98/</link>
+      <pubDate>Sun, 09 Oct 2022 21:56:13 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/contos7%E6%B7%BB%E5%8A%A0swap%E5%86%85%E5%AD%98/</guid>
+      <description>Swap介绍：
+Linux 将物理内存分为内存段，叫做页面。交换是指内存页面被复制到预先设定好的硬盘空间(叫做交换空间)的过程，目的是释放对于页面的内存。物理内存和交换空间的总大小是可用的虚拟内存的总量。
+Swap即：交换分区，类似于Windows的虚拟内存，但物理内存不足时，把部分硬盘空间当成虚拟内存使用，从而解决了物理内存容量不足。
+1、查看内在
+free -hm
+1.添加swap交换分区空间
+使用dd命令创建swap交换分区文件/dev/mapper/swap-mem，大小为2G：
+dd if=/dev/zero of=/home/swap-mem bs=1024 count=2048000
+格式化swap分区：
+mkswap /home/swap-mem
+设置交换分区：
+mkswap -f /home/swap-mem
+给权限
+chmod 600 /home/swap-mem
+激活swap分区：
+swapon /home/swap-mem
+设为开机自动启用：
+vim /etc/fstab
+在该文件底部添加如下内容：
+/home/swap-mem swap swap defaults 0 0
+2.删除swap交换分区
+停止正在使用的swap分区：
+swapoff /home/swap-mem
+删除swap分区文件：
+rm /home/swap-mem
+删除或注释在/etc/fstab文件中的以下开机自动挂载内容：
+/home/swap-mem swap swap defaults 0 0
+完结！</description>
+    </item>
+    
+    <item>
+      <title>Jmeter追加cookie</title>
+      <link>https://yuanmoc.github.io/posts/history/jmeter%E8%BF%BD%E5%8A%A0cookie/</link>
+      <pubDate>Tue, 10 May 2022 20:02:50 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/jmeter%E8%BF%BD%E5%8A%A0cookie/</guid>
+      <description>使用 BeanShell 进行对线程cookie进行追加。
+import org.apache.jmeter.protocol.http.control.CookieManager; import org.apache.jmeter.protocol.http.control.Cookie; CookieManager manager = ctx.getCurrentSampler().getCookieManager(); Cookie cookie = new Cookie(&amp;#34;GSMSessionSID&amp;#34;, &amp;#34;GSMSessionSID&amp;#34;, &amp;#34;qinsilk.com&amp;#34;, &amp;#34;/gsm&amp;#34;, true, Long.MAX_VALUE); manager.add(cookie); </description>
+    </item>
+    
+    <item>
+      <title>Arthas 可排查接口执行哪里执行比较占用时间</title>
+      <link>https://yuanmoc.github.io/posts/history/arthas-%E5%8F%AF%E6%8E%92%E6%9F%A5%E6%8E%A5%E5%8F%A3%E6%89%A7%E8%A1%8C%E5%93%AA%E9%87%8C%E6%89%A7%E8%A1%8C%E6%AF%94%E8%BE%83%E5%8D%A0%E7%94%A8%E6%97%B6%E9%97%B4/</link>
+      <pubDate>Wed, 30 Mar 2022 19:48:18 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/arthas-%E5%8F%AF%E6%8E%92%E6%9F%A5%E6%8E%A5%E5%8F%A3%E6%89%A7%E8%A1%8C%E5%93%AA%E9%87%8C%E6%89%A7%E8%A1%8C%E6%AF%94%E8%BE%83%E5%8D%A0%E7%94%A8%E6%97%B6%E9%97%B4/</guid>
+      <description>https://arthas.aliyun.com/doc/quick-start.html</description>
+    </item>
+    
+    <item>
+      <title>凤凰架构</title>
+      <link>https://yuanmoc.github.io/posts/history/%E5%87%A4%E5%87%B0%E6%9E%B6%E6%9E%84/</link>
+      <pubDate>Wed, 02 Mar 2022 09:33:27 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/%E5%87%A4%E5%87%B0%E6%9E%B6%E6%9E%84/</guid>
+      <description>http://icyfenix.cn/</description>
+    </item>
+    
+    <item>
+      <title>暴力破解 Wifi密码，可行性不高</title>
+      <link>https://yuanmoc.github.io/posts/history/%E6%9A%B4%E5%8A%9B%E7%A0%B4%E8%A7%A3WIFI%E5%AF%86%E7%A0%81%E5%8F%AF%E8%A1%8C%E6%80%A7%E4%B8%8D%E9%AB%98/</link>
+      <pubDate>Sat, 26 Feb 2022 22:07:09 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/%E6%9A%B4%E5%8A%9B%E7%A0%B4%E8%A7%A3WIFI%E5%AF%86%E7%A0%81%E5%8F%AF%E8%A1%8C%E6%80%A7%E4%B8%8D%E9%AB%98/</guid>
+      <description>设置使用外置网卡 # 操作步骤 # 查看支持的网卡
+kali@kali:~$ sudo airmon-ng PHY Interface Driver Chipset phy1 wlan0 rt2800usb Ralink Technology, Corp. RT2870/RT3070 启动网卡监听模式
+sudo airmon-ng start wlan0 再次使用 sudo ifconfig 查看时，wlan0 会变成 wlan0mon。
+kali@kali:~$ sudo ifconfig eth0: flags=4163&amp;lt;UP,BROADCAST,RUNNING,MULTICAST&amp;gt; mtu 1500 inet 192.168.183.128 netmask 255.255.255.0 broadcast 192.168.183.255 inet6 fe80::20c:29ff:fe01:5e1b prefixlen 64 scopeid 0x20&amp;lt;link&amp;gt; ether 00:0c:29:01:5e:1b txqueuelen 1000 (Ethernet) RX packets 86 bytes 6556 (6.4 KiB) RX errors 0 dropped 0 overruns 0 frame 0 TX packets 45 bytes 4234 (4.</description>
+    </item>
+    
+    <item>
+      <title>Es参考文档</title>
+      <link>https://yuanmoc.github.io/posts/history/ES%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3/</link>
+      <pubDate>Mon, 14 Feb 2022 11:11:21 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/ES%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3/</guid>
+      <description>https://www.tizi365.com/archives/590.html</description>
+    </item>
+    
+    <item>
+      <title>更新 ID Eagit分支信息</title>
+      <link>https://yuanmoc.github.io/posts/history/%E6%9B%B4%E6%96%B0IDEAGIT%E5%88%86%E6%94%AF%E4%BF%A1%E6%81%AF/</link>
+      <pubDate>Fri, 21 Jan 2022 10:41:51 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/%E6%9B%B4%E6%96%B0IDEAGIT%E5%88%86%E6%94%AF%E4%BF%A1%E6%81%AF/</guid>
+      <description>IDEA 常常出现本地显示的分支信息与远程的分支信息不一致，使用以下命令更新远程分支信息到本地缓存中来。
+git remote update origin --prune </description>
+    </item>
+    
+    <item>
+      <title>Mysql不同字符集表关联导致索引失效</title>
+      <link>https://yuanmoc.github.io/posts/history/mysql%E4%B8%8D%E5%90%8C%E5%AD%97%E7%AC%A6%E9%9B%86%E8%A1%A8%E5%85%B3%E8%81%94%E5%AF%BC%E8%87%B4%E7%B4%A2%E5%BC%95%E5%A4%B1%E6%95%88/</link>
+      <pubDate>Thu, 06 Jan 2022 11:25:45 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/mysql%E4%B8%8D%E5%90%8C%E5%AD%97%E7%AC%A6%E9%9B%86%E8%A1%A8%E5%85%B3%E8%81%94%E5%AF%BC%E8%87%B4%E7%B4%A2%E5%BC%95%E5%A4%B1%E6%95%88/</guid>
+      <description>背景： 在做业务初始化时，出现join表关联没有走索引的情况，原来只要执行半个小时的脚本，现在要执行几个小时，经排查，是两个表的字符集不一样，旧表的字符集是utf8，而新表的字符集都是utf8mb4，而导致关联时不走索引。
+目前解决方案有两种： 1、修改旧表字符集成utf8mb4 2、在执行脚本时，转换字符集类型，从而让其走索引 convert(字段 using utf8mb4)
+1方案要处理难度非一般，目前业务在线上跑，</description>
+    </item>
+    
+    <item>
+      <title>Redis分布式锁</title>
+      <link>https://yuanmoc.github.io/posts/history/Redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/</link>
+      <pubDate>Wed, 29 Dec 2021 00:45:40 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/Redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/</guid>
+      <description>&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;redis.clients&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;jedis&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;3.0.1&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt; LockUtil
+public class LockUtil { private static final JedisPool JEDIS_POOL; /** 锁过期时间 */ private static final long INTERNAL_LOCK_LEASE_TIME = 5000; private final static long TIME_OUT = 20000; //获取锁的超时时间 private static final SetParams PARAMS = SetParams.setParams().nx().px(INTERNAL_LOCK_LEASE_TIME); static { JEDIS_POOL = new JedisPool(&amp;#34;139.9.183.232&amp;#34;, 6379); } private static Jedis getJedis() { Jedis resource = JEDIS_POOL.getResource(); resource.auth(&amp;#34;yuanmoc&amp;#34;); return resource; } public static boolean lock(String lockKey, String sessionId) { Jedis jedis = getJedis(); long start = System.</description>
+    </item>
+    
+    <item>
+      <title>Hash Mapkey Set踩坑</title>
+      <link>https://yuanmoc.github.io/posts/history/HashMapkeySet%E8%B8%A9%E5%9D%91/</link>
+      <pubDate>Sat, 06 Nov 2021 14:32:29 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/HashMapkeySet%E8%B8%A9%E5%9D%91/</guid>
+      <description>在HashMap中使用keySet获取一个Set对象，然后移除Set对象中的值，发现会把HashMap中的值也移除掉了。
+查看源码发现，HashMap中keySet使用的也是HashMap中的对象，而不是重新创建一个对象，所以操作HashSet时，也就是操作了HashMap对象。
+public Set&amp;lt;K&amp;gt; keySet() { Set&amp;lt;K&amp;gt; ks; return (ks = keySet) == null ? (keySet = new KeySet()) : ks; } final class KeySet extends AbstractSet&amp;lt;K&amp;gt; { public final int size() { return size; } public final void clear() { HashMap.this.clear(); } public final Iterator&amp;lt;K&amp;gt; iterator() { return new KeyIterator(); } public final boolean contains(Object o) { return containsKey(o); } public final boolean remove(Object key) { return removeNode(hash(key), key, null, false, true) !</description>
+    </item>
+    
+    <item>
+      <title>使用jetcache@ Create Cache创建两个缓存对象，发现配置全部使用了第一个</title>
+      <link>https://yuanmoc.github.io/posts/history/%E4%BD%BF%E7%94%A8jetcache@CreateCache%E5%88%9B%E5%BB%BA%E4%B8%A4%E4%B8%AA%E7%BC%93%E5%AD%98%E5%AF%B9%E8%B1%A1%E5%8F%91%E7%8E%B0%E9%85%8D%E7%BD%AE%E5%85%A8%E9%83%A8%E4%BD%BF%E7%94%A8%E4%BA%86%E7%AC%AC%E4%B8%80%E4%B8%AA/</link>
+      <pubDate>Thu, 28 Oct 2021 15:28:43 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/%E4%BD%BF%E7%94%A8jetcache@CreateCache%E5%88%9B%E5%BB%BA%E4%B8%A4%E4%B8%AA%E7%BC%93%E5%AD%98%E5%AF%B9%E8%B1%A1%E5%8F%91%E7%8E%B0%E9%85%8D%E7%BD%AE%E5%85%A8%E9%83%A8%E4%BD%BF%E7%94%A8%E4%BA%86%E7%AC%AC%E4%B8%80%E4%B8%AA/</guid>
+      <description>使用@CreateCache创建两个缓存对象，由于这两个缓存对象都使用的 area 和 name 是一样的，导致了创建的第二个缓存对象没有生效，而是使用了第一个缓存对象。
+主要排查为什么会使用到了第一个缓存的对象。
+/** 第一个缓存对象 */ @CreateCache(name = &amp;#34;pre&amp;#34;, cacheType = CacheType.REMOTE, expire = Integer.MAX_VALUE, timeUnit = TimeUnit.SECONDS) private Cache&amp;lt;String, List&amp;lt;PopupsVO&amp;gt;&amp;gt; popupsCache; /** 第二个缓存对象 */ @CreateCache(name = &amp;#34;pre&amp;#34;, cacheType = CacheType.REMOTE, expire = 60, timeUnit = TimeUnit.SECONDS) private Cache&amp;lt;String, List&amp;lt;Integer&amp;gt;&amp;gt; popupsCacheUserPopupsIds; 请求时，会先初始化缓存配置config，com.alicp.jetcache.anno.field.LazyInitCache#checkInit ,由于已经初始化过了，debug把 this.inited 改成false。重新进入初始化环节。
+private void checkInit() { if (!this.inited) { synchronized(this) { if (!this.inited) { this.init(); this.inited = true; } } } } 在com.alicp.jetcache.anno.field.LazyInitCache#init 进行初始化，</description>
+    </item>
+    
+    <item>
+      <title>使用js解码 Gb18030编码的 Base64字符串</title>
+      <link>https://yuanmoc.github.io/posts/history/%E4%BD%BF%E7%94%A8js%E8%A7%A3%E7%A0%81GB18030%E7%BC%96%E7%A0%81%E7%9A%84Base64%E5%AD%97%E7%AC%A6%E4%B8%B2/</link>
+      <pubDate>Thu, 14 Oct 2021 15:04:08 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/%E4%BD%BF%E7%94%A8js%E8%A7%A3%E7%A0%81GB18030%E7%BC%96%E7%A0%81%E7%9A%84Base64%E5%AD%97%E7%AC%A6%E4%B8%B2/</guid>
+      <description>背景：后端使用GB18030字节编码加密成Base64后，在前端解码。
+使用工具类进行解码 https://github.com/inexorabletash/text-encoding
+1、先生成Uint8 字节buffer
+var binary_string = window.atob(base64Cmd); var len = binary_string.length; var bytes = new Uint8Array(len); for (var i = 0; i &amp;lt; len; i++) { bytes[i] = binary_string.charCodeAt(i); } buffer = bytes.buffer; 2、再使用Uint8 字节buffer生成对应的中文编码字符串
+var str = new TextDecoder(&amp;#39;gb18030&amp;#39;).decode(buffer); </description>
+    </item>
+    
+    <item>
+      <title>Cpcl指令打印图片</title>
+      <link>https://yuanmoc.github.io/posts/history/CPCL%E6%8C%87%E4%BB%A4%E6%89%93%E5%8D%B0%E5%9B%BE%E7%89%87/</link>
+      <pubDate>Thu, 14 Oct 2021 11:59:33 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/CPCL%E6%8C%87%E4%BB%A4%E6%89%93%E5%8D%B0%E5%9B%BE%E7%89%87/</guid>
+      <description>public String graphics(int x0, int y0, int width, int height, BufferedImage bmp) { if (bmp != null) { //生成2进制字符串 int[] rgb = new int[3]; width = bmp.getWidth(); height = bmp.getHeight(); int wModByte = (width % 8) == 0 ? 0 : 8 - (width % 8); int pixelCount = (width + wModByte) * height; int wPrintByte = (width + wModByte) / 8; StringBuilder res = new StringBuilder(); for (int y = 0; y &amp;lt; height; y++) { for (int x = 0; x &amp;lt; width; x++) { int pixel = bmp.</description>
+    </item>
+    
+    <item>
+      <title>写个python脚本，每天定时登录</title>
+      <link>https://yuanmoc.github.io/posts/history/%E5%86%99%E4%B8%AApython%E8%84%9A%E6%9C%AC%E6%AF%8F%E5%A4%A9%E5%AE%9A%E6%97%B6%E7%99%BB%E5%BD%95/</link>
+      <pubDate>Mon, 13 Sep 2021 21:35:28 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/%E5%86%99%E4%B8%AApython%E8%84%9A%E6%9C%AC%E6%AF%8F%E5%A4%A9%E5%AE%9A%E6%97%B6%E7%99%BB%E5%BD%95/</guid>
+      <description>写一个脚本，每天登录获取积分。
+使用的语法是python3，系统是centos7。
+1、安装http请求需要的requests模块，直接使用pip3来安装
+pip install requests 也可以到官网去下载源文件来安装 https://pypi.org/project/requests/
+2、编写python脚本，文件名称：lmsLogin.py
+#!/bin/python3 import re import requests from urllib import parse users = [ {&amp;#39;user&amp;#39;: &amp;#39;xxx&amp;#39;, &amp;#39;pwd&amp;#39;: &amp;#39;xxx&amp;#39;}, {&amp;#39;user&amp;#39;: &amp;#39;xxx&amp;#39;, &amp;#39;pwd&amp;#39;: &amp;#39;xxx&amp;#39;} ] for user in users: res = requests.get(url = &amp;#39;https://lms.qinsilk.com/login&amp;#39;) pattern = re.compile(r&amp;#39;&amp;lt;meta content=&amp;#34;(.*)?&amp;#34; name=&amp;#34;csrf-token&amp;#34;&amp;#39;, re.M|re.I) token = pattern.findall(res.text, 0)[0] print(token) cookie = requests.utils.dict_from_cookiejar(res.cookies) print (cookie) url = r&amp;#39;https://lms.qinsilk.com/login_check&amp;#39; headers = { &amp;#39;origin&amp;#39;: &amp;#39;https://lms.qinsilk.com&amp;#39;, &amp;#39;content-type&amp;#39;: &amp;#39;application/x-www-form-urlencoded&amp;#39;, &amp;#39;User-Agent&amp;#39;: r&amp;#39;Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.</description>
+    </item>
+    
+    <item>
+      <title>Oom堆栈信息分析</title>
+      <link>https://yuanmoc.github.io/posts/history/OOM%E5%A0%86%E6%A0%88%E4%BF%A1%E6%81%AF%E5%88%86%E6%9E%90/</link>
+      <pubDate>Sun, 22 Aug 2021 16:49:50 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/OOM%E5%A0%86%E6%A0%88%E4%BF%A1%E6%81%AF%E5%88%86%E6%9E%90/</guid>
+      <description>先把一台有问题的服务从微服务摘下来，其他服务重启，保证线上运行正常，然后在这台服务上进行分析原因。
+1、打印GC日志
+JAVA_OPTS=&amp;#34;$JAVA_OPTS -server -Xms4096m -Xmx4096m -Xss1024k -XX:PermSize=256m -XX:MaxPermSize=256m -XX:+PrintGCDetails -Xloggc:/usr/local/gc.log -XX:+PrintGCTimeStamps&amp;#34; 查看GC情况（Minor GC、Major GC、Full GC）
+tail -n 50 gc.log 2、查看CPU占用情况
+jps top -H -p [pid] 3、把堆栈信息导出来
+jstack pid &amp;gt; jst.txt jmap -dump:format=b,file=jdump.bin pid -dump: 生成Java堆转储快照 -heap：显示Java堆详细信息 -histo：显示堆中对象统计信息 同时也可以使用 jmap -histo &amp;lt;PID&amp;gt; | grep [过滤类] 查看一下有没有哪个类对象过多，如果有，可能就是这里的问题了。 分析堆栈信息：Memory Analyzer tools:AMT
+overview -&amp;gt; See stacktrace，可以看见栈信息
+然后点击details，查看这个GC不掉的内存对象是谁，找到自己写的内存对象。
+然后去分析代码，为什么会出现这种情况。</description>
+    </item>
+    
+    <item>
+      <title>打印横排二维码</title>
+      <link>https://yuanmoc.github.io/posts/history/%E6%89%93%E5%8D%B0%E6%A8%AA%E6%8E%92%E4%BA%8C%E7%BB%B4%E7%A0%81/</link>
+      <pubDate>Tue, 17 Aug 2021 15:40:12 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/%E6%89%93%E5%8D%B0%E6%A8%AA%E6%8E%92%E4%BA%8C%E7%BB%B4%E7%A0%81/</guid>
+      <description>public class PrintQrCode3Test { public static void main(String[] args) throws Exception { // 最多3组 List&amp;lt;KeyValue&amp;gt; list = new ArrayList&amp;lt;&amp;gt;(); list.add(KeyValue.generator(&amp;#34;80&amp;#34;, getStr(28))); list.add(KeyValue.generator(&amp;#34;80&amp;#34;, getStr(44))); list.add(KeyValue.generator(&amp;#34;80&amp;#34;, getStr(74))); System.out.println(toHexString(qrCode3Map(list))); } public static String getStr(Integer len) { return StringUtil.leftPad(&amp;#34;&amp;#34;, len, &amp;#34;zxcvbnmasdfghjklqwertyuiop.:/.:/&amp;#34;); } public static byte[] qrCode3Map(List&amp;lt;KeyValue&amp;gt; content) { byte[] byteMerger = new byte[0]; // byte[] init = new byte[]{0x1B, 0x1D, 0x1E, 0x00, 0x0C, 0x04, 0x1B, 0x1D, 0x1F, 0x1B, 0x40}; byte[] init = new byte[]{0x1B, 0x40}; byteMerger = byteMerger(byteMerger, init); int w = 880; int h = 380; int w_pL = w%256; int w_pH = w/256; int h_pL = h%256; int h_pH = h/256; byte[] start = new byte[]{0x1B,0x4C,0x1B,0x57,0x00,0x00,0x00,0x00,(byte) w_pL,(byte) w_pH,(byte)h_pL,(byte)h_pH,0x0A}; byteMerger = byteMerger(byteMerger, start); for (int i = 0; i &amp;lt; content.</description>
+    </item>
+    
+    <item>
+      <title>创建一个线程工厂</title>
+      <link>https://yuanmoc.github.io/posts/history/%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E7%BA%BF%E7%A8%8B%E5%B7%A5%E5%8E%82/</link>
+      <pubDate>Sat, 03 Jul 2021 14:39:24 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E7%BA%BF%E7%A8%8B%E5%B7%A5%E5%8E%82/</guid>
+      <description>区分其他线程，监控线程。
+class NamedThreadFactory implements ThreadFactory { private static final AtomicInteger POOL_NUMBER = new AtomicInteger(1); private final AtomicInteger THREAD_NUMBER; private final ThreadGroup GROUP; private final String NAME_PREFIX; private final boolean IS_DAEMON; NamedThreadFactory() { this(&amp;#34;test-thread-factory&amp;#34;); } NamedThreadFactory(String name) { this(name, false); } NamedThreadFactory(String preffix, boolean daemon) { this.THREAD_NUMBER = new AtomicInteger(0); SecurityManager s = System.getSecurityManager(); this.GROUP = s != null ? s.getThreadGroup() : Thread.currentThread().getThreadGroup(); this.NAME_PREFIX = preffix + &amp;#34;-&amp;#34; + POOL_NUMBER.getAndIncrement() + &amp;#34;-thread-&amp;#34;; this.</description>
+    </item>
+    
+    <item>
+      <title>Application Event和 Listener实现业务解耦</title>
+      <link>https://yuanmoc.github.io/posts/history/ApplicationEvent%E5%92%8CListener%E5%AE%9E%E7%8E%B0%E4%B8%9A%E5%8A%A1%E8%A7%A3%E8%80%A6/</link>
+      <pubDate>Sat, 26 Jun 2021 17:24:22 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/ApplicationEvent%E5%92%8CListener%E5%AE%9E%E7%8E%B0%E4%B8%9A%E5%8A%A1%E8%A7%A3%E8%80%A6/</guid>
+      <description>ApplicationEvent以及Listener是Spring为我们提供的一个事件监听、订阅的实现，内部实现原理是观察者设计模式，设计初衷是为了系统业务逻辑解耦，提高可扩展性及可维护性。事件发布者并不需要考虑谁去监听，监听具体的内容是什么，发布者的工作只是为了发布时间而已。
+创建并发布 ApplicationEvent 事件 # 1、创建一个ApplicationEvent事件实体,只要 extends ApplicationEvent，作用于发布事件时
+public class UserEvent extends ApplicationEvent { private UserVO userVO; public UserEvent(Object source, UserVO userVO) { super(source); this.userVO = userVO; } public UserVO getUserVO() { return userVO; } public void setUserVO(UserVO userVO) { this.userVO = userVO; } } 2、创建一个业务Servie，并发布ApplicationEvent事件
+@Service @Transactional public class UserService { @Resource private UserDao userDao; @Resource private ApplicationContext applicationContext; public void testSave() { UserVO userVO = new UserVO(); userVO.setName(&amp;#34;123&amp;#34;); userVO.</description>
+    </item>
+    
+    <item>
+      <title>创建线程池</title>
+      <link>https://yuanmoc.github.io/posts/history/%E5%88%9B%E5%BB%BA%E7%BA%BF%E7%A8%8B%E6%B1%A0/</link>
+      <pubDate>Mon, 21 Jun 2021 00:43:36 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/%E5%88%9B%E5%BB%BA%E7%BA%BF%E7%A8%8B%E6%B1%A0/</guid>
+      <description>ThreadPoolExecutor executor = new ThreadPoolExecutor(5, 20, 2, TimeUnit.MINUTES, new LinkedBlockingQueue&amp;lt;&amp;gt;()); </description>
+    </item>
+    
+    <item>
+      <title>Centos7安装 Docker</title>
+      <link>https://yuanmoc.github.io/posts/history/centos7%E5%AE%89%E8%A3%85Docker/</link>
+      <pubDate>Sat, 12 Jun 2021 12:20:57 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/centos7%E5%AE%89%E8%A3%85Docker/</guid>
+      <description>在centos7 上安装 Docker # 安装
+# step 1: 安装必要的一些系统工具 sudo yum install -y yum-utils device-mapper-persistent-data lvm2 # Step 2: 添加软件源信息 sudo yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo # Step 3: 更新并安装 Docker-CE sudo yum makecache fast sudo yum -y install docker-ce # Step 4: 开启Docker服务 sudo service docker start 注意：其他注意事项在下面的注释中 # 官方软件源默认启用了最新的软件，您可以通过编辑软件源的方式获取各个版本的软件包。例如官方并没有将测试版本的软件源置为可用，你可以通过以下方式开启。同理可以开启各种测试版本等。 # vim /etc/yum.repos.d/docker-ce.repo # 将 [docker-ce-test] 下方的 enabled=0 修改为 enabled=1 # # 安装指定版本的Docker-CE: # Step 1: 查找Docker-CE的版本: # yum list docker-ce.</description>
+    </item>
+    
+    <item>
+      <title>Mysqlon使用遇坑</title>
+      <link>https://yuanmoc.github.io/posts/history/Mysqlon%E4%BD%BF%E7%94%A8%E9%81%87%E5%9D%91/</link>
+      <pubDate>Thu, 03 Jun 2021 09:57:46 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/Mysqlon%E4%BD%BF%E7%94%A8%E9%81%87%E5%9D%91/</guid>
+      <description>本来想查询分组下id最大的一条数据，语句如下：
+select * from order_delivery where id in ( select max(id) id from order_delivery where cid &amp;gt;= _IN_CUR_ID and cid &amp;lt; _IN_CUR_ID + _IN_STEP and update_time &amp;gt; &amp;#39;2021-03-01&amp;#39; group by cid, delivery_type ); 结果发现，on下的子语句不走索引了。数据太多，结果跑不动了。
+改了一下，先排序再分组查询，这样避免了on子查询的使用，成功走上了索引。
+select * from (select * from order_delivery where cid &amp;gt;= _IN_CUR_ID and cid &amp;lt; _IN_CUR_ID + _IN_STEP and update_time &amp;gt; &amp;#39;2021-03-01&amp;#39; order by id desc) t group by cid, delivery_type; </description>
+    </item>
+    
+    <item>
+      <title>My Batis打印日志</title>
+      <link>https://yuanmoc.github.io/posts/history/MyBatis%E6%89%93%E5%8D%B0%E6%97%A5%E5%BF%97/</link>
+      <pubDate>Wed, 02 Jun 2021 14:14:36 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/MyBatis%E6%89%93%E5%8D%B0%E6%97%A5%E5%BF%97/</guid>
+      <description>在Mybatis 的配置文件中添加：
+&amp;lt;settings&amp;gt; &amp;lt;!-- 打印查询语句 --&amp;gt; &amp;lt;setting name=&amp;#34;logImpl&amp;#34; value=&amp;#34;STDOUT_LOGGING&amp;#34; /&amp;gt; &amp;lt;/settings&amp;gt; 同时可以配合IDEA插件 MyBatis Log Plugin 一起使用。</description>
+    </item>
+    
+    <item>
+      <title>正则小记</title>
+      <link>https://yuanmoc.github.io/posts/history/%E6%AD%A3%E5%88%99%E5%B0%8F%E8%AE%B0/</link>
+      <pubDate>Thu, 27 May 2021 10:07:47 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/%E6%AD%A3%E5%88%99%E5%B0%8F%E8%AE%B0/</guid>
+      <description>常用元字符 # 代码 说明 . 匹配除换行符以外的任意字符 \w 匹配字母或数字或下划线 \s 匹配任意的空白符 \d 匹配数字 \b 匹配单词的开始或结束 ^ 匹配字符串的开始 $ 匹配字符串的结束 常用限定符 # 代码/语法 说明 * 重复零次或更多次 + 重复一次或更多次 ? 重复零次或一次 {n} 重复n次 {n,} 重复n次或更多次 {n,m} 重复n到m次 常用反义词 # 代码/语法 说明 \W 匹配任意不是字母，数字，下划线，汉字的字符 \S 匹配任意不是空白符的字符 \D 匹配任意非数字的字符 \B 匹配不是单词开头或结束的位置 [^x] 匹配除了x以外的任意字符 [^aeiou] 匹配除了aeiou这几个字母以外的任意字符 贪婪匹配/其他 # 字符 描述 (pattern) 匹配 pattern 并获取这一匹配。所获取的匹配可以从产生的 Matches 集合得到，在VBScript 中使用 SubMatches 集合，在JScript 中则使用 $0…$9 属性。要匹配圆括号字符，请使用 &amp;lsquo;(&amp;rsquo; 或 &amp;lsquo;)&amp;rsquo;。 (?</description>
+    </item>
+    
+    <item>
+      <title>Jdk8@ Functional Interface的使用</title>
+      <link>https://yuanmoc.github.io/posts/history/jdk8@FunctionalInterface%E7%9A%84%E4%BD%BF%E7%94%A8/</link>
+      <pubDate>Fri, 21 May 2021 17:49:04 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/jdk8@FunctionalInterface%E7%9A%84%E4%BD%BF%E7%94%A8/</guid>
+      <description>简介
+java 8引入了lambda表达式，lambda表达式实际上表示的就是一个匿名的function。
+在java 8之前，如果需要使用到匿名function需要new一个类的实现，但是有了lambda表达式之后，一切都变的非常简介。
+我们看一个之前讲线程池的时候的一个例子：
+//ExecutorService using class ExecutorService executorService = Executors.newSingleThreadExecutor(); executorService.submit(new Runnable() { @Override public void run() { log.info(&amp;#34;new runnable&amp;#34;); } }); executorService.submit需要接收一个Runnable类，上面的例子中我们new了一个Runnable类，并实现了它的run（）方法。
+上面的例子如果用lambda表达式来重写，则如下所示：
+//ExecutorService using lambda executorService.submit(()-&amp;gt;log.info(&amp;#34;new runnable&amp;#34;)); 看起是不是很简单，使用lambda表达式就可以省略匿名类的构造，并且可读性更强。
+那么是不是所有的匿名类都可以用lambda表达式来重构呢？也不是。
+我们看下Runnable类有什么特点：
+@FunctionalInterface public interface Runnable Runnable类上面有一个@FunctionalInterface注解。这个注解就是我们今天要讲到的Functional Interface。
+Functional Interface # Functional Interface是指带有 @FunctionalInterface 注解的interface。它的特点是其中只有一个子类必须要实现的abstract方法。如果abstract方法前面带有default关键字，则不做计算。
+其实这个也很好理解，因为Functional Interface改写成为lambda表达式之后，并没有指定实现的哪个方法，如果有多个方法需要实现的话，就会有问题。
+@Documented @Retention(RetentionPolicy.RUNTIME) @Target(ElementType.TYPE) public @interface FunctionalInterface {} Functional Interface一般都在java.util.function包中。
+根据要实现的方法参数和返回值的不同，Functional Interface可以分为很多种，下面我们分别来介绍。
+Function：一个参数一个返回值 # Function接口定义了一个方法，接收一个参数，返回一个参数。
+@FunctionalInterface public interface Function&amp;lt;T, R&amp;gt; { /** * Applies this function to the given argument.</description>
+    </item>
+    
+    <item>
+      <title>Jvm常用工具</title>
+      <link>https://yuanmoc.github.io/posts/history/JVM%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/</link>
+      <pubDate>Fri, 14 May 2021 19:11:57 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/JVM%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/</guid>
+      <description>JVM常用工具 # jps # Java版的ps命令，主要用于查看Java应用的进程号,启动JVM的参数。
+jps [options] [hostid]
+options参数:
+-l 输出类命名或者jar路径 -q 输出LVMID -m 输出JVM启动时传给main()的参数 -v 输出JVM启动时显示指令参数 例子：
+jps -l 输出jar包路径，类全名 jps -m 输出main参数 jps -v 输出JVM参数 jinfo # jinfo是用来查看JVM参数和动态修改部分JVM参数的命令
+命令格式：
+jinfo [option] options参数解释：
+-flag 打印指定名称的参数 -flag [+|-] 打开或关闭参数 -flag = 设置参数 -flags 打印所有参数 -sysprops 打印系统配置 打印上面两个选项 示例：
+其中11666为pid
+查看JVM参数和系统配置
+jinfo 11666 jinfo -flags 11666 jinfo -sysprops 11666 查看打印GC日志参数
+jinfo -flag PrintGC 11666 jinfo -flag PrintGCDetails 11666 打开GC日志参数
+jinfo -flag +PrintGC 11666 jinfo -flag +PrintGCDetails 11666 关闭GC日志参数</description>
+    </item>
+    
+    <item>
+      <title>生成业务 ID</title>
+      <link>https://yuanmoc.github.io/posts/history/%E7%94%9F%E6%88%90%E4%B8%9A%E5%8A%A1ID/</link>
+      <pubDate>Thu, 13 May 2021 16:13:14 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/%E7%94%9F%E6%88%90%E4%B8%9A%E5%8A%A1ID/</guid>
+      <description>生成唯一的业务ID号
+public class UniqueStringGenerator { private static final int MAX_COUNTER = 10000; private volatile static int COUNTER = 0; private static final String PAD_STR = &amp;#34;0&amp;#34;; private static DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern(&amp;#34;yyMMddHHmmssSSS&amp;#34;); public static synchronized String generatorId() { if (COUNTER &amp;gt; MAX_COUNTER) { COUNTER = 0; } String uniqueNumber = getNowString() + getNumberString(); COUNTER++; return uniqueNumber; } private static String getNowString() { LocalDateTime ldt = LocalDateTime.now(); return ldt.format(FORMATTER); } private static String getNumberString() { return StringUtils.</description>
+    </item>
+    
+    <item>
+      <title>Kill掉java进程</title>
+      <link>https://yuanmoc.github.io/posts/history/kill%E6%8E%89java%E8%BF%9B%E7%A8%8B/</link>
+      <pubDate>Tue, 11 May 2021 14:58:11 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/kill%E6%8E%89java%E8%BF%9B%E7%A8%8B/</guid>
+      <description>开发时有可能会出现端口被占用，或者异常能出时，重启，端口会被占用的情况。 这里需要kill无用的进程。
+在windows系统下：
+# 查询端口进程的PID netstat -ano| findstr 8080 # 也可以使用java工具jps查看java应用进程 jps # kill掉进程 taskkill /pid [pid] /f 在Linux系统下：
+jps kill [pid] </description>
+    </item>
+    
+    <item>
+      <title>Rocket Mq延时消息的使用和延时级别的配置</title>
+      <link>https://yuanmoc.github.io/posts/history/RocketMQ%E5%BB%B6%E6%97%B6%E6%B6%88%E6%81%AF%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E5%BB%B6%E6%97%B6%E7%BA%A7%E5%88%AB%E7%9A%84%E9%85%8D%E7%BD%AE/</link>
+      <pubDate>Tue, 13 Apr 2021 17:14:47 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/RocketMQ%E5%BB%B6%E6%97%B6%E6%B6%88%E6%81%AF%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E5%BB%B6%E6%97%B6%E7%BA%A7%E5%88%AB%E7%9A%84%E9%85%8D%E7%BD%AE/</guid>
+      <description> RocketMQ延时消息的使用和延时级别的配置 # 开源框架的没有__STARTDELIVERTIME配置 阿里企业级没有messageDelayLevel配置
+消息tag __TAG 消息key __KEY 消息ID __MSGID 重试次数 __RECONSUMETIMES 设置消息的定时投递时间（绝对时间),最大延迟时间为7天. __STARTDELIVERTIME 设置消息的延迟级别，其中，level=0 级表示不延时 _DELAYTIMEVELVEL 在服务器端（rocketmq-broker端）的属性配置文件中加入以下行： messageDelayLevel=1s 5s 10s 30s 1m 2m 3m 4m 5m 6m 7m 8m 9m 10m 20m 30m 1h 2h 这个配置项配置了从1级开始各级延时的时间，如1表示延时1s，2表示延时5s，14表示延时10m，可以修改这个指定级别的延时时间； </description>
+    </item>
+    
+    <item>
+      <title>查看网络命令记录</title>
+      <link>https://yuanmoc.github.io/posts/history/%E6%9F%A5%E7%9C%8B%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4%E8%AE%B0%E5%BD%95/</link>
+      <pubDate>Sun, 11 Apr 2021 13:21:01 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/%E6%9F%A5%E7%9C%8B%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4%E8%AE%B0%E5%BD%95/</guid>
+      <description>列出当前的防火墙规则，查看网络链路
+iptables -t nat -L -n --line-numbers Chain PREROUTING (policy ACCEPT) num target prot opt source destination 1 DOCKER all -- 0.0.0.0/0 0.0.0.0/0 ADDRTYPE match dst-type LOCAL Chain INPUT (policy ACCEPT) num target prot opt source destination Chain OUTPUT (policy ACCEPT) num target prot opt source destination 1 DOCKER all -- 0.0.0.0/0 !127.0.0.0/8 ADDRTYPE match dst-type LOCAL Chain POSTROUTING (policy ACCEPT) num target prot opt source destination 1 MASQUERADE all -- 172.</description>
+    </item>
+    
+    <item>
+      <title>Docker Compose搭建 Rocket Mq</title>
+      <link>https://yuanmoc.github.io/posts/history/Docker-compose%E6%90%AD%E5%BB%BARocketMQ/</link>
+      <pubDate>Sun, 11 Apr 2021 00:43:14 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/Docker-compose%E6%90%AD%E5%BB%BARocketMQ/</guid>
+      <description>RocketMQ架构图 搭建RocketMQ服务需要NameServer、Broker和RocketMQ的管理后台。
+1、docker-compose文件
+version: &amp;#39;2&amp;#39; services: rmqnamesrv: image: apacherocketmq/rocketmq:latest container_name: rmqnamesrv ports: - 9876:9876 volumes: - ./file/rmqnamesrv/logs:/home/rocketmq/logs command: sh mqnamesrv rmqbroker: image: apacherocketmq/rocketmq:latest container_name: rmqbroker ports: - 10909:10909 - 10911:10911 - 10912:10912 volumes: # 这里要注意一下，logs和store文件要给够权限 - ./file/rmqbroker/logs:/home/rocketmq/logs - ./file/rmqbroker/store:/home/rocketmq/store - ./env/broker.conf:/home/rocketmq/conf/broker.conf environment: JAVA_OPTS: &amp;#34; -Duser.home=/opt&amp;#34; JAVA_OPT_EXT: &amp;#34;-server -Xms128m -Xmx128m -Xmn128m&amp;#34; command: sh mqbroker -n rmqnamesrv:9876 -c /home/rocketmq/conf/broker.conf depends_on: - rmqnamesrv rmqconsole: image: styletang/rocketmq-console-ng:latest container_name: rmqconsole ports: - 8081:8080 environment: JAVA_OPTS: &amp;#34;-Drocketmq.</description>
+    </item>
+    
+    <item>
+      <title>Rocket Mq的介绍</title>
+      <link>https://yuanmoc.github.io/posts/history/RocketMQ%E7%9A%84%E4%BB%8B%E7%BB%8D/</link>
+      <pubDate>Sun, 11 Apr 2021 00:10:12 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/RocketMQ%E7%9A%84%E4%BB%8B%E7%BB%8D/</guid>
+      <description>RocketMQ 架构图 有四大部分：NameServer，Broker，Producer，Consumer。
+NameServer # NameServer主要包括两个主要功能：
+1、管理brokers：broker服务器启动时会注册到NameServer上，并且两者之间保持心跳监测机制，以此来保证NameServer知道broker的存活状态；
+2、路由信息管理：每一台NameServer都存有全部的broker集群信息和生产者/消费者客户端的请求信息；
+Broker # Broker的四大作用：
+1、请求分发：是client的入口，接收来自生产者消费者的请求 2、client管理：管理客户（产品/消费者）并维护消费者的主题订阅。 3、数据存储：提供简单的api来查询磁盘上的临时数据 4、高可用：主从节点间同步数据保证高可用
+Producer # Producer启动时，需要指定NameServer的地址，从NameServer集群中选一台建立长连接。如果该NameServer宕机，会自动连其他NameServer。直到有可用的NameServer为止。生产者每30秒从NameServer获取Topic跟Broker的映射关系，更新到本地内存中。再跟Topic涉及的所有Broker建立长连接，每隔30秒发一次心跳。Broker每隔10s中扫描所有存活的连接，如果Broker在2分钟内没有收到心跳数据，则关闭与Producer的连接。
+Consumer # 消费客户端的连接方式和生产者类似。
+其他概念 # 1、 Topic 一个应用尽可能用一个Topic，消息子类型用tags来标识，tags可以由应用自由设置。只有发送消息设置了tags，消费方在订阅消息时，才可以利用tags 在broker做消息过滤。
+2、 key 每个消息在业务层面的唯一标识码，要设置到 keys 字段，方便将来定位消息丢失问题。服务器会为每个消息创建索引(哈希索引)，应用可以通过 topic，key来查询这条消息内容，以及消息被谁消费。由于是哈希索引，请务必保证key 尽可能唯一，这样可以避免潜在的哈希冲突。
+3、Message：消息，要传输的信息。
+4、Message Queue：消息队列
+5、send send消息方法，只要不抛异常，就代表发送成功。但是发送成功会有多个状态，在sendResult里定义。
+SEND_OK：消息发送成功
+FLUSH_DISK_TIMEOUT：消息发送成功，但是服务器刷盘超时，消息已经进入服务器队列，只有此时服务器宕机，消息才会丢失
+FLUSH_SLAVE_TIMEOUT：消息发送成功，但是服务器同步到Slave时超时，消息已经进入服务器队列，只有此时服务器宕机，消息才会丢失
+SLAVE_NOT_AVAILABLE：消息发送成功，但是此时slave不可用，消息已经进入服务器队列，只有此时服务器宕机，消息才会丢失</description>
+    </item>
+    
+    <item>
+      <title>使用页模式打印多个二维码</title>
+      <link>https://yuanmoc.github.io/posts/history/%E4%BD%BF%E7%94%A8%E9%A1%B5%E6%A8%A1%E5%BC%8F%E6%89%93%E5%8D%B0%E5%A4%9A%E4%B8%AA%E4%BA%8C%E7%BB%B4%E7%A0%81/</link>
+      <pubDate>Sat, 10 Apr 2021 15:29:08 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/%E4%BD%BF%E7%94%A8%E9%A1%B5%E6%A8%A1%E5%BC%8F%E6%89%93%E5%8D%B0%E5%A4%9A%E4%B8%AA%E4%BA%8C%E7%BB%B4%E7%A0%81/</guid>
+      <description>使用页模式打印多个二维码 # 可能会在使用页模式前出现停顿，页模式要先把指令编好，再打印。
+步骤：
+1、开始页模式
+2、页模式偏移量
+3、设置二维码大小
+4、设置二维码错误纠错等级
+5、传输数据至编码缓存（打印二维码数据）
+6、打印编码缓存中的二维条码
+打印多个：继续 2-6 步骤
+7、打印页模式数据，关闭页模式
+开始页模式 # /** * 0x00,0x00,0x00,0x00 是打印区域左上角 * w,h 定义的是打印区域的右下角 * w 是页模式内容区域的宽，单位dot 1mm=8dot * h 是页模式内容区域的高，单位dot */ public byte[] crtiPageStartn(int w,int h) { int w_pL = w%256; int w_pH = w/256; int h_pL = h%256; int h_pH = h/256; byte[] bytes = new byte[]{0x1B,0x4C,0x1B,0x57,0x00,0x00,0x00,0x00,(byte) w_pL,(byte) w_pH,(byte)h_pL,(byte)h_pH}; return bytes; } 横向打印二维码 # 打印二维码要定义每一个二维码左上角的位置，即偏移量。
+/** 页模式偏移量，单位dot */ public byte[] crtiPrintAnddot(int x) { int x_s = x % 256; int y_s = x / 256; //1B 24 3c 00 --1B 24 nL nH 设置绝对打印位置LabelNowX //1D 24 00 00 --1D 24 nL nH 页模式下设置纵向绝对位置LabelNowY byte[] bytes = new byte[]{0x1B, 0x24, (byte)x_s, (byte)y_s, 0x1D, 0x24, 0x00, 0x00}; return bytes; } /** 二维码大小 1-9 */ public byte[] setQrcodeSize(int size) { byte[] bytes = new byte[]{29, 40, 107, 3, 0, 49, 67, (byte) size}; return bytes; } /** * 设置二维码错误纠错等级 * @param 48 &amp;lt;= n &amp;lt;= 51，纠正比例（7，15，25，30）% */ public byte[] setQrcodeErrorCorrectionLevel(byte n) { byte[] bytes = {29, 40, 107, 3, 0, 49, 69, n}; return bytes; } /** * 传输数据至编码缓存 */ public byte[] setQrcodeData(String text) { byte[] bytes = {29, 40, 107, (byte) ((text.</description>
+    </item>
+    
+    <item>
+      <title>Esc图片预处理（先加载进打印机，再直接调用打印）</title>
+      <link>https://yuanmoc.github.io/posts/history/ESC%E5%9B%BE%E7%89%87%E9%A2%84%E5%A4%84%E7%90%86%E5%85%88%E5%8A%A0%E8%BD%BD%E8%BF%9B%E6%89%93%E5%8D%B0%E6%9C%BA%E5%86%8D%E7%9B%B4%E6%8E%A5%E8%B0%83%E7%94%A8%E6%89%93%E5%8D%B0/</link>
+      <pubDate>Sat, 10 Apr 2021 15:10:20 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/ESC%E5%9B%BE%E7%89%87%E9%A2%84%E5%A4%84%E7%90%86%E5%85%88%E5%8A%A0%E8%BD%BD%E8%BF%9B%E6%89%93%E5%8D%B0%E6%9C%BA%E5%86%8D%E7%9B%B4%E6%8E%A5%E8%B0%83%E7%94%A8%E6%89%93%E5%8D%B0/</guid>
+      <description>ESC图片预处理 # 定义 # /** * 定义位图 */ public byte[] critDefineNV(ArrayList&amp;lt;BufferedImage&amp;gt; images) { int n = images.size(); // 定义几个位图，执行会覆盖原来的 byte[] header = new byte[]{28, 113, (byte)n}; for(int i = 0; i &amp;lt; images.size(); ++i) { header = byteMerger(header, imageToByte((BufferedImage)images.get(i))); } return header; } /** * 合并字节数组 */ public byte[] byteMerger(byte[] byte_1, byte[] byte_2) { byte[] byte_3 = new byte[byte_1.length + byte_2.length]; System.arraycopy(byte_1, 0, byte_3, 0, byte_1.length); System.arraycopy(byte_2, 0, byte_3, byte_1.</description>
+    </item>
+    
+    <item>
+      <title>Jconsole使用</title>
+      <link>https://yuanmoc.github.io/posts/history/Jconsole%E4%BD%BF%E7%94%A8/</link>
+      <pubDate>Mon, 05 Apr 2021 17:18:54 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/Jconsole%E4%BD%BF%E7%94%A8/</guid>
+      <description>开启JMX管理功能
+在JVM启动参数中添加如下参数
+-Djava.rmi.server.hostname=xxx.xxx.xxx.xxx -Dcom.sun.management.jmxremote.port=9999 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=true -Dcom.sun.management.jmxremote.pwd.file=jmxremote.password -Dcom.sun.management.jmxremote.access.file=jmxremote.access </description>
+    </item>
+    
+    <item>
+      <title>Visual Vm工具使用</title>
+      <link>https://yuanmoc.github.io/posts/history/VisualVM%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/</link>
+      <pubDate>Mon, 05 Apr 2021 16:00:48 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/VisualVM%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/</guid>
+      <description>作用 # jvisualVM是JDK自带的Java性能分析工具，在JDK的bin目录下，文件名就叫jvisualVM.exe。
+jvisualvm可以监控本地、远程的java进程，实时查看进程的cpu、堆、线程等参数，对java进程生成dump文件，并对dump文件进行分析。
+插件安装 # 插件安装：https://visualvm.github.io/pluginscenters.html
+下载 下载要安装的插件 打开visualVM工具，在工具-&amp;gt;插件-&amp;gt;已下载，选择下载好的插件安装。
+导入jmap导出的dump # 通过 jmap -dump:live,format=b,file=d:/b.bin 7576 导出的dump文件，可以装载到jVisualVM中进行分析。
+点击文件-&amp;gt;载入，选择我们导出好的dump文件即可。</description>
+    </item>
+    
+    <item>
+      <title>Jmap工具使用</title>
+      <link>https://yuanmoc.github.io/posts/history/Jmap%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/</link>
+      <pubDate>Mon, 05 Apr 2021 15:40:47 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/Jmap%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/</guid>
+      <description>作用： # jmap是JDK中提供的一个用来监视进程运行中的jvm物理内存的占用情况的工具。该进程内存内，所有对象的情况，例如产生了哪些对象，对象数量。当系统崩溃时，jmap 可以从core文件或进程中获得内存的具体匹配情况，包括Heap size, Perm size等。
+影响： # 使用jmap会影响线上运行的应用，所以尽量不要在线上执行此命令。如果想dump堆信息，可以使用gcore命令，比jmap -dump快。
+Jmap的使用 # 1、查看堆信息
+jmap -heap &amp;lt;PID&amp;gt;
+可以通过jps命令来查看正在运行的java应用进程。
+$ jps 7576 jar 9962 Jps 然后查看对应堆信息
+$ jmap -heap 7576 Attaching to process ID 7576, please wait... Debugger attached successfully. Server compiler detected. JVM version is 25.212-b10 using thread-local object allocation. Parallel GC with 4 thread(s) Heap Configuration: MinHeapFreeRatio = 0 MaxHeapFreeRatio = 100 MaxHeapSize = 2116026368 (2018.0MB) NewSize = 44564480 (42.</description>
+    </item>
+    
+    <item>
+      <title>图片转 Bit Map位图</title>
+      <link>https://yuanmoc.github.io/posts/history/%E5%9B%BE%E7%89%87%E8%BD%ACBitMap%E4%BD%8D%E5%9B%BE/</link>
+      <pubDate>Tue, 26 Jan 2021 23:14:53 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/%E5%9B%BE%E7%89%87%E8%BD%ACBitMap%E4%BD%8D%E5%9B%BE/</guid>
+      <description>记录一下如何生成位图字节码
+public static byte[] imgToInstruct(int o_x, int o_y, int mode, BufferedImage bi) throws Exception{ //定义指令拼装部分尾部 byte[] i2=&amp;#34;\r\n&amp;#34;.getBytes(&amp;#34;utf-8&amp;#34;); //生成2进制字符串 int[] rgb = new int[3]; int width = bi.getWidth(); int height = bi.getHeight(); int wModByte = (width % 8) == 0 ? 0 : 8 - (width % 8); int pixelCount = (width + wModByte) * height; int wPrintByte = (width + wModByte) / 8; StringBuilder res = new StringBuilder(); for (int y = 0; y &amp;lt; height; y++) { for (int x = 0; x &amp;lt; width; x++) { int pixel = bi.</description>
+    </item>
+    
+    <item>
+      <title>Frp内网穿透使用</title>
+      <link>https://yuanmoc.github.io/posts/history/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F%E4%BD%BF%E7%94%A8/</link>
+      <pubDate>Sat, 09 Jan 2021 22:41:55 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F%E4%BD%BF%E7%94%A8/</guid>
+      <description>由于项目要开发调试第三方的回调，回调地址必须是外网的一个ip地址或者域名，为了方便调试应用，下面搭建一个外网穿透服务来使用，把外网地址映射到本地机器上。
+个人使用frp来搭建内网穿透服务，frp分为frps服务端和frpc客户端，注意，在使用时，frps和frpc的版本要一样，不然可能会出现问题。
+附： frp的github 地址
+服务端的搭建 # 1、需要一个外网ip,域名，域名解析到ip上，如：frp.yuanmoc.cn解析到我的ip上。
+2、下载frp到我们的服务器，我是在Linux上搭建的frps，所以我下载了Linux版本frps，即frp_0.34.3_linux_amd64.tar.gz ，解压下载下来的文件 tar -zxvf frp_0.34.3_linux_amd64.tar.gz ，其中 frps 和 frps.ini 是我们需要的文件，注意frps要有可执行的权限，即
+chmod +x frps` 3、编写修改 frps.ini 配置文件
+[common] bind_addr = 0.0.0.0 # 全部客户端可连接 bind_port = 7000 # 绑定的端口，在客户端上要对应 vhost_http_port = 8000 # 映射的http请求端口 # 安全起见，加上授权 authentication_method = token # 授权方式token token = xxx # token的值，要在客户端的common添加此授权 4、启动服务端，可以使用以下命令进行执行
+frps -c frps.ini 5、启动成功后会有如下日志
+2021/01/09 22:05:16 [I] [service.go:190] frps tcp listen on 0.0.0.0:7000 2021/01/09 22:05:16 [I] [service.go:232] http service listen on 0.</description>
+    </item>
+    
+    <item>
+      <title>Jet Cache的使用</title>
+      <link>https://yuanmoc.github.io/posts/history/jetCache%E7%9A%84%E4%BD%BF%E7%94%A8/</link>
+      <pubDate>Sat, 26 Dec 2020 23:01:39 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/jetCache%E7%9A%84%E4%BD%BF%E7%94%A8/</guid>
+      <description>jetcahce是阿里出品的一套缓存系统，下面进行简单的使用，同时附上 官方文档地址。
+使用lettuce客户端连接redis的方式（jetcahce里面有jedis和lettuce两种连接redis的方式，个人比较喜欢使用lettuce，因为他是使用netty实现的，效率比较高，同时是多线程安全的）。
+1、添加jetcache-starter-redis-lettuce和jetcache-starter-redis依赖
+&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;com.alicp.jetcache&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;jetcache-starter-redis&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;2.5.14&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;com.alicp.jetcache&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;jetcache-starter-redis-lettuce&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;2.6.0&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt; 2、为jetcache配置远程连接redis和本地缓存
+jetcache: statIntervalMinutes: 15 areaInCacheName: false # 本地缓存，使用linkedhashmap实现 local: default: type: linkedhashmap keyConvertor: fastjson # 远程缓存，使用lettuce的方式连接 remote: default: type: redis.lettuce keyConvertor: fastjson uri: redis://password@127.0.0.1:6379/ valueEncoder: java valueDecoder: java poolConfig: minIdle: 5 maxIdle: 20 maxTotal: 50 3、添启动配置 @EnableMethodCache注解是激活@Cached注解的 @EnableCreateCacheAnnotation注解是激活CreateCache注解的
+@SpringBootApplication @EnableMethodCache(basePackages = &amp;#34;com.example.jetcache.jetcache&amp;#34;) @EnableCreateCacheAnnotation public class JetcacheApplication { public static void main(String[] args) { SpringApplication.run(JetcacheApplication.class, args); } } 4、简单使用</description>
+    </item>
+    
+    <item>
+      <title>使用 Spring实现一个策略</title>
+      <link>https://yuanmoc.github.io/posts/history/%E4%BD%BF%E7%94%A8Spring%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%AD%96%E7%95%A5/</link>
+      <pubDate>Sat, 26 Dec 2020 17:51:08 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/%E4%BD%BF%E7%94%A8Spring%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%AD%96%E7%95%A5/</guid>
+      <description>在很多场景中，我们都需要根据不同的行为调用不同的一个实现业务逻辑，这里就可以使用策略模式来实现。
+下面在Spring中来实现一个策略模式,场景：根据不同的打印方式，调用不同的打印指令。
+下面主要使用了注解与Spring BeanPostProcessor 相结合，在项目启动时，将注解的类添加到PrinterStrategy中管理，然后通过传过来的参数获取相应的类去执行。
+1、创建一个枚举类，记录类型
+public enum PrinterEnum { ESC,TSC } 2、创建一个注解类，用于添加标识类型并交于Spring管理
+@Target(value = ElementType.TYPE) @Retention(RetentionPolicy.RUNTIME) @Component public @interface PrinterAnnotation { /** * type 类别 * @return */ PrinterEnum type() default PrinterEnum.ESC; String description() default &amp;#34;&amp;#34;; } 3、创建一个抽象打印类
+public abstract class PrinterAbstract { public abstract void getPrintEsc(); } 4、实现两种打印方式，并为其加上打印注解
+@PrinterAnnotation(type = PrinterEnum.ESC) public class EscPrinter extends PrinterAbstract { public void getPrintEsc() { System.out.println(&amp;#34;esc&amp;#34;); } } @PrinterAnnotation(type = PrinterEnum.TSC) public class TscPrinter extends PrinterAbstract { public void getPrintEsc() { System.</description>
+    </item>
+    
+    <item>
+      <title>Nacos的使用</title>
+      <link>https://yuanmoc.github.io/posts/history/Nacos%E7%9A%84%E4%BD%BF%E7%94%A8/</link>
+      <pubDate>Sat, 26 Dec 2020 10:55:28 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/Nacos%E7%9A%84%E4%BD%BF%E7%94%A8/</guid>
+      <description>配置中心 # 启动配置中心
+在SpringBoot中使用 # 1、添加web依赖和nacos配置中心依赖
+&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;spring-boot-starter-web&amp;lt;/artifactId&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;spring-boot-starter-actuator&amp;lt;/artifactId&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;com.alibaba.boot&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;nacos-config-spring-boot-starter&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;0.2.1&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;com.alibaba.boot&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;nacos-config-spring-boot-actuator&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;0.2.1&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt; 2、在配置文件application.properties中添加nacos配置
+# Nacos配置中心地址 nacos.config.server-addr=127.0.0.1:8848 # endpoint http://localhost:8080/actuator/nacos-config # health http://localhost:8080/actuator/health # 不需要身份验证的情况下访问所有actuator端点 management.endpoints.web.exposure.include=* # 将健康信息展示给所有用户 management.endpoint.health.show-details=always 3、在配置类中启用Nacos配置中心
+@SpringBootApplication @NacosPropertySource(dataId = &amp;#34;example&amp;#34;, groupId = &amp;#34;DEFAULT_GROUP&amp;#34;, autoRefreshed = true) public class NacosConfigApplication { public static void main(String[] args) { SpringApplication.run(NacosConfigApplication.class, args); } } 其中dataId和groupId对应我们在配置中心中配置的DataId和group值。如下图 4、示例代码测试。
+@Controller @RequestMapping(&amp;#34;config&amp;#34;) public class ConfigController { @NacosValue(value = &amp;#34;${useLocalCache:false}&amp;#34;, autoRefreshed = true) private boolean useLocalCache; @RequestMapping(value = &amp;#34;/get&amp;#34;, method = GET) @ResponseBody public boolean get() { return useLocalCache; } } 在SpringCloud中使用 # 1、添加web和Nacos依赖</description>
+    </item>
+    
+    <item>
+      <title>Nacos服务的搭建</title>
+      <link>https://yuanmoc.github.io/posts/history/Nacos%E6%9C%8D%E5%8A%A1%E7%9A%84%E6%90%AD%E5%BB%BA/</link>
+      <pubDate>Sat, 19 Dec 2020 12:16:30 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/Nacos%E6%9C%8D%E5%8A%A1%E7%9A%84%E6%90%AD%E5%BB%BA/</guid>
+      <description>Nacos 是一个服务注册中心和服务配置中心一体化的组件。需要我们去安装Nacos服务，并运行。
+安装Nacos 服务 # 由于个人比较喜欢使用Docker来搭建各种学习服务，同样，下面也使用Docker来搭建Nacos服务，参考 官方。
+1、Dockerfile文件
+version: &amp;#39;3.1&amp;#39; services: # mysql 数据库 mysql: container_name: mysql image: mysql:5.7 command: --default-authentication-plugin=mysql_native_password restart: always ports: - 3306:3306 environment: MYSQL_ROOT_PASSWORD: root # Nacos 服务注册中心 nacos: image: nacos/nacos-server:latest container_name: nacos-standalone-mysql env_file: - ./env/nacos-standlone-mysql.env volumes: - ./env/custom.properties:/home/nacos/init.d/custom.properties ports: - &amp;#34;8848:8848&amp;#34; - &amp;#34;9555:9555&amp;#34; depends_on: - mysql restart: on-failure # 搭建prometheus采集Nacos metrics数据 prometheus: container_name: prometheus image: prom/prometheus:latest volumes: - ./env/prometheus-standalone.yaml:/etc/prometheus/prometheus.yml ports: - &amp;#34;9090:9090&amp;#34; depends_on: - nacos restart: on-failure # 搭建grafana图形化展示metrics数据 grafana: container_name: grafana image: grafana/grafana:latest ports: - 3000:3000 restart: on-failure 2、nacos-standlone-mysql.</description>
+    </item>
+    
+    <item>
+      <title>基金的基本知识</title>
+      <link>https://yuanmoc.github.io/posts/history/%E5%9F%BA%E9%87%91%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/</link>
+      <pubDate>Sun, 18 Oct 2020 23:35:55 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/%E5%9F%BA%E9%87%91%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/</guid>
+      <description>基金的基本知识 # 基金类型 # 基本有货币基金、债券基金和股票基金，其中货币基金的风险最近，同时收益也是最近的；债券基金的风险相对来说是中等的，同时收益也是中等的；最后股票基金是风险最大的，同时，收益也是最大的。
+指数基金 # 巴菲特推荐的基金是指数基金，指数基金是一种特殊的股票基金，它可复制和追踪指数；指数基金追踪指数，按照指数的规则来选股；且是被动投资，无人为因素干扰，透明度高，规则清晰，长期可靠。
+一些基本的描述说明
+1、基金的手续费用：
+指数基金：0.06%-0.08% / 年
+普通基金：0.12%-0.2% / 年
+2、基金代码
+A股基金：6位数字（如：510880 上证红利）
+港股基金：5位数字（如：02828 恒生）
+美股基金：3-5位英文字符（如：apy 标普500）
+3、基金的净值
+一只基金，净值1.5元。是每一份这样的基金份额，其中包含的股票等金融资产，市值 为1.5元。
+如：1元净值和2元净值的基金，买100元基金，1元的净值基金可以买到100股，而2元净值的基金只能买到50股。
+国内的基金净值一般都是1-3元一股的。
+4、场内和场外基金
+场内基金是可以在证券交易所进行买卖交易的基金，场外基金是可以直接在基金交易平台进行申赎的基金。
+5、连接基金
+是基金公司开发的特殊产品，方便没有场内股票账户的投资者也可以投资场内的基金。联接基金也是指数基金。
+6、LOF基金
+是同时可以在场内和场外购买到的基金，它在场内和场外的基金代码都是一致的。
+7、A股/H股
+A股：国内企业在内地上市
+H股：国内企业在香港上市
+8、交易规则
+下午3点是交易的分隔线，3点之前申购和赎回是当天的基金收盘净值成交，3点之后申购和赎回是第二天交易日基金的收盘的净值成交。
+9、交易日和交易时间
+交易日：非节假日的周一到周五
+交易时间：上午9.30 - 11.30 下午13.00 - 15.00
+10、基金性质
+LOF基金：开放型基金，可以随时买入和卖出 FOF基金：投资基金的基金 QDII基金：投资海外股票的基金 基金后面带A：适合长期投资，短期卖出费用很高 基金后面带C：适合短期投资，长期卖出费用很高
+指数类型 # 1、上证50指数
+专门投资大型企业，是从上海交证券易所选择的50家企业。
+参考：华夏上证50ETF 代码510050，易方达上证50 代码110003
+2、沪深300指数
+专门投资大中型企业，是从深圳和上海证券交易所选择的300家企业。
+参考：华泰柏瑞沪深300ETF 代码510300，嘉实沪深300ETF联接160706
+3、中证500指数
+专门投资中小型企业，是从深圳和上海证券交易所选择规模处于301-800位的500家中小型企业。
+参考：南方中证500ETF 代码510500，南方中证500ETF联接 代码 160119</description>
+    </item>
+    
+    <item>
+      <title>Linux文本处理大三利器grep、sed、awk</title>
+      <link>https://yuanmoc.github.io/posts/history/Linux%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86%E5%A4%A7%E4%B8%89%E5%88%A9%E5%99%A8grepsedawk/</link>
+      <pubDate>Mon, 24 Aug 2020 20:24:58 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/Linux%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86%E5%A4%A7%E4%B8%89%E5%88%A9%E5%99%A8grepsedawk/</guid>
+      <description>grep # 用于查找文件里符合条件的字符串。
+1、grep [查找内容，支持正则] [文件，支持正则] 2、cat [文件] | grep [查找内容，支持正则]
+sed # 主要用来自动编辑一个或多个文件、简化对文件的反复操作、编写转换程序等。
+sed [-hnV] [-e &amp;lt;script&amp;gt;] [-f&amp;lt;script文件&amp;gt;] [文本文件] 参数说明：
+-e&amp;lt;script&amp;gt;或&amp;ndash;expression=&amp;lt;script&amp;gt; 以选项中指定的script来处理输入的文本文件。
+-f&amp;lt;script文件&amp;gt;或&amp;ndash;file=&amp;lt;script文件&amp;gt; 以选项中指定的script文件来处理输入的文本文件。
+-h或&amp;ndash;help 显示帮助。
+-n或&amp;ndash;quiet或&amp;ndash;silent 仅显示script处理后的结果。
+-V或&amp;ndash;version 显示版本信息。
+动作说明：
+a ：新增， a 的后面可以接字串，而这些字串会在新的一行出现(目前的下一行) c ：取代， c 的后面可以接字串，这些字串可以取代 n1,n2 之间的行 d ：删除。 i ：插入， i 的后面可以接字串，而这些字串会在新的一行出现(目前的上一行) p ：打印，亦即将某个选择的数据印出。通常 p 会与参数 sed -n 一起运行 s ：取代，可以直接进行取代的工作哩！通常这个 s 的动作可以搭配正规表示法！例如 1,20s/old/new/g 1、以行为单位的新增/删除
+# 以下只修改了输出的文件流，没有修改原文件，可以使用sed -i -e &amp;#39;2d&amp;#39; test.txt这种方式修改原文件 nl test.txt | sed -e &amp;#39;2,5d&amp;#39; # 删除第二到第五行 nl test.</description>
+    </item>
+    
+    <item>
+      <title>Sql条件语句</title>
+      <link>https://yuanmoc.github.io/posts/history/SQL%E6%9D%A1%E4%BB%B6%E8%AF%AD%E5%8F%A5/</link>
+      <pubDate>Fri, 21 Aug 2020 19:21:16 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/SQL%E6%9D%A1%E4%BB%B6%E8%AF%AD%E5%8F%A5/</guid>
+      <description>IF表达式 # 语法：IF(expr1, expr2, expr3) 解释：如果expr1结果为true，则使用expr2值，否则使用expr3值。
+使用：
+select id, name, age, IF(sex=1,&amp;#39;男&amp;#39;,&amp;#39;女&amp;#39;) as sex from student IFNULL # 语法：IFNULL(expr1, expr2) 解释：如果expr1不为空，则输出expr1的值，否则输出expr2的值。
+使用：
+select IFNULL(1,0) --输出1 select IFNULL(NULL,0) --输出0 IF ELSEIF ELSE # 语法：
+IF search_condition THEN statement_list [ELSEIF search_condition THEN] statement_list ... [ELSE statement_list] END IF CASE THEN # 语法：
+CASE search_condition WHEN expr1 THEN value1 WHEN expr2 THEN value2 ELSE value3 END 使用：
+SELECT id, name, CASE sex WHEN 1 THEN &amp;#39;男&amp;#39; WHEN 2 THEN &amp;#39;女&amp;#39; ELSE &amp;#39;保密&amp;#39; END AS sex from student 测试数据库语句：</description>
+    </item>
+    
+    <item>
+      <title>动态规划</title>
+      <link>https://yuanmoc.github.io/posts/history/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/</link>
+      <pubDate>Sun, 02 Aug 2020 22:39:29 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/</guid>
+      <description>动态规划的定义 # 最优子结构（数学优化方法） 动态规划是数学优化的方法指，动态规划要解决的都是问题的最优解。而一个问题的最优解是由它的各个子问题的最优解决定的。 重叠子问题（编程方法） 动态规划是编程的方法指，可以借助编程的技巧去保证每个重叠的子问题只会被求解一次。 因此，判断一个问题能不能称得上是动态规划的问题，需要看它是满足这两个重要的属性：最优子结构（Optimal Substructure）和重叠子问题（Overlapping Sub-problems）。
+动态规划方法 # 递归（Recursion） # 递归的解法需要耗费非常多的重复计算，很多计算都是重叠的，可以使用记忆化的方法避免重叠计算问题。
+记忆化（Memoization） # 记忆化，就是将已经计算出来的结果保存起来，那么下次遇到相同的输入时，直接返回保存好的结果，能够有效节省了大量的计算时间。
+自底向上（Bottom-Up） # 自底向上指，通过状态转移方程，从最小的问题规模入手，不断地增加问题规模，直到所要求的问题规模为止。依然使用记忆化避免重复的计算，不需要递归。
+斐波那契数列 # 写一个函数，输入 n ，求斐波那契（Fibonacci）数列的第 n 项。斐波那契数列的定义如下： F(0) = 0, F(1) = 1 F(N) = F(N - 1) + F(N - 2), 其中 N &amp;gt; 1. Java代码
+// 递归的实现 public int fib(int n) { if(n &amp;lt;= 1){ return n; }else{ return fib(n-1)+fib(n-2); } } // 记忆化的实现 public int fib(int n) { // 用于记忆上一次的结果 int[] fn = new int[n+1]; fn[0] = 0; fn[1] = 1; for (int i = 2; i &amp;lt;= n; i++) { fn[i] = fn[i-1] + fn[i-2]; } return fn[n]; } // 自底向上的实现 public int fib(int n) { if(n &amp;lt;= 1) { return n; } int f0 = 0, f1 = 1, res = 0; for(int i = 2; i &amp;lt;= n; i++) { res = f0 + f1; f0= f1; f1= res; } return res; } 动态规划面试题分类 # 线性规划 # 线性，就是说各个子问题的规模以线性的方式分布，并且子问题的最佳状态或结果可以存储在一维线性的数据结构里，例如一维数组，哈希表等。</description>
+    </item>
+    
+    <item>
+      <title>图深度、广度优先遍历</title>
+      <link>https://yuanmoc.github.io/posts/history/%E5%9B%BE%E6%B7%B1%E5%BA%A6%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E9%81%8D%E5%8E%86/</link>
+      <pubDate>Sun, 02 Aug 2020 15:35:46 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/%E5%9B%BE%E6%B7%B1%E5%BA%A6%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E9%81%8D%E5%8E%86/</guid>
+      <description>图的种类 # 1、无向图（Undirected Graph）：每个顶点和其他顶点通过相连线连接。 2、有向图(Drirected Graph)：有向图中的相连线是有方向的。 3、权重图(Weighted Graph)：在权重图中，每条相连线各自有各自的权重。
+有向图的实现 # 1、矩阵
+使用矩阵来表示图之间的连向关系，用一个一维数组来保存顶点，再二维数组来保存顶点之间的关联。如：
+1-&amp;gt;2有关联，就在edge[1][2]=1来表示。
+2、链表 用链表来表示两个顶点之间的关系，用一维数组来保存各个顶点，再以顶点为头节点，关联边用链表串起来。如：
+0-&amp;gt;1有关联，就用一条链表保存起来。
+DFS与BFS过程 # 深度优先算法主要与栈有关（先进后出），广度优先算法与堆有关（先进先出）。
+深度优先算法 # 过程：
+1、先将0放在栈中 栈中数据：0 打印数据：
+2、0出栈并打印，把0相关联的放入栈中，即把1、2放入栈中 栈中数据：1、2 打印数据：0
+3、1出栈并打印，把1相关联的放入栈中，即把3、4放入栈中 栈中数据：3、4、2 打印数据：0、1
+4、3出栈并打印，3没有相关联的了，就没有数据入栈 栈中数据：4、2 打印数据：0、1、3
+5、4出栈并打印，4没有相关联的了，就没有数据入栈 栈中数据：2 打印数据：0、1、3、4
+6、2出栈并打印，把2相关联的放入栈中，即把5、6放入栈中 栈中数据：5、6 打印数据：0、1、3、4、2
+7、5出栈并打印，5没有相关联的了，就没有数据入栈 栈中数据：6 打印数据：0、1、3、4、2、5
+8、6出栈并打印，6没有相关联的了，就没有数据入栈 栈中数据： 打印数据：0、1、3、4、2、5、6
+9，栈中没有数据，结束。
+广度优先算法 # 过程：
+1、0放入堆中 堆中数据：0 打印数据：
+2、0出堆并打印，把与0相关联的1、2放入堆中 堆中数据：2、1 打印数据：0
+3、1出堆并打印，把与1相关联的3、4放入堆中 堆中数据：4、3、2 打印数据：0、1
+4、2出堆并打印，把与2相关联的5、6放入堆中 堆中数据：6、5、4、3 打印数据：0、1、2
+5、3出堆并打印，因为没有相关联的，所以没有数据放入堆中 堆中数据：6、5、4 打印数据：0、1、2、3
+6、3出堆并打印，因为没有相关联的，所以没有数据放入堆中 堆中数据：6、5 打印数据：0、1、2、3、4
+7、3出堆并打印，因为没有相关联的，所以没有数据放入堆中 堆中数据：6 打印数据：0、1、2、3、4、5</description>
+    </item>
+    
+    <item>
+      <title>Redis</title>
+      <link>https://yuanmoc.github.io/posts/history/Redis/</link>
+      <pubDate>Wed, 29 Jul 2020 15:12:45 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/Redis/</guid>
+      <description>Redis的线程模型 # 客户端 socket01 向 redis 的 server socket 请求建立连接，此时 server socket 会产生一个 AE_READABLE 事件，IO 多路复用程序监听到 server socket 产生的事件后，将该事件压入队列中。文件事件分派器从队列中获取该事件，交给连接应答处理器。连接应答处理器会创建一个能与客户端通信的 socket01，并将该 socket01 的 AE_READABLE 事件与命令请求处理器关联。
+假设此时客户端发送了一个 set key value 请求，此时 redis 中的 socket01 会产生 AE_READABLE 事件，IO 多路复用程序将事件压入队列，此时事件分派器从队列中获取到该事件，由于前面 socket01 的 AE_READABLE 事件已经与命令请求处理器关联，因此事件分派器将事件交给命令请求处理器来处理。命令请求处理器读取 socket01 的 key value 并在自己内存中完成 key value 的设置。操作完成后，它会将 socket01 的 AE_WRITABLE 事件与令回复处理器关联。
+如果此时客户端准备好接收返回结果了，那么 redis 中的 socket01 会产生一个 AE_WRITABLE 事件，同样压入队列中，事件分派器找到相关联的命令回复处理器，由命令回复处理器对 socket01 输入本次操作的一个结果，比如 ok，之后解除 socket01 的 AE_WRITABLE 事件与命令回复处理器的关联。
+redis单线程模型效率高 # 对redis里的数据操作的时候是纯内存操作。 文件事件处理器的核心机制是非阻塞的IO多路复用程序。 单线程避免了多线程频繁上下文切换带来的损耗。 redis的过期策略和内存淘汰机制 # 定期删除 定期删除是指redis默认会每隔100ms会随机抽取一些设置了过期时间的key检查是否过期了，如果过期了就删除。</description>
+    </item>
+    
+    <item>
+      <title>Java8新特性</title>
+      <link>https://yuanmoc.github.io/posts/history/Java8%E6%96%B0%E7%89%B9%E6%80%A7/</link>
+      <pubDate>Wed, 29 Jul 2020 11:41:55 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/Java8%E6%96%B0%E7%89%B9%E6%80%A7/</guid>
+      <description>Lambda表达式 # Lambda 表达式的引入避免了匿名方法的麻烦使用，并且给予Java简单但是强大的函数化的编程能力。
+使用
+// 在1.8之前使用 new Thread(new Runnable() { @Override public void run() { System.out.println(&amp;#34;Before Java8!&amp;#34;); } }).start(); // 在1.8之后使用 new Thread(() -&amp;gt; System.out.println(&amp;#34;In Java8!&amp;#34;) ).start(); 语法
+基本语法: (parameters) -&amp;gt; expression 或 (parameters) -&amp;gt;{ statements; }
+// 1. 不需要参数,返回值为 5 () -&amp;gt; {return 5;} () -&amp;gt; 5 // 只有一行，可以省略{}和return // 2. 接收一个参数(数字类型),返回其2倍的值 (x) -&amp;gt; 2 * x // 3. 接受2个参数(数字),并返回他们的差值 (x, y) -&amp;gt; x – y // 4.</description>
+    </item>
+    
+    <item>
+      <title>Jvm参数</title>
+      <link>https://yuanmoc.github.io/posts/history/JVM%E5%8F%82%E6%95%B0/</link>
+      <pubDate>Tue, 28 Jul 2020 11:02:39 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/JVM%E5%8F%82%E6%95%B0/</guid>
+      <description>调优的目的
+减少Minor GC、Major GC、Full GC（在GC的过程中，程序会STW[stop the world]，程序会出现卡顿，减少GC会提升程序的运行流畅和效率）。 其中Full GC时间最长，首先要减少Full GC。 常用的调优工具
+Java内置的VisualVM
+JVM参数
+参数 说明 -Xms100M 初始化堆空间大小，-XX:InitialHeapSize=100M -Xmx100M 最大堆空间大小，-XX:MaxHeapSize=100M -Xmn20M 年轻代空间大小，-XX:NewSize=20M -Xss512k 设置线程空间大小 -XX:PermGen 设置永久代内存初始化大小,jdk1.8开始废弃永久代 -XX:MaxPermGen 设置永久代最大值 -XX:SurvivorRatio 设置Eden区和Survivor区的空间比例:Eden/S0=Eden/S1 默认为8 -XX:NewRatio 设置年老代和年轻代的大小比例,默认值是2 -XX:PermSize=256m 永久区空间大小 -XX:MaxPermSize=256m 最大永久区空间大小 -XX:+UseStringCache 启用缓存常用字符串,默认开启 -XX:+UseConcMarkSweepGC 年老代使用cms收集器 -XX:UseParNewGC 新生代使用并行收集器 -XX:ParallelGCThreads=4 并行线程数量 -XX:CMSClassUnloadingEnabled 允许对类元素进行清理 -XX:+DisableExplicitGC 禁止显示GC -XX:UseCMSInitiatingOccupancyOnly 表示只有达到阀值的时候用进行cms回收 -XX:CMSInitiatingOccupancyFraction=70 设置cms在老年代回收的阀值为70% -verbose:gc 输出虚拟机GC详情 -XX:+PrintGCDetails 打印GC详情日志 -XX:+PrintGCDateStamps 打印GC耗时 -XX:+PrintTenuringDistribution 打印Tenuring年龄信息 -XX:+HeapDumpOnOutOfMemoryError 当抛出oom错误时进行HeapDump -XX:HeapDumpPath=/home/admin/logs 指定HeapDump文件的输出路径 -XX:+UseSerialGC 串行,Young区和Old区都使用串行,使用复制算法回收,逻辑简单高效,无线程切换开销 -XX:+UseParallelGC 并行, Young区:使用Parallel Scavenge回收算法,会产生多个线程并行回收.通过 -XX:ParallelGCThreads=n 参数指定线程数,默认是cpu核数;Old区:单线程 -XX:+UseParallelOldGC 并行,和UseParallelGC一样,Young区和Old区的垃圾回收都用多线程收集 -XX:+UseConcMarkSweepGC 并发、短暂停顿的并发收集。young区：可以使用普通的Parallel垃圾收集算法由参数 -XX:+UseParNewGC来控制;old区:只能使用Concurrent Mark Sweep -XX:+UseG1GC 并行的、并发的和增量式压缩短暂停顿的垃圾收集器。不区分Young区和Old区空间。它把堆空间划分为多个大小相等的区域。当进行垃圾收集时，它会优先收集存活对象比较少的区域，因此叫&amp;quot;Garbage First&amp;quot; </description>
+    </item>
+    
+    <item>
+      <title>Java Gc</title>
+      <link>https://yuanmoc.github.io/posts/history/JavaGC/</link>
+      <pubDate>Mon, 27 Jul 2020 17:04:15 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/JavaGC/</guid>
+      <description>堆的回收区域
+新生代（Young Generation）NewSize和MaxNewSize分别可以控制年轻代的初始大小和最大的大小。 老年代（Old Generation）。 永久代（Permanent Generation）【1.8以后采用元空间，不在虚拟机里，而是使用本地内存】。 三大垃圾收集算法
+标记/清除算法 复制算法 标记/整理算法 JVM GC算法
+JVM采用“分代收集算法”对不同区域采用不同的回收算法。 新生代采用复制算法。 老年代采用标记/清除算法或标记/整理算法。 GC过程
+1-2、当new新对象时，Eden空间满了，使用复制算法把存活的对象复制到空的S0(S1)上。 3-4、判断S1中存活对象的年龄值，当年龄值+1达到15时（默认15，可修改），对象将进入老年代，当没有满足时，就复制进去S0中。
+大对象直接进入老年代。 当对象总数大于Survivor（S0/S1）的一半时，也会直接进入老年代。 判断对象是否存活算法 1.引用计数算法 早期判断对象是否存活大多都是以这种算法，这种算法判断很简单，简单来说就是给对象添加一个引用计数器，每当对象被引用一次就加1，引用失效时就减1。当为0的时候就判断对象不会再被引用。
+2.可达性分析算法 它的基本思路是通过一个称为“GC Roots”的对象（局部变量）为起始点，搜索所经过的路径称为引用链，当一个对象到GC Roots没有任何引用跟它连接则证明对象是不可用的。(解决了循环利用)
+Minor GC、Major GC、Full GC
+在年轻代Young space(包括Eden区和Survivor区)中的垃圾回收称之为 Minor GC,Minor GC只会清理年轻代. Major GC清理老年代，但是通常也可以指和Full GC是等价，因为收集老年代的时候往往也会伴随着升级年轻代，收集整个Java堆。 Full GC是对新生代、老年代、永久代统一的回收。 </description>
+    </item>
+    
+    <item>
+      <title>Jvm内存</title>
+      <link>https://yuanmoc.github.io/posts/history/JVM%E5%86%85%E5%AD%98/</link>
+      <pubDate>Mon, 27 Jul 2020 12:02:12 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/JVM%E5%86%85%E5%AD%98/</guid>
+      <description> 内存区域 # 程序计数器
+每个线程都有一个独立的程序计数器，指向当前执行的行号。正在执行Java方法的话，计数器记录的是虚拟机字节码指令的地址(当前指令的地址)。如果是Natice方法，则为空。
+Java 虚拟机栈
+每个方法在执行的时候也会创建一个栈帧，存储了局部变量，操作数，动态链接，方法返回地址。
+每个方法从调用到执行完毕，对应一个栈帧在虚拟机栈中的入栈和出栈。 局部变量所需内存在编译期间完成分配。 如果线程请求的栈深度大于虚拟机所允许的深度，则StackOverflowError。 如果虚拟机栈可以动态扩展，扩展到无法申请足够的内存，则OutOfMemoryError。 本地方法栈
+和虚拟机栈类似，主要为虚拟机使用到的Native方法服务。
+也会抛出StackOverflowError 和 OutOfMemoryError。 Java堆
+被所有线程共享的一块内存区域，在虚拟机启动的时候创建，用于存放对象实例。
+对可以按照可扩展来实现（通过-Xmx 和-Xms 来控制） 当堆中没有内存可分配给实例，也无法再扩展时，则抛出OutOfMemoryError异常。 方法区
+被所有方法线程共享的一块内存区域。
+用于存储已经被虚拟机加载的类信息，常量，静态变量等。 这个区域的内存回收目标主要针对常量池的回收和堆类型的卸载。 老版本方法区也被称为永久代，jdk8真正开始废弃永久代，而使用元空间(Metaspace)。 内存模型JMM # 定义 JMM定义了线程和主内存之间的抽象关系。 线程之间的共享变量存储在主内存（Main Memory）中，每个线程都有一个私有的本地内存（Local Memory），本地内存中存储了该线程读/写共享变量的副本。
+JMM内存模型三大特性
+原子性：
+AtomicInteger类类。 使用 synchronized 互斥锁来保证操作的原子性。 可见性：
+synchronized，对一个变量执行 unlock 操作之前，必须把变量值同步回主内存。 volatile，会强制将该变量自己和当时其他变量的状态都刷出缓存。 final，被 final 关键字修饰的字段在构造器中一旦初始化完成。 有序性：
+源代码 -&amp;gt; 编译器优化的重排 -&amp;gt; 指令并行的重排 -&amp;gt; 内存系统的重排 -&amp;gt;最终执行的命令。 重排序过程不会影响到单线程程序的执行，却会影响到多线程并发执行的正确性。 操作指令
+指令 名称 描述 lock 加锁 作用于主内存的变量 unlock 解锁 作用于主内存的变量 read 读取 读取主内存的变量 load 加载 将读取的主内存变量加载到工作副本中 use 使用 把工作内存中的变量传递给执行引擎 assign 赋值 将执行引擎接收到的值赋值给工作内存变量 store 存储 作用于工作内存，将工作内存变量传递到主内存 write 写入 作用于主内存，将从工作副本store的值写入主内存中 </description>
+    </item>
+    
+    <item>
+      <title>递归与回溯问题</title>
+      <link>https://yuanmoc.github.io/posts/history/%E9%80%92%E5%BD%92%E4%B8%8E%E5%9B%9E%E6%BA%AF%E9%97%AE%E9%A2%98/</link>
+      <pubDate>Fri, 24 Jul 2020 12:04:36 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/%E9%80%92%E5%BD%92%E4%B8%8E%E5%9B%9E%E6%BA%AF%E9%97%AE%E9%A2%98/</guid>
+      <description>汉诺塔问题 # 解题思路
+1、假设有n个盘子需要移动 2、首先将最上面的n-1个盘子从A借助C移到B柱子 3、然后将最下面的一个盘子从A移到C柱子 4、最后将B当作A，A当作B，将n-1个盘子从B借助C移动到A柱子，再将B柱子最后一个移动到C上（实际重复了2-3步骤，只是把A、B参考对象对换） 5、当只剩下最后一个时，从A移动到C就可以了
+Java代码
+public class Hanota { public static void main(String[] args) { List&amp;lt;Integer&amp;gt; a = new ArrayList&amp;lt;&amp;gt;(); List&amp;lt;Integer&amp;gt; b = new ArrayList&amp;lt;&amp;gt;(); List&amp;lt;Integer&amp;gt; c = new ArrayList&amp;lt;&amp;gt;(); a.add(2); a.add(1); a.add(0); new Hanota().hanota(a,b,c); System.out.println(c); } public void hanota(List&amp;lt;Integer&amp;gt; A, List&amp;lt;Integer&amp;gt; B, List&amp;lt;Integer&amp;gt; C) { move(A.size(), A, B, C); } public void move(int n, List&amp;lt;Integer&amp;gt; A, List&amp;lt;Integer&amp;gt; B, List&amp;lt;Integer&amp;gt; C){ if(n == 1){ C.add(A.get(A.size() - 1)); A.</description>
+    </item>
+    
+    <item>
+      <title>微服务</title>
+      <link>https://yuanmoc.github.io/posts/history/%E5%BE%AE%E6%9C%8D%E5%8A%A1/</link>
+      <pubDate>Thu, 23 Jul 2020 11:01:53 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/%E5%BE%AE%E6%9C%8D%E5%8A%A1/</guid>
+      <description>基本组件 # 注册中心 # Spring Cloud Eureka
+服务调用 # Spring Cloud Ribbon Spring Cloud Feign
+服务熔断 # Spring Cloud Hystrix
+配置中心 # Spring Cloud Config
+服务总线 # Spring Cloud Bus
+服务网关 # Spring Cloud Zuul
+分布式锁 # 分布式事务 # 分布式缓存 # 分布式Session # 待继&amp;hellip;&amp;hellip;</description>
+    </item>
+    
+    <item>
+      <title>桶排序</title>
+      <link>https://yuanmoc.github.io/posts/history/%E6%A1%B6%E6%8E%92%E5%BA%8F/</link>
+      <pubDate>Tue, 21 Jul 2020 11:35:21 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/%E6%A1%B6%E6%8E%92%E5%BA%8F/</guid>
+      <description>计数排序 # 解题思路 1、取出数组中的最大值。 2、以（最大值 +1）作为辅助数组大小进行记录数组信息。 3、重新把辅助数组中的数据转回数组中。
+Java代码
+public void countSort(int[] arr) { // 设置最大值变量并找出 int max = arr[0]; for (int i = 1; i &amp;lt; arr.length; i++) { if (max &amp;lt; arr[i]) { max = arr[i]; } } // 设置辅助数组 int[] tmp = new int[max+1]; // 将数据保存到辅助数组中 for (int i = 0; i &amp;lt; arr.length; i++) { tmp[arr[i]]++; } // 从辅助数组中数据转到数组中 int index = 0; for (int i = 0; i &amp;lt; tmp.</description>
+    </item>
+    
+    <item>
+      <title>Callable返回值的源码</title>
+      <link>https://yuanmoc.github.io/posts/history/Callable%E8%BF%94%E5%9B%9E%E5%80%BC%E7%9A%84%E6%BA%90%E7%A0%81/</link>
+      <pubDate>Mon, 20 Jul 2020 10:31:48 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/Callable%E8%BF%94%E5%9B%9E%E5%80%BC%E7%9A%84%E6%BA%90%E7%A0%81/</guid>
+      <description>分析一下Callable是如何拿到返回值的
+callable 是如何保存返回值 # 1、先写一个callable测试类
+public static void main(String[] args) throws ExecutionException, InterruptedException { ExecutorService pool = Executors.newCachedThreadPool(); Future&amp;lt;String&amp;gt; result = pool.submit(() -&amp;gt; { return &amp;#34;Callable Test&amp;#34;; }); System.out.println(result.get()); } 2、看一下submit方法有什么
+public &amp;lt;T&amp;gt; Future&amp;lt;T&amp;gt; submit(Callable&amp;lt;T&amp;gt; task) { if (task == null) throw new NullPointerException(); RunnableFuture&amp;lt;T&amp;gt; ftask = newTaskFor(task); execute(ftask); return ftask; } 构建一个 RunnableFuture 对象，通过AbstractExecutorService的execute方法来执行，那么返回值的获取操作应该就在RunnableFuture对象里了，执行的方法是run()。
+3、再深入查看newTaskFor(task)方法
+protected &amp;lt;T&amp;gt; RunnableFuture&amp;lt;T&amp;gt; newTaskFor(Callable&amp;lt;T&amp;gt; callable) { return new FutureTask&amp;lt;T&amp;gt;(callable); } 发现他实际是构建了一个 FutureTask(callable) 对象，把我们创建的callable对象传进去。
+4、那我们来看一下这个对象的run()方法</description>
+    </item>
+    
+    <item>
+      <title>My Sql存储过程</title>
+      <link>https://yuanmoc.github.io/posts/history/MySQL%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B/</link>
+      <pubDate>Sat, 18 Jul 2020 11:31:40 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/MySQL%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B/</guid>
+      <description>存储过程是为了完成特定功能的SQL语句集，经编译创建并保存在数据库中，用户可通过指定存储过程的名字并给定参数来调用执行。
+创建存储过程基本格式 # CREATE [DEFINER = { user | CURRENT_USER }] PROCEDURE sp_name ([proc_parameter[,...]]) [characteristic ...] routine_body proc_parameter: [ IN | OUT | INOUT ] param_name type characteristic: COMMENT &amp;#39;string&amp;#39; | LANGUAGE SQL | [NOT] DETERMINISTIC | { CONTAINS SQL | NO SQL | READS SQL DATA | MODIFIES SQL DATA } | SQL SECURITY { DEFINER | INVOKER } routine_body: Valid SQL routine statement [begin_label:] BEGIN [statement_list] …… END [end_label] 使用user表来做测试 # CREATE TABLE `user` ( `id` int(11) NOT NULL AUTO_INCREMENT, `name` varchar(255) NOT NULL, `age` int(5) DEFAULT NULL, `tag` varchar(255) DEFAULT NULL, PRIMARY KEY (`id`) ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8; 创建一个基本的存储过程 # create PROCEDURE select_user(IN user_id INTEGER) BEGIN select * from user where id = user_id; --分号不可少 END; --分号不可少 select_user是创建一个名称为select_user的存储过程。 IN user_id INTEGER是设置一个user_id的参数，类型为整数。 过程体格式：以BEGIN开始，END结束，可嵌套创建。 为了避免存储过程中分号(&amp;quot;;&amp;quot;)结束语句，我们使用分隔符告诉mysql解释器,该段命令是否已经结束了。</description>
+    </item>
+    
+    <item>
+      <title>分组查询并选择最大最小平均值等信息</title>
+      <link>https://yuanmoc.github.io/posts/history/%E5%88%86%E7%BB%84%E6%9F%A5%E8%AF%A2%E5%B9%B6%E9%80%89%E6%8B%A9%E6%9C%80%E5%A4%A7%E6%9C%80%E5%B0%8F%E5%B9%B3%E5%9D%87%E5%80%BC%E7%AD%89%E4%BF%A1%E6%81%AF/</link>
+      <pubDate>Sat, 18 Jul 2020 10:35:14 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/%E5%88%86%E7%BB%84%E6%9F%A5%E8%AF%A2%E5%B9%B6%E9%80%89%E6%8B%A9%E6%9C%80%E5%A4%A7%E6%9C%80%E5%B0%8F%E5%B9%B3%E5%9D%87%E5%80%BC%E7%AD%89%E4%BF%A1%E6%81%AF/</guid>
+      <description>创建一个用户表，用于测试
+CREATE TABLE `user` ( `id` int(11) NOT NULL AUTO_INCREMENT, `name` varchar(255) NOT NULL, `age` int(5) DEFAULT NULL, `tag` varchar(255) DEFAULT NULL, PRIMARY KEY (`id`) ) 1、查询tag标签中的最大年龄用户的信息
+先排序再查询
+select * from (select * from user order by age desc) as u group by tag 先排好序，然后再分组查询组中的第一条，也就是tag中age最大值的那条信息。
+也可以这样写
+select * from user group by tag order by age desc 如果是查询最小值就order by asc就可以了
+2、查询tag标签中平均值最小的tag标签信息
+select tag,avg(age) from user group by tag order by avg(age) limit 1 END!</description>
+    </item>
+    
+    <item>
+      <title>Restful Api设计规范</title>
+      <link>https://yuanmoc.github.io/posts/history/RESTfulAPI%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83/</link>
+      <pubDate>Fri, 17 Jul 2020 11:49:19 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/RESTfulAPI%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83/</guid>
+      <description>请求格式
+RESTful的核心思想就是，客户端发出的数据+操作指令都是“动词+宾语”的结构，比如GET /articles这个命令，GET是动词，/articles是宾语，有五种HTTP请求方式。
+# GET：读取（Read） # POST：新建（Create） # PUT：更新（Update） # PATCH：更新（Update），通常是部分更新 # DELETE：删除（Delete） 动词的覆盖
+有些客户端只能使用GET和POST这两种方法。服务器必须接受POST模拟其他三个方法（PUT、PATCH、DELETE）。这时，客户端发出的 HTTP 请求，要加上X-HTTP-Method-Override属性，告诉服务器应该使用哪一个动词，覆盖POST方法。
+POST /api/person/4 HTTP/1.1 X-HTTP-Method-Override: PUT 复数 URL
+为了统一起见，建议都使用复数 URL，比如GET /articles/2要好于GET /article/2。
+单词问题 出现单词拼接时，用-分隔。
+避免多级 URL
+常见的情况是，资源需要多级分类，因此很容易写出多级的 URL，比如获取某个作者的某一类文章。
+# GET /authors/12/categories/2 这种 URL 不利于扩展，语义也不明确，往往要想一会，才能明白含义。 更好的做法是，除了第一级，其他级别都用查询字符串表达。
+# GET /authors/12?categories=2 下面是另一个例子，查询已发布的文章。你可能会设计成下面的 URL。
+# GET /articles/published 查询字符串的写法明显更好
+# GET /articles?published=true 不要返回纯本文
+API 返回的数据格式，不应该是纯文本，而应该是一个 JSON 对象，因为这样才能返回标准的结构化数据。所以，服务器回应的 HTTP 头的Content-Type属性要设为application/json。
+客户端请求时，也要明确告诉服务器，可以接受 JSON 格式，即请求的 HTTP 头的ACCEPT属性也要设成application/json。下面是一个例子。
+GET /orders/2 HTTP/1.1 Accept: application/json 发生错误时，不要返回 200 状态码</description>
+    </item>
+    
+    <item>
+      <title>堆排序</title>
+      <link>https://yuanmoc.github.io/posts/history/%E5%A0%86%E6%8E%92%E5%BA%8F/</link>
+      <pubDate>Thu, 16 Jul 2020 11:35:23 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/%E5%A0%86%E6%8E%92%E5%BA%8F/</guid>
+      <description>堆定义 每个堆都是完全二叉树（从上到下，从左到右，高最大相差一）。 大顶堆：每个结点的值都大于或等于其左右孩子结点的值。 小顶堆：每个结点的值都小于或等于其左右孩子结点的值。
+同时，我们对堆中的结点按层进行编号，将这种逻辑结构映射到数组中就是下面这个样子。 整体解题思路： 1、先把要排序的数据放到数组中。 2、对数组中的数组进行构建成堆。 3、将构建好的堆中的头数据与结尾数据交换并截取出结尾数据。 4、继续将剩下的数据构建成堆，并重复3操作，直到结束。
+构建成堆时的几个关键点： 1、尾部元素的父结点计算： (arr.length-1)/2 2、父元素的左结点计算：i * 2 + 1 3、父元素的右结点计算：i * 2 + 2 4、从右到左，从下到上进行比较与交换，最后形成堆
+Java代码
+public class HeapSort { public static void main(String[] args) { int[] arr = {16, 2,123,7, 3, 20, 17, 8,123,1,221}; HeapSort heapSort = new HeapSort(); heapSort.heapSort(arr); System.out.println(Arrays.toString(arr)); } public void heapSort(int[] arr) { // 找出大头堆，与结尾交换，并截取出尾部 for (int i = arr.length-1; i &amp;gt; 0; i--) { // 将交换后的数组，再次构建成堆 buildHeap(arr,i); swap(arr,0, i); } } /** * 构建堆 * 10 * / \ * 5 8 * / \ / \ * 3 4 6 7 * 正好可以用一个数组表示 {10,5,8,3,4,6,7} * 元素父节点： (i-1)/2 * 元素左子节点： 2i+1 * 元素右子节点： 2i+2 * @param arr 数组 * @param length 堆长度 */ private void buildHeap(int[] arr, int length) { // 父节点 int parent = (length - 1) / 2; for (int i = parent; i &amp;gt;= 0 ; i--) { adjustHeap(arr, i, length); } } /** * 调整堆，，找出最大值节点，与parent节点交换 * @param arr 数组 * @param parent 父节点 * @param length 堆长度 */ private void adjustHeap(int[] arr, int parent, int length) { int leftChild = 2 * parent + 1; int max = parent; // 左节点 if (leftChild &amp;lt;= length &amp;amp;&amp;amp; arr[leftChild] &amp;gt; arr[max]) { max = leftChild; } // 右节点 if (leftChild + 1 &amp;lt;= length &amp;amp;&amp;amp; arr[leftChild + 1] &amp;gt; arr[max]) { max = leftChild + 1; } if (max !</description>
+    </item>
+    
+    <item>
+      <title>拓扑排序</title>
+      <link>https://yuanmoc.github.io/posts/history/%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F/</link>
+      <pubDate>Wed, 15 Jul 2020 16:51:53 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F/</guid>
+      <description>基本思想 拓扑排序应用的场合不再是一个简单的数组，而是研究图论里面顶点和顶点连线之间的性质。拓扑排序就是要将这些顶点按照相连的性质进行排序。拓扑排序一般用来理清具有依赖关系的任务。
+实现
+将问题用一个有向无环图（DAG, Directed Acyclic Graph）进行抽象表达，定义出哪些是图的顶点，顶点之间如何互相关联。 可以利用广度优先搜索或深度优先搜索来进行拓扑排序。 Leetcode题目
+Leetcode 207. 课程表 Leetcode 210. 课程表 II 课程表 II 解题
+题目
+现在你总共有 n 门课需要选，记为 0 到 n-1。 在选修某些课程之前需要一些先修课程。 例如，想要学习课程 0 ，你需要先完成课程 1 ，我们用一个匹配来表示他们: [0,1] 给定课程总量以及它们的先决条件，返回你为了学完所有课程所安排的学习顺序。 可能会有多个正确的顺序，你只要返回一种就可以了。如果不可能完成所有课程，返回一个空数组。 示例: 输入: 4, [[1,0],[2,0],[3,1],[3,2]] 输出: [0,1,2,3] or [0,2,1,3] 解释: 总共有 4 门课程。要学习课程 3，你应该先完成课程 1 和课程 2。并且课程 1 和课程 2 都应该排在课程 0 之后。 因此，一个正确的课程顺序是 [0,1,2,3] 。另一个正确的排序是 [0,2,1,3] 。 步骤
+1、设定顶点（节点）变量个数，和个数之间的路线关系（用二维数组保存） 2、使用一个一维数组用来记录顶点（节点）入度的数量 3、设置一个队列，把入度为0的数放入队列 4、设置一个一维数组用于保存返回值，取出队列元素放到一维数组，并修改其他节点的入度数量。 5、返回
+Java代码
+public int[] topologicalSort(int numCourses, int[][] prerequisites) { // 用于保存节点入度 int[] in = new int[numCourses]; // 响应结果 int[] res = new int[numCourses]; // 队列，用于保存入度为0的结点 Queue&amp;lt;Integer&amp;gt; queue = new LinkedList&amp;lt;&amp;gt;(); // 统计节点的入度 for (int[] edge: prerequisites) { in[edge[0]]++; } // 把入度为0的结点放入队列 for (int i = 0; i &amp;lt; numCourses; i++) { if (in[i] == 0) { queue.</description>
+    </item>
+    
+    <item>
+      <title>归并排序</title>
+      <link>https://yuanmoc.github.io/posts/history/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/</link>
+      <pubDate>Wed, 15 Jul 2020 15:12:11 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/</guid>
+      <description>基本思想 核心是分治，就是把一个复杂的问题分成两个或多个相同或相似的子问题，然后把子问题分成更小的子问题，直到子问题可以简单的直接求解。
+实现 把数组从中间划分成两个子数组，一直递归地把子数组划分成更小的子数组，直到子数组里面只有一个元素，才开始合并排序。
+分解左右并排序 左右两部分合并排序 Java代码
+public void mergeSort(int[] nums, int left, int right) { if (left &amp;gt;= right) { return; } int middle = (left + right)/2; // 分化数组 mergeSort(nums, left, middle); // 分化数组 mergeSort(nums, middle+1, right); // 合并左右边 merge(nums,left,middle,right); } // 合并排序好的左边和右边 public void merge(int[] nums, int left, int middle, int right) { //临时数组 int[] tmp = new int[right-left+1]; // start1 左边索引 start2右边索引 index 临时数组索引 int start1 = left, start2 = middle + 1, index = 0; while (start1 &amp;lt;= middle || start2 &amp;lt;= right) { if (start1 &amp;gt; middle) { // 左边已经排序完，只排序右边 tmp[index++] = nums[start2++]; } else if (start2 &amp;gt; right) { //右边已经排序完，只排序左边 tmp[index++] = nums[start1++]; } else if (nums[start1] &amp;gt; nums[start2]) { //两边都没有排序完 tmp[index++] = nums[start2++]; } else { //两边都没有排序完 tmp[index++] = nums[start1++]; } } // 把排序好的数据重新赋值回原数组中 for (int i = left; i &amp;lt;= right; i++) { nums[i] = tmp[i-left]; } } 空间复杂度</description>
+    </item>
+    
+    <item>
+      <title>快速排序</title>
+      <link>https://yuanmoc.github.io/posts/history/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/</link>
+      <pubDate>Wed, 15 Jul 2020 14:12:56 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/</guid>
+      <description>基本思想 快速排序也采用了分治的思想。
+实现 随机把一个数作为基准（一般使用第一个数），把原始的数组筛选成较小和较大的两个子数组，然后递归地排序两个子数组。
+步骤分解 Java代码
+public void quickSort(int[] nums, int left, int right) { if (left &amp;gt;= right) { return; } // 找出基准分割界点 int middle = helper(nums, left, right); // 左边继续排序 quickSort(nums,left, middle-1); // 右边继续排序 quickSort(nums, middle+1,right); } private int helper(int[] nums, int left, int right) { // 以val为基准，把比val大的数放一边，比val小的数放一边 int val = nums[left]; while (left &amp;lt; right) { while (val &amp;lt;= nums[right] &amp;amp;&amp;amp; left &amp;lt; right) { right--; } nums[left] = nums[right]; while (val &amp;gt;= nums[left] &amp;amp;&amp;amp; left &amp;lt; right) { left++; } nums[right] = nums[left]; } nums[left] = val; return left; } 时间复杂度</description>
+    </item>
+    
+    <item>
+      <title>插入排序</title>
+      <link>https://yuanmoc.github.io/posts/history/%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F/</link>
+      <pubDate>Wed, 15 Jul 2020 13:17:22 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F/</guid>
+      <description>在冒泡排序中，经过每一轮的排序处理后，数组后端的数是排好序的；而对于插入排序来说，经过每一轮的排序处理后，数组前端的数都是排好序的。
+基本思路：当迭代到i时，会向前比较，插入到合适的位置（去在线算法演示体会）。
+Java代码
+public void insertionSort(int[] nums) { for (int i = 1; i &amp;lt; nums.length; i++) { for (int j = i; j &amp;gt;= 1; j--) { if (nums[j-1] &amp;lt; nums[j]) { break; } int tmp = nums[j-1]; nums[j-1] = nums[j]; nums[j] = tmp; } } } 空间复杂度
+假设数组的元素个数是 n，由于在整个排序的过程中，是直接在给定的数组里面进行元素的两两交换，空间复杂度是 O(1)。
+时间复杂度
+给定的数组按照顺序已经排好 只需要进行 n-1 次的比较，两两交换次数为 0，时间复杂度是 O(n)。这是最好的情况。
+给定的数组按照逆序排列 在这种情况下，我们需要进行 n(n-1)/2 次比较，时间复杂度是 O(n2)。这是最坏的情况。
+给定的数组杂乱无章 在这种情况下，平均时间复杂度是 O(n2)。
+由此可见，和冒泡排序一样，插入排序的时间复杂度是 O(n2)，并且它也是一种稳定的排序算法。
+练习题目：LeetCode 第 147 题</description>
+    </item>
+    
+    <item>
+      <title>冒泡排序</title>
+      <link>https://yuanmoc.github.io/posts/history/%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/</link>
+      <pubDate>Wed, 15 Jul 2020 13:17:20 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/</guid>
+      <description>冒泡排序是非常简单的一种排序，我们只需求知道他是怎样交换的就可以了。
+基本规则：从左到右依次比较，把最大的数放到右边，依次迭代（先是保证末端排好，再向前迭代）。可以找个“在线算法演示”进行体会。
+Java代码
+public void bubbleSort(int[] nums) { for (int i = 0; i &amp;lt; nums.length-1; i++) { for (int j = i; j &amp;lt; nums.length-1; j++) { if(nums[j] &amp;gt; nums[j+1]) { int tmp = nums[j]; nums[j] = nums[j+1]; nums[j+1] = tmp; } } } } 那还有没有得优化的呢？结果是当然的。当冒泡还没有完成时，已经排好序了。这时，如果还继续冒泡会浪费时间。在这里，我们可以设置一个flag进行状态的记录。
+public void bubbleSort2(int[] nums) { for (int i = 0; i &amp;lt; nums.length-1; i++) { boolean flag = true; for (int j = i; j &amp;lt; nums.</description>
+    </item>
+    
+    <item>
+      <title>Leetcode242.有效的字母异位词</title>
+      <link>https://yuanmoc.github.io/posts/history/Leetcode242.%E6%9C%89%E6%95%88%E7%9A%84%E5%AD%97%E6%AF%8D%E5%BC%82%E4%BD%8D%E8%AF%8D/</link>
+      <pubDate>Tue, 14 Jul 2020 18:02:24 +0000</pubDate>
+      
+      <guid>https://yuanmoc.github.io/posts/history/Leetcode242.%E6%9C%89%E6%95%88%E7%9A%84%E5%AD%97%E6%AF%8D%E5%BC%82%E4%BD%8D%E8%AF%8D/</guid>
+      <description>题目
+给定两个字符串 s 和 t ，编写一个函数来判断 t 是否是 s 的字母异位词。 示例 1: 输入: s = &amp;#34;anagram&amp;#34;, t = &amp;#34;nagaram&amp;#34; 输出: true 示例 2: 输入: s = &amp;#34;rat&amp;#34;, t = &amp;#34;car&amp;#34; 输出: false 说明: 你可以假设字符串只包含小写字母。 进阶: 如果输入字符串包含 unicode 字符怎么办？你能否调整你的解法来应对这种情况？ 针对这种情况，我们可以使用字母的特性，只有26个字母。 1、我们可以建立一个26位大小的数组作为计数器。 2、遍历S，把其中的字母放入到计数器中。 3、遍历T，把对应的字母从计数器中减少，并判断是否合理。
+代码
+public boolean isAnagram(String s, String t) { if(s.length() != t.length()) { return false; } int[] counter = new int[26]; for (int i = 0; i &amp;lt; s.length(); i++) { counter[s.</description>
+    </item>
+    
+  </channel>
+</rss>

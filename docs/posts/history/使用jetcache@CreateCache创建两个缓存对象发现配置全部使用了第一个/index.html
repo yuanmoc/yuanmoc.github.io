@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="zh" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="使用@CreateCache创建两个缓存对象，由于这两个缓存对象都使用的 area 和 name 是一样的，导致了创建的第二个缓存对象没有生效，而是使用了第一个缓存对象。
+主要排查为什么会使用到了第一个缓存的对象。
+/** 第一个缓存对象 */ @CreateCache(name = &#34;pre&#34;, cacheType = CacheType.REMOTE, expire = Integer.MAX_VALUE, timeUnit = TimeUnit.SECONDS) private Cache&lt;String, List&lt;PopupsVO&gt;&gt; popupsCache; /** 第二个缓存对象 */ @CreateCache(name = &#34;pre&#34;, cacheType = CacheType.REMOTE, expire = 60, timeUnit = TimeUnit.SECONDS) private Cache&lt;String, List&lt;Integer&gt;&gt; popupsCacheUserPopupsIds; 请求时，会先初始化缓存配置config，com.alicp.jetcache.anno.field.LazyInitCache#checkInit ,由于已经初始化过了，debug把 this.inited 改成false。重新进入初始化环节。
+private void checkInit() { if (!this.inited) { synchronized(this) { if (!this.inited) { this.init(); this.inited = true; } } } } 在com.alicp.jetcache.anno.field.LazyInitCache#init 进行初始化，">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light dark"><meta property="og:title" content="使用jetcache@ Create Cache创建两个缓存对象，发现配置全部使用了第一个" />
+<meta property="og:description" content="使用@CreateCache创建两个缓存对象，由于这两个缓存对象都使用的 area 和 name 是一样的，导致了创建的第二个缓存对象没有生效，而是使用了第一个缓存对象。
+主要排查为什么会使用到了第一个缓存的对象。
+/** 第一个缓存对象 */ @CreateCache(name = &#34;pre&#34;, cacheType = CacheType.REMOTE, expire = Integer.MAX_VALUE, timeUnit = TimeUnit.SECONDS) private Cache&lt;String, List&lt;PopupsVO&gt;&gt; popupsCache; /** 第二个缓存对象 */ @CreateCache(name = &#34;pre&#34;, cacheType = CacheType.REMOTE, expire = 60, timeUnit = TimeUnit.SECONDS) private Cache&lt;String, List&lt;Integer&gt;&gt; popupsCacheUserPopupsIds; 请求时，会先初始化缓存配置config，com.alicp.jetcache.anno.field.LazyInitCache#checkInit ,由于已经初始化过了，debug把 this.inited 改成false。重新进入初始化环节。
+private void checkInit() { if (!this.inited) { synchronized(this) { if (!this.inited) { this.init(); this.inited = true; } } } } 在com.alicp.jetcache.anno.field.LazyInitCache#init 进行初始化，" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yuanmoc.github.io/posts/history/%E4%BD%BF%E7%94%A8jetcache@CreateCache%E5%88%9B%E5%BB%BA%E4%B8%A4%E4%B8%AA%E7%BC%93%E5%AD%98%E5%AF%B9%E8%B1%A1%E5%8F%91%E7%8E%B0%E9%85%8D%E7%BD%AE%E5%85%A8%E9%83%A8%E4%BD%BF%E7%94%A8%E4%BA%86%E7%AC%AC%E4%B8%80%E4%B8%AA/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-10-28T15:28:43+00:00" />
+<meta property="article:modified_time" content="2021-10-28T15:28:43+00:00" />
+<title>使用jetcache@ Create Cache创建两个缓存对象，发现配置全部使用了第一个 | YUANMOC</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/book.min.33a48f5432973b8ff9a82679d9e45d67f2c15d4399bd2829269455cfe390b5e8.css" integrity="sha256-M6SPVDKXO4/5qCZ52eRdZ/LBXUOZvSgpJpRVz&#43;OQteg=" crossorigin="anonymous">
+  <script defer src="/flexsearch.min.js"></script>
+  <script defer src="/zh.search.min.bcd4c6c0afaad634b7158fe062bd1b5025ef549d3a8e1b80668f1e8aedea8f0d.js" integrity="sha256-vNTGwK&#43;q1jS3FY/gYr0bUCXvVJ06jhuAZo8eiu3qjw0=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>YUANMOC</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="搜索" aria-label="搜索" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-74286b56e7b99aa3cfac52c55eb97834" class="toggle"  />
+    <label for="section-74286b56e7b99aa3cfac52c55eb97834" class="flex justify-between">
+      <a role="button" class="">文档笔记</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-eb0f5223a522dd98c2608944d8591bd7" class="toggle"  />
+    <label for="section-eb0f5223a522dd98c2608944d8591bd7" class="flex justify-between">
+      <a role="button" class="">Java</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/%E6%96%87%E6%A1%A3%E7%AC%94%E8%AE%B0/java/test/" class="">测试</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-9a0e942fd76c38c5301548a2b901f29c" class="toggle"  />
+    <label for="section-9a0e942fd76c38c5301548a2b901f29c" class="flex justify-between">
+      <a role="button" class="">Spring</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-416782b8caea9c48e0932ec01f628422" class="toggle"  />
+    <label for="section-416782b8caea9c48e0932ec01f628422" class="flex justify-between">
+      <a role="button" class="">数据库</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-237795881f3f8a8cb3543c2915069ce6" class="toggle"  />
+    <label for="section-237795881f3f8a8cb3543c2915069ce6" class="flex justify-between">
+      <a role="button" class="">算法</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-561070938b635b15571e14a6af3bb967" class="toggle"  />
+    <label for="section-561070938b635b15571e14a6af3bb967" class="flex justify-between">
+      <a role="button" class="">架构</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-f149dbcae8f463483817cbbe388a4496" class="toggle"  />
+    <label for="section-f149dbcae8f463483817cbbe388a4496" class="flex justify-between">
+      <a role="button" class="">方法论</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-473eaddd3a92a7dc4b230603ef07e994" class="toggle"  />
+    <label for="section-473eaddd3a92a7dc4b230603ef07e994" class="flex justify-between">
+      <a role="button" class="">工具&amp;部署</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-00b995767d8191cdedb015981436796e" class="toggle"  />
+    <label for="section-00b995767d8191cdedb015981436796e" class="flex justify-between">
+      <a role="button" class="">团队&amp;产品</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-5e9eb52f77b1e6a6c6e7b1b2f7159627" class="toggle"  />
+    <label for="section-5e9eb52f77b1e6a6c6e7b1b2f7159627" class="flex justify-between">
+      <a role="button" class="">面试</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="/posts/"  >
+        博客
+      </a>
+  </li>
+  
+  <li>
+    <a href="https://github.com/yuanmoc"  target="_blank" rel="noopener">
+        Github
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>使用jetcache@ Create Cache创建两个缓存对象，发现配置全部使用了第一个</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents"></nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+<article class="markdown">
+  <h1>
+    <a href="/posts/history/%E4%BD%BF%E7%94%A8jetcache@CreateCache%E5%88%9B%E5%BB%BA%E4%B8%A4%E4%B8%AA%E7%BC%93%E5%AD%98%E5%AF%B9%E8%B1%A1%E5%8F%91%E7%8E%B0%E9%85%8D%E7%BD%AE%E5%85%A8%E9%83%A8%E4%BD%BF%E7%94%A8%E4%BA%86%E7%AC%AC%E4%B8%80%E4%B8%AA/">使用jetcache@ Create Cache创建两个缓存对象，发现配置全部使用了第一个</a>
+  </h1>
+  
+  <h5>2021-10-28 15:28:43</h5>
+
+
+
+  
+
+  
+  <div>
+    
+      <a href="/tags/2023-05-07%E4%BB%8Ehalo%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB/">2023-05-07从halo博客迁移</a>
+  </div>
+  
+
+
+
+<p>使用@CreateCache创建两个缓存对象，由于这两个缓存对象都使用的 area 和 name 是一样的，导致了创建的第二个缓存对象没有生效，而是使用了第一个缓存对象。</p>
+<p>主要排查为什么会使用到了第一个缓存的对象。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">/** 第一个缓存对象 */</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@CreateCache</span><span style="color:#f92672">(</span>name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;pre&#34;</span><span style="color:#f92672">,</span> cacheType <span style="color:#f92672">=</span> CacheType<span style="color:#f92672">.</span><span style="color:#a6e22e">REMOTE</span><span style="color:#f92672">,</span> expire <span style="color:#f92672">=</span> Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">MAX_VALUE</span><span style="color:#f92672">,</span> timeUnit <span style="color:#f92672">=</span> TimeUnit<span style="color:#f92672">.</span><span style="color:#a6e22e">SECONDS</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> Cache<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> List<span style="color:#f92672">&lt;</span>PopupsVO<span style="color:#f92672">&gt;&gt;</span> popupsCache<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/** 第二个缓存对象 */</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@CreateCache</span><span style="color:#f92672">(</span>name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;pre&#34;</span><span style="color:#f92672">,</span> cacheType <span style="color:#f92672">=</span> CacheType<span style="color:#f92672">.</span><span style="color:#a6e22e">REMOTE</span><span style="color:#f92672">,</span> expire <span style="color:#f92672">=</span> <span style="color:#ae81ff">60</span><span style="color:#f92672">,</span> timeUnit <span style="color:#f92672">=</span> TimeUnit<span style="color:#f92672">.</span><span style="color:#a6e22e">SECONDS</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> Cache<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> List<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;&gt;</span> popupsCacheUserPopupsIds<span style="color:#f92672">;</span>
+</span></span></code></pre></div><p>请求时，会先初始化缓存配置config，<code>com.alicp.jetcache.anno.field.LazyInitCache#checkInit</code> ,由于已经初始化过了，debug把 this.inited 改成false。重新进入初始化环节。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">checkInit</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">inited</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">synchronized</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">inited</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">init</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">inited</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>在<code>com.alicp.jetcache.anno.field.LazyInitCache#init</code> 进行初始化，</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span> <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">init</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">inited</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalStateException<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            GlobalCacheConfig globalCacheConfig <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>GlobalCacheConfig<span style="color:#f92672">)</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">beanFactory</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getBean</span><span style="color:#f92672">(</span>GlobalCacheConfig<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            ConfigProvider configProvider <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>ConfigProvider<span style="color:#f92672">)</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">beanFactory</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getBean</span><span style="color:#f92672">(</span>ConfigProvider<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            CachedAnnoConfig cac <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> CachedAnnoConfig<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            cac<span style="color:#f92672">.</span><span style="color:#a6e22e">setArea</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ann</span><span style="color:#f92672">.</span><span style="color:#a6e22e">area</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>            cac<span style="color:#f92672">.</span><span style="color:#a6e22e">setName</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ann</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>            cac<span style="color:#f92672">.</span><span style="color:#a6e22e">setTimeUnit</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ann</span><span style="color:#f92672">.</span><span style="color:#a6e22e">timeUnit</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>            cac<span style="color:#f92672">.</span><span style="color:#a6e22e">setExpire</span><span style="color:#f92672">((</span><span style="color:#66d9ef">long</span><span style="color:#f92672">)</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ann</span><span style="color:#f92672">.</span><span style="color:#a6e22e">expire</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>            cac<span style="color:#f92672">.</span><span style="color:#a6e22e">setLocalExpire</span><span style="color:#f92672">((</span><span style="color:#66d9ef">long</span><span style="color:#f92672">)</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ann</span><span style="color:#f92672">.</span><span style="color:#a6e22e">localExpire</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>            cac<span style="color:#f92672">.</span><span style="color:#a6e22e">setCacheType</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ann</span><span style="color:#f92672">.</span><span style="color:#a6e22e">cacheType</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>            cac<span style="color:#f92672">.</span><span style="color:#a6e22e">setLocalLimit</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ann</span><span style="color:#f92672">.</span><span style="color:#a6e22e">localLimit</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>            cac<span style="color:#f92672">.</span><span style="color:#a6e22e">setSerialPolicy</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ann</span><span style="color:#f92672">.</span><span style="color:#a6e22e">serialPolicy</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>            cac<span style="color:#f92672">.</span><span style="color:#a6e22e">setKeyConvertor</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ann</span><span style="color:#f92672">.</span><span style="color:#a6e22e">keyConvertor</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>            cac<span style="color:#f92672">.</span><span style="color:#a6e22e">setRefreshPolicy</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">refreshPolicy</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            cac<span style="color:#f92672">.</span><span style="color:#a6e22e">setPenetrationProtectConfig</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">protectConfig</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            String cacheName <span style="color:#f92672">=</span> cac<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>CacheConsts<span style="color:#f92672">.</span><span style="color:#a6e22e">isUndefined</span><span style="color:#f92672">(</span>cacheName<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                String<span style="color:#f92672">[]</span> hiddenPackages <span style="color:#f92672">=</span> globalCacheConfig<span style="color:#f92672">.</span><span style="color:#a6e22e">getHiddenPackages</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>                CacheNameGenerator g <span style="color:#f92672">=</span> configProvider<span style="color:#f92672">.</span><span style="color:#a6e22e">createCacheNameGenerator</span><span style="color:#f92672">(</span>hiddenPackages<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>                cacheName <span style="color:#f92672">=</span> g<span style="color:#f92672">.</span><span style="color:#a6e22e">generateCacheName</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">field</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">cache</span> <span style="color:#f92672">=</span> configProvider<span style="color:#f92672">.</span><span style="color:#a6e22e">getCacheContext</span><span style="color:#f92672">().</span><span style="color:#a6e22e">__createOrGetCache</span><span style="color:#f92672">(</span>cac<span style="color:#f92672">,</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ann</span><span style="color:#f92672">.</span><span style="color:#a6e22e">area</span><span style="color:#f92672">(),</span> cacheName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>在这里发现没有什么可以使配置无效的，进入下一个环节分析 <code>com.alicp.jetcache.anno.support.CacheContext#__createOrGetCache</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Cache <span style="color:#a6e22e">__createOrGetCache</span><span style="color:#f92672">(</span>CachedAnnoConfig cachedAnnoConfig<span style="color:#f92672">,</span> String area<span style="color:#f92672">,</span> String cacheName<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        String fullCacheName <span style="color:#f92672">=</span> area <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;_&#34;</span> <span style="color:#f92672">+</span> cacheName<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        Cache cache <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">cacheManager</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getCacheWithoutCreate</span><span style="color:#f92672">(</span>area<span style="color:#f92672">,</span> cacheName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>cache <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">synchronized</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                cache <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">cacheManager</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getCacheWithoutCreate</span><span style="color:#f92672">(</span>area<span style="color:#f92672">,</span> cacheName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>cache <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">globalCacheConfig</span><span style="color:#f92672">.</span><span style="color:#a6e22e">isAreaInCacheName</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                        cache <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">buildCache</span><span style="color:#f92672">(</span>cachedAnnoConfig<span style="color:#f92672">,</span> area<span style="color:#f92672">,</span> fullCacheName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                        cache <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">buildCache</span><span style="color:#f92672">(</span>cachedAnnoConfig<span style="color:#f92672">,</span> area<span style="color:#f92672">,</span> cacheName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">cacheManager</span><span style="color:#f92672">.</span><span style="color:#a6e22e">putCache</span><span style="color:#f92672">(</span>area<span style="color:#f92672">,</span> cacheName<span style="color:#f92672">,</span> cache<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> cache<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>在这里，发现如果能拿到配置就不初始化了，也可能是问题的所在，接着进入this.cacheManager.getCacheWithoutCreate(area, cacheName);分析。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Cache <span style="color:#a6e22e">getCacheWithoutCreate</span><span style="color:#f92672">(</span>String area<span style="color:#f92672">,</span> String cacheName<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        ConcurrentHashMap<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> Cache<span style="color:#f92672">&gt;</span> areaMap <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getCachesByArea</span><span style="color:#f92672">(</span>area<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span>Cache<span style="color:#f92672">)</span>areaMap<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>cacheName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>发现缓存管理器以 area 和 cacheName 来保存记录了缓存实例的配置，也就是说，如果第一个缓存初始化了缓存配置，第二个缓存通过 area 和 cacheName 来查询，发现已经有了配置，就直接拿来使用。</p>
+<p>最终解决，如果要使两个缓存实例使用不一样的配置，那就要使两个缓存实例的 area 或者 cacheName 不一样。完结&hellip;..</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+  <div>
+    <a class="flex align-center" href="https://github.com/yuanmoc/yuanmoc.github.io/edit/main/content/posts/history/%e4%bd%bf%e7%94%a8jetcache@CreateCache%e5%88%9b%e5%bb%ba%e4%b8%a4%e4%b8%aa%e7%bc%93%e5%ad%98%e5%af%b9%e8%b1%a1%ef%bc%8c%e5%8f%91%e7%8e%b0%e9%85%8d%e7%bd%ae%e5%85%a8%e9%83%a8%e4%bd%bf%e7%94%a8%e4%ba%86%e7%ac%ac%e4%b8%80%e4%b8%aa.md" target="_blank" rel="noopener">
+      <img src="/svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>编辑本页</span>
+    </a>
+  </div>
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+
+
+<script src="https://utteranc.es/client.js"
+        repo="yuanmoc/blogtalks"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents"></nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

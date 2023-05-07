@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="zh" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content=" 内存区域 # 程序计数器
+每个线程都有一个独立的程序计数器，指向当前执行的行号。正在执行Java方法的话，计数器记录的是虚拟机字节码指令的地址(当前指令的地址)。如果是Natice方法，则为空。
+Java 虚拟机栈
+每个方法在执行的时候也会创建一个栈帧，存储了局部变量，操作数，动态链接，方法返回地址。
+每个方法从调用到执行完毕，对应一个栈帧在虚拟机栈中的入栈和出栈。 局部变量所需内存在编译期间完成分配。 如果线程请求的栈深度大于虚拟机所允许的深度，则StackOverflowError。 如果虚拟机栈可以动态扩展，扩展到无法申请足够的内存，则OutOfMemoryError。 本地方法栈
+和虚拟机栈类似，主要为虚拟机使用到的Native方法服务。
+也会抛出StackOverflowError 和 OutOfMemoryError。 Java堆
+被所有线程共享的一块内存区域，在虚拟机启动的时候创建，用于存放对象实例。
+对可以按照可扩展来实现（通过-Xmx 和-Xms 来控制） 当堆中没有内存可分配给实例，也无法再扩展时，则抛出OutOfMemoryError异常。 方法区
+被所有方法线程共享的一块内存区域。
+用于存储已经被虚拟机加载的类信息，常量，静态变量等。 这个区域的内存回收目标主要针对常量池的回收和堆类型的卸载。 老版本方法区也被称为永久代，jdk8真正开始废弃永久代，而使用元空间(Metaspace)。 内存模型JMM # 定义 JMM定义了线程和主内存之间的抽象关系。 线程之间的共享变量存储在主内存（Main Memory）中，每个线程都有一个私有的本地内存（Local Memory），本地内存中存储了该线程读/写共享变量的副本。
+JMM内存模型三大特性
+原子性：
+AtomicInteger类类。 使用 synchronized 互斥锁来保证操作的原子性。 可见性：
+synchronized，对一个变量执行 unlock 操作之前，必须把变量值同步回主内存。 volatile，会强制将该变量自己和当时其他变量的状态都刷出缓存。 final，被 final 关键字修饰的字段在构造器中一旦初始化完成。 有序性：
+源代码 -&gt; 编译器优化的重排 -&gt; 指令并行的重排 -&gt; 内存系统的重排 -&gt;最终执行的命令。 重排序过程不会影响到单线程程序的执行，却会影响到多线程并发执行的正确性。 操作指令
+指令 名称 描述 lock 加锁 作用于主内存的变量 unlock 解锁 作用于主内存的变量 read 读取 读取主内存的变量 load 加载 将读取的主内存变量加载到工作副本中 use 使用 把工作内存中的变量传递给执行引擎 assign 赋值 将执行引擎接收到的值赋值给工作内存变量 store 存储 作用于工作内存，将工作内存变量传递到主内存 write 写入 作用于主内存，将从工作副本store的值写入主内存中 ">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light dark"><meta property="og:title" content="Jvm内存" />
+<meta property="og:description" content=" 内存区域 # 程序计数器
+每个线程都有一个独立的程序计数器，指向当前执行的行号。正在执行Java方法的话，计数器记录的是虚拟机字节码指令的地址(当前指令的地址)。如果是Natice方法，则为空。
+Java 虚拟机栈
+每个方法在执行的时候也会创建一个栈帧，存储了局部变量，操作数，动态链接，方法返回地址。
+每个方法从调用到执行完毕，对应一个栈帧在虚拟机栈中的入栈和出栈。 局部变量所需内存在编译期间完成分配。 如果线程请求的栈深度大于虚拟机所允许的深度，则StackOverflowError。 如果虚拟机栈可以动态扩展，扩展到无法申请足够的内存，则OutOfMemoryError。 本地方法栈
+和虚拟机栈类似，主要为虚拟机使用到的Native方法服务。
+也会抛出StackOverflowError 和 OutOfMemoryError。 Java堆
+被所有线程共享的一块内存区域，在虚拟机启动的时候创建，用于存放对象实例。
+对可以按照可扩展来实现（通过-Xmx 和-Xms 来控制） 当堆中没有内存可分配给实例，也无法再扩展时，则抛出OutOfMemoryError异常。 方法区
+被所有方法线程共享的一块内存区域。
+用于存储已经被虚拟机加载的类信息，常量，静态变量等。 这个区域的内存回收目标主要针对常量池的回收和堆类型的卸载。 老版本方法区也被称为永久代，jdk8真正开始废弃永久代，而使用元空间(Metaspace)。 内存模型JMM # 定义 JMM定义了线程和主内存之间的抽象关系。 线程之间的共享变量存储在主内存（Main Memory）中，每个线程都有一个私有的本地内存（Local Memory），本地内存中存储了该线程读/写共享变量的副本。
+JMM内存模型三大特性
+原子性：
+AtomicInteger类类。 使用 synchronized 互斥锁来保证操作的原子性。 可见性：
+synchronized，对一个变量执行 unlock 操作之前，必须把变量值同步回主内存。 volatile，会强制将该变量自己和当时其他变量的状态都刷出缓存。 final，被 final 关键字修饰的字段在构造器中一旦初始化完成。 有序性：
+源代码 -&gt; 编译器优化的重排 -&gt; 指令并行的重排 -&gt; 内存系统的重排 -&gt;最终执行的命令。 重排序过程不会影响到单线程程序的执行，却会影响到多线程并发执行的正确性。 操作指令
+指令 名称 描述 lock 加锁 作用于主内存的变量 unlock 解锁 作用于主内存的变量 read 读取 读取主内存的变量 load 加载 将读取的主内存变量加载到工作副本中 use 使用 把工作内存中的变量传递给执行引擎 assign 赋值 将执行引擎接收到的值赋值给工作内存变量 store 存储 作用于工作内存，将工作内存变量传递到主内存 write 写入 作用于主内存，将从工作副本store的值写入主内存中 " />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yuanmoc.github.io/posts/history/JVM%E5%86%85%E5%AD%98/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2020-07-27T12:02:12+00:00" />
+<meta property="article:modified_time" content="2020-07-27T12:02:12+00:00" />
+<title>Jvm内存 | YUANMOC</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/book.min.33a48f5432973b8ff9a82679d9e45d67f2c15d4399bd2829269455cfe390b5e8.css" integrity="sha256-M6SPVDKXO4/5qCZ52eRdZ/LBXUOZvSgpJpRVz&#43;OQteg=" crossorigin="anonymous">
+  <script defer src="/flexsearch.min.js"></script>
+  <script defer src="/zh.search.min.bcd4c6c0afaad634b7158fe062bd1b5025ef549d3a8e1b80668f1e8aedea8f0d.js" integrity="sha256-vNTGwK&#43;q1jS3FY/gYr0bUCXvVJ06jhuAZo8eiu3qjw0=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>YUANMOC</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="搜索" aria-label="搜索" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-74286b56e7b99aa3cfac52c55eb97834" class="toggle"  />
+    <label for="section-74286b56e7b99aa3cfac52c55eb97834" class="flex justify-between">
+      <a role="button" class="">文档笔记</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-eb0f5223a522dd98c2608944d8591bd7" class="toggle"  />
+    <label for="section-eb0f5223a522dd98c2608944d8591bd7" class="flex justify-between">
+      <a role="button" class="">Java</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/%E6%96%87%E6%A1%A3%E7%AC%94%E8%AE%B0/java/test/" class="">测试</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-9a0e942fd76c38c5301548a2b901f29c" class="toggle"  />
+    <label for="section-9a0e942fd76c38c5301548a2b901f29c" class="flex justify-between">
+      <a role="button" class="">Spring</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-416782b8caea9c48e0932ec01f628422" class="toggle"  />
+    <label for="section-416782b8caea9c48e0932ec01f628422" class="flex justify-between">
+      <a role="button" class="">数据库</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-237795881f3f8a8cb3543c2915069ce6" class="toggle"  />
+    <label for="section-237795881f3f8a8cb3543c2915069ce6" class="flex justify-between">
+      <a role="button" class="">算法</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-561070938b635b15571e14a6af3bb967" class="toggle"  />
+    <label for="section-561070938b635b15571e14a6af3bb967" class="flex justify-between">
+      <a role="button" class="">架构</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-f149dbcae8f463483817cbbe388a4496" class="toggle"  />
+    <label for="section-f149dbcae8f463483817cbbe388a4496" class="flex justify-between">
+      <a role="button" class="">方法论</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-473eaddd3a92a7dc4b230603ef07e994" class="toggle"  />
+    <label for="section-473eaddd3a92a7dc4b230603ef07e994" class="flex justify-between">
+      <a role="button" class="">工具&amp;部署</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-00b995767d8191cdedb015981436796e" class="toggle"  />
+    <label for="section-00b995767d8191cdedb015981436796e" class="flex justify-between">
+      <a role="button" class="">团队&amp;产品</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-5e9eb52f77b1e6a6c6e7b1b2f7159627" class="toggle"  />
+    <label for="section-5e9eb52f77b1e6a6c6e7b1b2f7159627" class="flex justify-between">
+      <a role="button" class="">面试</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="/posts/"  >
+        博客
+      </a>
+  </li>
+  
+  <li>
+    <a href="https://github.com/yuanmoc"  target="_blank" rel="noopener">
+        Github
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Jvm内存</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#内存区域">内存区域</a></li>
+        <li><a href="#内存模型jmm">内存模型JMM</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+<article class="markdown">
+  <h1>
+    <a href="/posts/history/JVM%E5%86%85%E5%AD%98/">Jvm内存</a>
+  </h1>
+  
+  <h5>2020-07-27 12:02:12</h5>
+
+
+
+  
+
+  
+  <div>
+    
+      <a href="/tags/2023-05-07%E4%BB%8Ehalo%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB/">2023-05-07从halo博客迁移</a>
+  </div>
+  
+
+
+
+<h2 id="内存区域">
+  内存区域
+  <a class="anchor" href="#%e5%86%85%e5%ad%98%e5%8c%ba%e5%9f%9f">#</a>
+</h2>
+<p>
+  <img src="/images/image-2f14605eb4da4779b6f188fe763df53d.png" alt="内存区域" /></p>
+<p><strong>程序计数器</strong></p>
+<p>每个线程都有一个独立的程序计数器，指向当前执行的行号。正在执行Java方法的话，计数器记录的是虚拟机字节码指令的地址(当前指令的地址)。如果是Natice方法，则为空。</p>
+<p><strong>Java 虚拟机栈</strong></p>
+<p>每个方法在执行的时候也会创建一个栈帧，存储了局部变量，操作数，动态链接，方法返回地址。</p>
+<ul>
+<li>每个方法从调用到执行完毕，对应一个栈帧在虚拟机栈中的入栈和出栈。</li>
+<li>局部变量所需内存在编译期间完成分配。</li>
+<li>如果线程请求的栈深度大于虚拟机所允许的深度，则StackOverflowError。</li>
+<li>如果虚拟机栈可以动态扩展，扩展到无法申请足够的内存，则OutOfMemoryError。</li>
+</ul>
+<p><strong>本地方法栈</strong></p>
+<p>和虚拟机栈类似，主要为虚拟机使用到的Native方法服务。</p>
+<ul>
+<li>也会抛出StackOverflowError 和 OutOfMemoryError。</li>
+</ul>
+<p><strong>Java堆</strong></p>
+<p>被所有线程共享的一块内存区域，在虚拟机启动的时候创建，用于存放对象实例。</p>
+<ul>
+<li>对可以按照可扩展来实现（通过-Xmx 和-Xms 来控制）</li>
+<li>当堆中没有内存可分配给实例，也无法再扩展时，则抛出OutOfMemoryError异常。</li>
+</ul>
+<p><strong>方法区</strong></p>
+<p>被所有方法线程共享的一块内存区域。</p>
+<ul>
+<li>用于存储已经被虚拟机加载的类信息，常量，静态变量等。</li>
+<li>这个区域的内存回收目标主要针对常量池的回收和堆类型的卸载。</li>
+<li>老版本方法区也被称为永久代，jdk8真正开始废弃永久代，而使用元空间(Metaspace)。</li>
+</ul>
+<h2 id="内存模型jmm">
+  内存模型JMM
+  <a class="anchor" href="#%e5%86%85%e5%ad%98%e6%a8%a1%e5%9e%8bjmm">#</a>
+</h2>
+<p>
+  <img src="/images/image-8853b0c3f5d8475393e83757579b4f63.png" alt="JMM内存模型" /></p>
+<p><strong>定义</strong>
+JMM定义了线程和主内存之间的抽象关系。
+线程之间的共享变量存储在主内存（Main Memory）中，每个线程都有一个私有的本地内存（Local Memory），本地内存中存储了该线程读/写共享变量的副本。</p>
+<p><strong>JMM内存模型三大特性</strong></p>
+<p>原子性：</p>
+<ul>
+<li>AtomicInteger类类。</li>
+<li>使用 synchronized 互斥锁来保证操作的原子性。</li>
+</ul>
+<p>可见性：</p>
+<ul>
+<li>synchronized，对一个变量执行 unlock 操作之前，必须把变量值同步回主内存。</li>
+<li>volatile，会强制将该变量自己和当时其他变量的状态都刷出缓存。</li>
+<li>final，被 final 关键字修饰的字段在构造器中一旦初始化完成。</li>
+</ul>
+<p>有序性：</p>
+<ul>
+<li>源代码 -&gt; 编译器优化的重排 -&gt; 指令并行的重排 -&gt; 内存系统的重排 -&gt;最终执行的命令。</li>
+<li>重排序过程不会影响到单线程程序的执行，却会影响到多线程并发执行的正确性。</li>
+</ul>
+<p><strong>操作指令</strong></p>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>lock</td>
+<td>加锁</td>
+<td>作用于主内存的变量</td>
+</tr>
+<tr>
+<td>unlock</td>
+<td>解锁</td>
+<td>作用于主内存的变量</td>
+</tr>
+<tr>
+<td>read</td>
+<td>读取</td>
+<td>读取主内存的变量</td>
+</tr>
+<tr>
+<td>load</td>
+<td>加载</td>
+<td>将读取的主内存变量加载到工作副本中</td>
+</tr>
+<tr>
+<td>use</td>
+<td>使用</td>
+<td>把工作内存中的变量传递给执行引擎</td>
+</tr>
+<tr>
+<td>assign</td>
+<td>赋值</td>
+<td>将执行引擎接收到的值赋值给工作内存变量</td>
+</tr>
+<tr>
+<td>store</td>
+<td>存储</td>
+<td>作用于工作内存，将工作内存变量传递到主内存</td>
+</tr>
+<tr>
+<td>write</td>
+<td>写入</td>
+<td>作用于主内存，将从工作副本store的值写入主内存中</td>
+</tr>
+</tbody>
+</table>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+  <div>
+    <a class="flex align-center" href="https://github.com/yuanmoc/yuanmoc.github.io/edit/main/content/posts/history/JVM%e5%86%85%e5%ad%98.md" target="_blank" rel="noopener">
+      <img src="/svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>编辑本页</span>
+    </a>
+  </div>
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+
+
+<script src="https://utteranc.es/client.js"
+        repo="yuanmoc/blogtalks"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#内存区域">内存区域</a></li>
+        <li><a href="#内存模型jmm">内存模型JMM</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="zh" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="前言 # 需要将一批百度网盘资源批量保存到自己的网盘，并分享出来使用，传统手动转存和分享的方式太慢了，所以编写了以下程序快速达到目的。
+代码 # import base64 import requests import re import time import random import math from urllib.parse import unquote import ddddocr class BaiDuPan(object): def __init__(self): # 创建session并设置初始登录Cookie self.session = requests.session() self.session.cookies[&#39;BAIDUID&#39;] = &#39;&#39; self.session.cookies[&#39;BDUSS&#39;] = &#39;&#39; self.session.cookies[&#39;STOKEN&#39;] = &#39;&#39; self.headers = { &#39;Host&#39;: &#39;pan.baidu.com&#39;, &#39;User-Agent&#39;: &#39;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36&#39;, } self.login_info = { &#39;bdstoken&#39;: &#39;&#39;, &#39;username&#39;: &#39;&#39; } &#39;&#39;&#39; 验证Cookie是否已登录 返回值errno代表的意思： 0 有效的Cookie；1 init方法中未配置登录Cookie；2 无效的Cookie &#39;&#39;&#39; def verifyCookie(self): if(self.">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light dark"><meta property="og:title" content="使用python将百度网盘批量转存并分享" />
+<meta property="og:description" content="前言 # 需要将一批百度网盘资源批量保存到自己的网盘，并分享出来使用，传统手动转存和分享的方式太慢了，所以编写了以下程序快速达到目的。
+代码 # import base64 import requests import re import time import random import math from urllib.parse import unquote import ddddocr class BaiDuPan(object): def __init__(self): # 创建session并设置初始登录Cookie self.session = requests.session() self.session.cookies[&#39;BAIDUID&#39;] = &#39;&#39; self.session.cookies[&#39;BDUSS&#39;] = &#39;&#39; self.session.cookies[&#39;STOKEN&#39;] = &#39;&#39; self.headers = { &#39;Host&#39;: &#39;pan.baidu.com&#39;, &#39;User-Agent&#39;: &#39;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36&#39;, } self.login_info = { &#39;bdstoken&#39;: &#39;&#39;, &#39;username&#39;: &#39;&#39; } &#39;&#39;&#39; 验证Cookie是否已登录 返回值errno代表的意思： 0 有效的Cookie；1 init方法中未配置登录Cookie；2 无效的Cookie &#39;&#39;&#39; def verifyCookie(self): if(self." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yuanmoc.github.io/posts/history/%E4%BD%BF%E7%94%A8python%E5%B0%86%E7%99%BE%E5%BA%A6%E7%BD%91%E7%9B%98%E6%89%B9%E9%87%8F%E8%BD%AC%E5%AD%98%E5%B9%B6%E5%88%86%E4%BA%AB/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-10-16T13:56:56+00:00" />
+<meta property="article:modified_time" content="2022-10-16T13:56:56+00:00" />
+<title>使用python将百度网盘批量转存并分享 | YUANMOC</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/book.min.33a48f5432973b8ff9a82679d9e45d67f2c15d4399bd2829269455cfe390b5e8.css" integrity="sha256-M6SPVDKXO4/5qCZ52eRdZ/LBXUOZvSgpJpRVz&#43;OQteg=" crossorigin="anonymous">
+  <script defer src="/flexsearch.min.js"></script>
+  <script defer src="/zh.search.min.bcd4c6c0afaad634b7158fe062bd1b5025ef549d3a8e1b80668f1e8aedea8f0d.js" integrity="sha256-vNTGwK&#43;q1jS3FY/gYr0bUCXvVJ06jhuAZo8eiu3qjw0=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>YUANMOC</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="搜索" aria-label="搜索" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-74286b56e7b99aa3cfac52c55eb97834" class="toggle"  />
+    <label for="section-74286b56e7b99aa3cfac52c55eb97834" class="flex justify-between">
+      <a role="button" class="">文档笔记</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-eb0f5223a522dd98c2608944d8591bd7" class="toggle"  />
+    <label for="section-eb0f5223a522dd98c2608944d8591bd7" class="flex justify-between">
+      <a role="button" class="">Java</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/%E6%96%87%E6%A1%A3%E7%AC%94%E8%AE%B0/java/test/" class="">测试</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-9a0e942fd76c38c5301548a2b901f29c" class="toggle"  />
+    <label for="section-9a0e942fd76c38c5301548a2b901f29c" class="flex justify-between">
+      <a role="button" class="">Spring</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-416782b8caea9c48e0932ec01f628422" class="toggle"  />
+    <label for="section-416782b8caea9c48e0932ec01f628422" class="flex justify-between">
+      <a role="button" class="">数据库</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-237795881f3f8a8cb3543c2915069ce6" class="toggle"  />
+    <label for="section-237795881f3f8a8cb3543c2915069ce6" class="flex justify-between">
+      <a role="button" class="">算法</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-561070938b635b15571e14a6af3bb967" class="toggle"  />
+    <label for="section-561070938b635b15571e14a6af3bb967" class="flex justify-between">
+      <a role="button" class="">架构</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-f149dbcae8f463483817cbbe388a4496" class="toggle"  />
+    <label for="section-f149dbcae8f463483817cbbe388a4496" class="flex justify-between">
+      <a role="button" class="">方法论</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-473eaddd3a92a7dc4b230603ef07e994" class="toggle"  />
+    <label for="section-473eaddd3a92a7dc4b230603ef07e994" class="flex justify-between">
+      <a role="button" class="">工具&amp;部署</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-00b995767d8191cdedb015981436796e" class="toggle"  />
+    <label for="section-00b995767d8191cdedb015981436796e" class="flex justify-between">
+      <a role="button" class="">团队&amp;产品</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-5e9eb52f77b1e6a6c6e7b1b2f7159627" class="toggle"  />
+    <label for="section-5e9eb52f77b1e6a6c6e7b1b2f7159627" class="flex justify-between">
+      <a role="button" class="">面试</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="/posts/"  >
+        博客
+      </a>
+  </li>
+  
+  <li>
+    <a href="https://github.com/yuanmoc"  target="_blank" rel="noopener">
+        Github
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>使用python将百度网盘批量转存并分享</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#前言">前言</a></li>
+        <li><a href="#代码">代码</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+<article class="markdown">
+  <h1>
+    <a href="/posts/history/%E4%BD%BF%E7%94%A8python%E5%B0%86%E7%99%BE%E5%BA%A6%E7%BD%91%E7%9B%98%E6%89%B9%E9%87%8F%E8%BD%AC%E5%AD%98%E5%B9%B6%E5%88%86%E4%BA%AB/">使用python将百度网盘批量转存并分享</a>
+  </h1>
+  
+  <h5>2022-10-16 13:56:56</h5>
+
+
+
+  
+
+  
+  <div>
+    
+      <a href="/tags/2023-05-07%E4%BB%8Ehalo%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB/">2023-05-07从halo博客迁移</a>
+  </div>
+  
+
+
+
+<h2 id="前言">
+  前言
+  <a class="anchor" href="#%e5%89%8d%e8%a8%80">#</a>
+</h2>
+<p>需要将一批百度网盘资源批量保存到自己的网盘，并分享出来使用，传统手动转存和分享的方式太慢了，所以编写了以下程序快速达到目的。</p>
+<h2 id="代码">
+  代码
+  <a class="anchor" href="#%e4%bb%a3%e7%a0%81">#</a>
+</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> base64
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> requests
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> re
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> time
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> random
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> math
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> urllib.parse <span style="color:#f92672">import</span> unquote
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> ddddocr
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">BaiDuPan</span>(object):
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> __init__(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 创建session并设置初始登录Cookie</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>session <span style="color:#f92672">=</span> requests<span style="color:#f92672">.</span>session()
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>cookies[<span style="color:#e6db74">&#39;BAIDUID&#39;</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>cookies[<span style="color:#e6db74">&#39;BDUSS&#39;</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>cookies[<span style="color:#e6db74">&#39;STOKEN&#39;</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>headers <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;Host&#39;</span>: <span style="color:#e6db74">&#39;pan.baidu.com&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;User-Agent&#39;</span>: <span style="color:#e6db74">&#39;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36&#39;</span>,
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>login_info <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;bdstoken&#39;</span>: <span style="color:#e6db74">&#39;&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;username&#39;</span>: <span style="color:#e6db74">&#39;&#39;</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;&#39;&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    验证Cookie是否已登录
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    返回值errno代表的意思：
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    0 有效的Cookie；1 init方法中未配置登录Cookie；2 无效的Cookie
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#39;&#39;&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">verifyCookie</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span>(self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>cookies[<span style="color:#e6db74">&#39;BAIDUID&#39;</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;&#39;</span>):
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#39;errno&#39;</span>: <span style="color:#ae81ff">1</span>, <span style="color:#e6db74">&#39;err_msg&#39;</span>: <span style="color:#e6db74">&#39;请在init方法中配置百度网盘登录Cookie&#39;</span>}
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            params <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#39;clienttype&#39;</span>: <span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#39;app_id&#39;</span>: <span style="color:#ae81ff">250528</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#39;web&#39;</span>: <span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#39;dp-logid&#39;</span>: self<span style="color:#f92672">.</span>getDpLogId()
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            response <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#39;https://pan.baidu.com/api/loginStatus&#39;</span>, params<span style="color:#f92672">=</span>params, headers<span style="color:#f92672">=</span>self<span style="color:#f92672">.</span>headers)
+</span></span><span style="display:flex;"><span>            login_info <span style="color:#f92672">=</span> response<span style="color:#f92672">.</span>json()<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#39;login_info&#39;</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span>(response <span style="color:#f92672">and</span> login_info <span style="color:#f92672">!=</span> <span style="color:#66d9ef">None</span>):
+</span></span><span style="display:flex;"><span>                print(response<span style="color:#f92672">.</span>json())
+</span></span><span style="display:flex;"><span>                self<span style="color:#f92672">.</span>login_info[<span style="color:#e6db74">&#39;bdstoken&#39;</span>] <span style="color:#f92672">=</span> login_info<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#39;bdstoken&#39;</span>)
+</span></span><span style="display:flex;"><span>                self<span style="color:#f92672">.</span>login_info[<span style="color:#e6db74">&#39;username&#39;</span>] <span style="color:#f92672">=</span> login_info<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#39;username&#39;</span>)
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#39;errno&#39;</span>: <span style="color:#ae81ff">0</span>, <span style="color:#e6db74">&#39;err_msg&#39;</span>: <span style="color:#e6db74">&#39;有效的Cookie，用户名：</span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> login_info<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#39;username&#39;</span>)}
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#39;errno&#39;</span>: <span style="color:#ae81ff">2</span>, <span style="color:#e6db74">&#39;err_msg&#39;</span>: <span style="color:#e6db74">&#39;无效的Cookie！&#39;</span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;&#39;&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    获取指定目录的文件列表，直接返回原始的json
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#39;&#39;&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">getFileList</span>(self, dir<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;/&#39;</span>, order<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;time&#39;</span>, desc<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, page<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, num<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span>):
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 访问首页获取bdstoken</span>
+</span></span><span style="display:flex;"><span>        params <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;clienttype&#39;</span>: <span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;app_id&#39;</span>: <span style="color:#ae81ff">250528</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;web&#39;</span>: <span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;dp-logid&#39;</span>: self<span style="color:#f92672">.</span>getDpLogId(),
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;order&#39;</span>: order,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;desc&#39;</span>: desc,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;dir&#39;</span>: dir,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;num&#39;</span>: num,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;page&#39;</span>: page
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;https://pan.baidu.com/api/list&#39;</span>
+</span></span><span style="display:flex;"><span>        headers <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>headers
+</span></span><span style="display:flex;"><span>        headers[<span style="color:#e6db74">&#39;Referer&#39;</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;https://pan.baidu.com/disk/main&#39;</span>
+</span></span><span style="display:flex;"><span>        response <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>get(url, params<span style="color:#f92672">=</span>params, headers<span style="color:#f92672">=</span>headers)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> response<span style="color:#f92672">.</span>json()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;&#39;&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    识别 验证加密分享时的验证码
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    返回值errno代表的意思：
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    0 识别成功；1 识别失败；其他值 获取验证码失败；
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#39;&#39;&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">vcodeOCR</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 获取验证码</span>
+</span></span><span style="display:flex;"><span>        vcode_res <span style="color:#f92672">=</span> requests<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#39;https://pan.baidu.com/api/getcaptcha?prod=shareverify&amp;web=1&amp;channel=chunlei&amp;web=1&amp;app_id=250528&amp;bdstoken=null&amp;clienttype=0&#39;</span>, headers<span style="color:#f92672">=</span>self<span style="color:#f92672">.</span>headers)
+</span></span><span style="display:flex;"><span>        vcode_json <span style="color:#f92672">=</span> vcode_res<span style="color:#f92672">.</span>json()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span>(vcode_json[<span style="color:#e6db74">&#39;errno&#39;</span>] <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>):
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># 获取验证码图片</span>
+</span></span><span style="display:flex;"><span>            genimage <span style="color:#f92672">=</span> requests<span style="color:#f92672">.</span>get(vcode_json[<span style="color:#e6db74">&#39;vcode_img&#39;</span>], headers<span style="color:#f92672">=</span>self<span style="color:#f92672">.</span>headers)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            ocr <span style="color:#f92672">=</span> ddddocr<span style="color:#f92672">.</span>DdddOcr()
+</span></span><span style="display:flex;"><span>            vcode <span style="color:#f92672">=</span> ocr<span style="color:#f92672">.</span>classification(genimage<span style="color:#f92672">.</span>content)
+</span></span><span style="display:flex;"><span>            print(<span style="color:#e6db74">&#34;验证码是：&#34;</span>, vcode)
+</span></span><span style="display:flex;"><span>            errno, err_msg <span style="color:#f92672">=</span> (<span style="color:#ae81ff">1</span>, <span style="color:#e6db74">&#39;识别失败&#39;</span>) <span style="color:#66d9ef">if</span>(len(vcode) <span style="color:#f92672">!=</span> <span style="color:#ae81ff">4</span>) <span style="color:#66d9ef">else</span> (<span style="color:#ae81ff">0</span>, <span style="color:#e6db74">&#39;识别成功&#39;</span>)
+</span></span><span style="display:flex;"><span>            vcode_str <span style="color:#f92672">=</span> vcode_json[<span style="color:#e6db74">&#39;vcode_str&#39;</span>]
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            errno <span style="color:#f92672">=</span> vcode_json[<span style="color:#e6db74">&#39;errno&#39;</span>]
+</span></span><span style="display:flex;"><span>            err_msg <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;获取验证码失败&#39;</span>
+</span></span><span style="display:flex;"><span>            vcode_str <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>
+</span></span><span style="display:flex;"><span>            vcode <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#39;errno&#39;</span>: errno, <span style="color:#e6db74">&#39;err_msg&#39;</span>: err_msg, <span style="color:#e6db74">&#39;vcode&#39;</span>: vcode, <span style="color:#e6db74">&#39;vcode_str&#39;</span>: vcode_str}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;&#39;&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    验证加密分享
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    返回值errno代表的意思：
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    0 加密分享验证通过；1 验证码获取失败；2 提取码不正确；3 加密分享验证失败；4 重试几次后，验证码依旧不正确；
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#39;&#39;&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">verifyShare</span>(self, surl, pwd, referer, retryTime <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>):
+</span></span><span style="display:flex;"><span>        t <span style="color:#f92672">=</span> str(int(time<span style="color:#f92672">.</span>time()) <span style="color:#f92672">*</span> <span style="color:#ae81ff">1000</span>)
+</span></span><span style="display:flex;"><span>        params <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;surl&#39;</span>: surl,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;t&#39;</span>: t,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;channel&#39;</span>: <span style="color:#e6db74">&#39;chunlei&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;web&#39;</span>: <span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;app_id&#39;</span>: <span style="color:#ae81ff">250528</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;bdstoken&#39;</span>: self<span style="color:#f92672">.</span>login_info<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#39;bdstoken&#39;</span>),
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;logid&#39;</span>: self<span style="color:#f92672">.</span>getLogid(),
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;clienttype&#39;</span>: <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;https://pan.baidu.com/share/verify&#39;</span>
+</span></span><span style="display:flex;"><span>        form_data <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;pwd&#39;</span>: pwd,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;vcode&#39;</span>: <span style="color:#e6db74">&#39;&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;vcode_str&#39;</span>: <span style="color:#e6db74">&#39;&#39;</span>,
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 设置重试机制</span>
+</span></span><span style="display:flex;"><span>        is_vcode <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 试用几次就可以</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> n <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">0</span>, retryTime):
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># 自动获取并识别验证码，使用pytesseract自动识别时，可加大重试次数</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> is_vcode:
+</span></span><span style="display:flex;"><span>                ocr_result <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>vcodeOCR()
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span>(ocr_result[<span style="color:#e6db74">&#39;errno&#39;</span>] <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>):
+</span></span><span style="display:flex;"><span>                    form_data[<span style="color:#e6db74">&#39;vcode&#39;</span>] <span style="color:#f92672">=</span> ocr_result[<span style="color:#e6db74">&#39;vcode&#39;</span>]
+</span></span><span style="display:flex;"><span>                    form_data[<span style="color:#e6db74">&#39;vcode_str&#39;</span>] <span style="color:#f92672">=</span> ocr_result[<span style="color:#e6db74">&#39;vcode_str&#39;</span>]
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">elif</span>(ocr_result[<span style="color:#e6db74">&#39;errno&#39;</span>] <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>):
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">continue</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#39;errno&#39;</span>: <span style="color:#ae81ff">1</span>, <span style="color:#e6db74">&#39;err_msg&#39;</span>: <span style="color:#e6db74">&#39;验证码获取失败：</span><span style="color:#e6db74">%d</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> ocr_result[<span style="color:#e6db74">&#39;errno&#39;</span>]}
+</span></span><span style="display:flex;"><span>            headers <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>headers
+</span></span><span style="display:flex;"><span>            headers[<span style="color:#e6db74">&#39;referer&#39;</span>] <span style="color:#f92672">=</span> referer
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># verify_json[&#39;errno&#39;]：-9表示提取码不正确；-62表示需要验证码/验证码不正确（不输入验证码也是此返回值）</span>
+</span></span><span style="display:flex;"><span>            verify_res <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>post(url, headers<span style="color:#f92672">=</span>headers, params<span style="color:#f92672">=</span>params, data<span style="color:#f92672">=</span>form_data)
+</span></span><span style="display:flex;"><span>            verify_json <span style="color:#f92672">=</span> verify_res<span style="color:#f92672">.</span>json()
+</span></span><span style="display:flex;"><span>            cookie <span style="color:#f92672">=</span> verify_res<span style="color:#f92672">.</span>cookies<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#39;BDCLND&#39;</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span>(verify_json[<span style="color:#e6db74">&#39;errno&#39;</span>] <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>):
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#39;errno&#39;</span>: <span style="color:#ae81ff">0</span>, <span style="color:#e6db74">&#39;err_msg&#39;</span>: <span style="color:#e6db74">&#39;加密分享验证通过&#39;</span>, <span style="color:#e6db74">&#39;BDCLND&#39;</span>: cookie}
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">elif</span>(verify_json[<span style="color:#e6db74">&#39;errno&#39;</span>] <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">9</span>):
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#39;errno&#39;</span>: <span style="color:#ae81ff">2</span>, <span style="color:#e6db74">&#39;err_msg&#39;</span>: <span style="color:#e6db74">&#39;提取码不正确&#39;</span>}
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">elif</span>(verify_json[<span style="color:#e6db74">&#39;errno&#39;</span>] <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">62</span>):
+</span></span><span style="display:flex;"><span>                is_vcode <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#39;errno&#39;</span>: <span style="color:#ae81ff">3</span>, <span style="color:#e6db74">&#39;err_msg&#39;</span>: <span style="color:#e6db74">&#39;加密分享验证失败：</span><span style="color:#e6db74">%d</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> verify_json[<span style="color:#e6db74">&#39;errno&#39;</span>]}
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#39;errno&#39;</span>: <span style="color:#ae81ff">4</span>, <span style="color:#e6db74">&#39;err_msg&#39;</span>: <span style="color:#e6db74">&#39;重试多次后，验证码依旧不正确：</span><span style="color:#e6db74">%d</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> (verify_json[<span style="color:#e6db74">&#39;errno&#39;</span>] <span style="color:#66d9ef">if</span>(<span style="color:#e6db74">&#34;verify_json&#34;</span> <span style="color:#f92672">in</span> locals()) <span style="color:#66d9ef">else</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;&#39;&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    返回值errno代表的意思：
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    0 转存成功；1 无效的分享链接；2 分享文件已被删除；
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    3 分享文件已被取消；4 分享内容侵权，无法访问；5 找不到文件；6 分享文件已过期
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    7 获取提取码失败；8 获取加密cookie失败； 9 转存失败；
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#39;&#39;&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">saveShare</span>(self, url, pwd<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>, path<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;/&#39;</span>):
+</span></span><span style="display:flex;"><span>        share_res <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>get(url, headers<span style="color:#f92672">=</span>self<span style="color:#f92672">.</span>headers)
+</span></span><span style="display:flex;"><span>        share_page <span style="color:#f92672">=</span> share_res<span style="color:#f92672">.</span>content<span style="color:#f92672">.</span>decode(<span style="color:#e6db74">&#34;utf-8&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;&#39;&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        1.如果分享链接有密码，会被重定向至输入密码的页面；
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        2.如果分享链接不存在，会被重定向至404页面https://pan.baidu.com/error/404.html，但是状态码是200；
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        3.如果分享链接已被删除，页面会提示：啊哦，你来晚了，分享的文件已经被删除了，下次要早点哟。
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        4.如果分享链接已被取消，页面会提示：啊哦，你来晚了，分享的文件已经被取消了，下次要早点哟。
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        5.如果分享链接涉及侵权，页面会提示：此链接分享内容可能因为涉及侵权、色情、反动、低俗等信息，无法访问！
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        6.啊哦！链接错误没找到文件，请打开正确的分享链接!
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        7.啊哦，来晚了，该分享文件已过期
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#39;&#39;&#39;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span>(<span style="color:#e6db74">&#39;error/404.html&#39;</span> <span style="color:#f92672">in</span> share_res<span style="color:#f92672">.</span>url):
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;errno&#34;</span>: <span style="color:#ae81ff">1</span>, <span style="color:#e6db74">&#34;err_msg&#34;</span>: <span style="color:#e6db74">&#34;无效的分享链接&#34;</span>, <span style="color:#e6db74">&#34;extra&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>, <span style="color:#e6db74">&#34;info&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>}
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span>(<span style="color:#e6db74">&#39;你来晚了，分享的文件已经被删除了，下次要早点哟&#39;</span> <span style="color:#f92672">in</span> share_page):
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;errno&#34;</span>: <span style="color:#ae81ff">2</span>, <span style="color:#e6db74">&#34;err_msg&#34;</span>: <span style="color:#e6db74">&#34;分享文件已被删除&#34;</span>, <span style="color:#e6db74">&#34;extra&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>, <span style="color:#e6db74">&#34;info&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>}
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span>(<span style="color:#e6db74">&#39;你来晚了，分享的文件已经被取消了，下次要早点哟&#39;</span> <span style="color:#f92672">in</span> share_page):
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;errno&#34;</span>: <span style="color:#ae81ff">3</span>, <span style="color:#e6db74">&#34;err_msg&#34;</span>: <span style="color:#e6db74">&#34;分享文件已被取消&#34;</span>, <span style="color:#e6db74">&#34;extra&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>, <span style="color:#e6db74">&#34;info&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>}
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span>(<span style="color:#e6db74">&#39;此链接分享内容可能因为涉及侵权、色情、反动、低俗等信息，无法访问&#39;</span> <span style="color:#f92672">in</span> share_page):
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;errno&#34;</span>: <span style="color:#ae81ff">4</span>, <span style="color:#e6db74">&#34;err_msg&#34;</span>: <span style="color:#e6db74">&#34;分享内容侵权，无法访问&#34;</span>, <span style="color:#e6db74">&#34;extra&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>, <span style="color:#e6db74">&#34;info&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>}
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span>(<span style="color:#e6db74">&#39;链接错误没找到文件，请打开正确的分享链接&#39;</span> <span style="color:#f92672">in</span> share_page):
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;errno&#34;</span>: <span style="color:#ae81ff">5</span>, <span style="color:#e6db74">&#34;err_msg&#34;</span>: <span style="color:#e6db74">&#34;链接错误没找到文件&#34;</span>, <span style="color:#e6db74">&#34;extra&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>, <span style="color:#e6db74">&#34;info&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>}
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span>(<span style="color:#e6db74">&#39;啊哦，来晚了，该分享文件已过期&#39;</span> <span style="color:#f92672">in</span> share_page):
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;errno&#34;</span>: <span style="color:#ae81ff">6</span>, <span style="color:#e6db74">&#34;err_msg&#34;</span>: <span style="color:#e6db74">&#34;分享文件已过期&#34;</span>, <span style="color:#e6db74">&#34;extra&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>, <span style="color:#e6db74">&#34;info&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 如果加密分享，需要验证提取码，带上验证通过的Cookie再请求分享链接，即可获取分享文件</span>
+</span></span><span style="display:flex;"><span>        BDCLND <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span>(<span style="color:#e6db74">&#39;init&#39;</span> <span style="color:#f92672">in</span> share_res<span style="color:#f92672">.</span>url):
+</span></span><span style="display:flex;"><span>            surl <span style="color:#f92672">=</span> re<span style="color:#f92672">.</span>findall(<span style="color:#e6db74">r</span><span style="color:#e6db74">&#39;surl=(.+?)$&#39;</span>, share_res<span style="color:#f92672">.</span>url)[<span style="color:#ae81ff">0</span>]
+</span></span><span style="display:flex;"><span>            referer <span style="color:#f92672">=</span> share_res<span style="color:#f92672">.</span>url
+</span></span><span style="display:flex;"><span>            verify_result <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>verifyShare(surl, pwd, referer)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span>(verify_result[<span style="color:#e6db74">&#39;errno&#39;</span>] <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span>):
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;errno&#34;</span>: <span style="color:#ae81ff">8</span>, <span style="color:#e6db74">&#34;err_msg&#34;</span>: verify_result[<span style="color:#e6db74">&#39;err_msg&#39;</span>], <span style="color:#e6db74">&#34;extra&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>, <span style="color:#e6db74">&#34;info&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>}
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># 加密分享验证通过后，使用全局session刷新页面（全局session中带有解密的Cookie）</span>
+</span></span><span style="display:flex;"><span>                BDCLND <span style="color:#f92672">=</span> verify_result<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#39;BDCLND&#39;</span>)
+</span></span><span style="display:flex;"><span>                share_res <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>get(url, headers<span style="color:#f92672">=</span>self<span style="color:#f92672">.</span>headers)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        save_url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;https://pan.baidu.com/share/transfer&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        share_uk <span style="color:#f92672">=</span> re<span style="color:#f92672">.</span>findall(<span style="color:#e6db74">r</span><span style="color:#e6db74">&#39;share_uk:&#34;(\d+)&#34;&#39;</span>, share_res<span style="color:#f92672">.</span>text)[<span style="color:#ae81ff">0</span>]
+</span></span><span style="display:flex;"><span>        shareid <span style="color:#f92672">=</span> re<span style="color:#f92672">.</span>findall(<span style="color:#e6db74">r</span><span style="color:#e6db74">&#39;shareid:&#34;(\d+)&#34;&#39;</span>, share_res<span style="color:#f92672">.</span>text)[<span style="color:#ae81ff">0</span>]
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 531611295189884</span>
+</span></span><span style="display:flex;"><span>        fs_id <span style="color:#f92672">=</span> re<span style="color:#f92672">.</span>findall(<span style="color:#e6db74">r</span><span style="color:#e6db74">&#39;fs_id&#34;:(\d+),&#39;</span>, share_res<span style="color:#f92672">.</span>text)[<span style="color:#ae81ff">0</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        sekey <span style="color:#f92672">=</span> unquote(BDCLND)
+</span></span><span style="display:flex;"><span>        logid <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>getLogid()
+</span></span><span style="display:flex;"><span>        dplogid <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>getDpLogId()
+</span></span><span style="display:flex;"><span>        params <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;shareid&#39;</span>: shareid,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;from&#39;</span>: share_uk,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;sekey&#39;</span>: sekey,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;channel&#39;</span>: <span style="color:#e6db74">&#39;chunlei&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;web&#39;</span>: <span style="color:#e6db74">&#39;1&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;app_id&#39;</span>: <span style="color:#ae81ff">250528</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;bdstoken&#39;</span>: self<span style="color:#f92672">.</span>login_info[<span style="color:#e6db74">&#39;bdstoken&#39;</span>],
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;logid&#39;</span>: logid,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;clienttype&#39;</span>: <span style="color:#e6db74">&#39;0&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;dp-logid&#39;</span>: dplogid,
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        form_data <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;fsidlist&#39;</span>: <span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;[</span><span style="color:#e6db74">{</span>fs_id<span style="color:#e6db74">}</span><span style="color:#e6db74">]&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;path&#39;</span>: path
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        headers <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>headers
+</span></span><span style="display:flex;"><span>        headers[<span style="color:#e6db74">&#39;Origin&#39;</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;https://pan.baidu.com&#39;</span>
+</span></span><span style="display:flex;"><span>        headers[<span style="color:#e6db74">&#39;referer&#39;</span>] <span style="color:#f92672">=</span> url
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;&#39;&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        用带登录Cookie的全局session请求转存
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        如果有同名文件，保存的时候会自动重命名：类似xxx(1)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        暂时不支持超过文件数量的文件保存
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#39;&#39;&#39;</span>
+</span></span><span style="display:flex;"><span>        save_res <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>post(save_url, headers<span style="color:#f92672">=</span>headers, params<span style="color:#f92672">=</span>params, data<span style="color:#f92672">=</span>form_data)
+</span></span><span style="display:flex;"><span>        save_json <span style="color:#f92672">=</span> save_res<span style="color:#f92672">.</span>json()
+</span></span><span style="display:flex;"><span>        errno, err_msg, extra, info <span style="color:#f92672">=</span> (<span style="color:#ae81ff">0</span>, <span style="color:#e6db74">&#39;转存成功&#39;</span>, save_json[<span style="color:#e6db74">&#39;extra&#39;</span>], save_json[<span style="color:#e6db74">&#39;info&#39;</span>]) <span style="color:#66d9ef">if</span>(save_json[<span style="color:#e6db74">&#39;errno&#39;</span>] <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>) <span style="color:#66d9ef">else</span> (<span style="color:#ae81ff">9</span>, <span style="color:#e6db74">&#39;转存失败：</span><span style="color:#e6db74">%d</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> save_json[<span style="color:#e6db74">&#39;errno&#39;</span>], <span style="color:#e6db74">&#39;&#39;</span>, <span style="color:#e6db74">&#39;&#39;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#39;errno&#39;</span>: errno, <span style="color:#e6db74">&#39;err_msg&#39;</span>: err_msg, <span style="color:#e6db74">&#34;extra&#34;</span>: extra, <span style="color:#e6db74">&#34;info&#34;</span>: info}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;&#39;&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    重命名指定文件
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    0 重命名成功；1 重命名失败；
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#39;&#39;&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">rename</span>(self, path, newname):
+</span></span><span style="display:flex;"><span>        bdstoken <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>login_info[<span style="color:#e6db74">&#39;bdstoken&#39;</span>]
+</span></span><span style="display:flex;"><span>        url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;https://pan.baidu.com/api/filemanager&#39;</span>
+</span></span><span style="display:flex;"><span>        params <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;async&#39;</span>: <span style="color:#ae81ff">2</span>,
+</span></span><span style="display:flex;"><span>             <span style="color:#e6db74">&#39;onnest&#39;</span>: <span style="color:#e6db74">&#39;fail&#39;</span>,
+</span></span><span style="display:flex;"><span>             <span style="color:#e6db74">&#39;opera&#39;</span>: <span style="color:#e6db74">&#39;rename&#39;</span>,
+</span></span><span style="display:flex;"><span>             <span style="color:#e6db74">&#39;bdstoken&#39;</span>: bdstoken,
+</span></span><span style="display:flex;"><span>             <span style="color:#e6db74">&#39;clienttype&#39;</span>: <span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span>             <span style="color:#e6db74">&#39;app_id&#39;</span>: <span style="color:#ae81ff">250528</span>,
+</span></span><span style="display:flex;"><span>             <span style="color:#e6db74">&#39;web&#39;</span>: <span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>             <span style="color:#e6db74">&#39;dp-logid&#39;</span>: self<span style="color:#f92672">.</span>getDpLogId()
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        form_data <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#34;filelist&#34;</span>: <span style="color:#e6db74">&#34;[{</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">path</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">:</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">%s</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">,</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">newname</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">:</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">%s</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">}]&#34;</span> <span style="color:#f92672">%</span> (path, newname)}
+</span></span><span style="display:flex;"><span>        response <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>post(url, headers<span style="color:#f92672">=</span>self<span style="color:#f92672">.</span>headers, params<span style="color:#f92672">=</span>params, data<span style="color:#f92672">=</span>form_data)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span>(response<span style="color:#f92672">.</span>json()[<span style="color:#e6db74">&#39;errno&#39;</span>] <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>):
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#39;errno&#39;</span>: <span style="color:#ae81ff">0</span>, <span style="color:#e6db74">&#39;err_msg&#39;</span>: <span style="color:#e6db74">&#39;重命名成功！&#39;</span>}
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#39;errno&#39;</span>: <span style="color:#ae81ff">1</span>, <span style="color:#e6db74">&#39;err_msg&#39;</span>: <span style="color:#e6db74">&#39;重命名失败！&#39;</span>, <span style="color:#e6db74">&#39;info&#39;</span>: response<span style="color:#f92672">.</span>json()}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;&#39;&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    删除指定文件
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    0 删除成功；1 删除失败；
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#39;&#39;&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">delete</span>(self, path):
+</span></span><span style="display:flex;"><span>        bdstoken <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>login_info[<span style="color:#e6db74">&#39;bdstoken&#39;</span>]
+</span></span><span style="display:flex;"><span>        url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;https://pan.baidu.com/api/filemanager&#39;</span>
+</span></span><span style="display:flex;"><span>        params <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;async&#39;</span>: <span style="color:#ae81ff">2</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;onnest&#39;</span>: <span style="color:#e6db74">&#39;fail&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;opera&#39;</span>: <span style="color:#e6db74">&#39;delete&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;bdstoken&#39;</span>: bdstoken,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;clienttype&#39;</span>: <span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;app_id&#39;</span>: <span style="color:#ae81ff">250528</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;web&#39;</span>: <span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;dp-logid&#39;</span>: self<span style="color:#f92672">.</span>getDpLogId()
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        form_data <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#34;filelist&#34;</span>: <span style="color:#e6db74">&#34;[</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">%s</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">]&#34;</span> <span style="color:#f92672">%</span> path}
+</span></span><span style="display:flex;"><span>        response <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>post(url, headers<span style="color:#f92672">=</span>self<span style="color:#f92672">.</span>headers, params<span style="color:#f92672">=</span>params, data<span style="color:#f92672">=</span>form_data)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span>(response<span style="color:#f92672">.</span>json()[<span style="color:#e6db74">&#39;errno&#39;</span>] <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>):
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#39;errno&#39;</span>: <span style="color:#ae81ff">0</span>, <span style="color:#e6db74">&#39;err_msg&#39;</span>: <span style="color:#e6db74">&#39;删除成功！&#39;</span>}
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#39;errno&#39;</span>: <span style="color:#ae81ff">1</span>, <span style="color:#e6db74">&#39;err_msg&#39;</span>: <span style="color:#e6db74">&#39;删除失败！&#39;</span>, <span style="color:#e6db74">&#39;info&#39;</span>: response<span style="color:#f92672">.</span>json()}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;&#39;&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    移动文件至指定目录
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    0 删除成功；1 删除失败；
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    destination 移动的目录
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#39;&#39;&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">move</span>(self, path, destination, newname<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>):
+</span></span><span style="display:flex;"><span>        bdstoken <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>login_info[<span style="color:#e6db74">&#39;bdstoken&#39;</span>]
+</span></span><span style="display:flex;"><span>        url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;https://pan.baidu.com/api/filemanager&#39;</span>
+</span></span><span style="display:flex;"><span>        params <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;async&#39;</span>: <span style="color:#ae81ff">2</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;onnest&#39;</span>: <span style="color:#e6db74">&#39;fail&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;opera&#39;</span>: <span style="color:#e6db74">&#39;move&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;bdstoken&#39;</span>: bdstoken,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;clienttype&#39;</span>: <span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;app_id&#39;</span>: <span style="color:#ae81ff">250528</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;web&#39;</span>: <span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;dp-logid&#39;</span>: self<span style="color:#f92672">.</span>getDpLogId()
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span>(<span style="color:#f92672">not</span> newname):
+</span></span><span style="display:flex;"><span>            newname <span style="color:#f92672">=</span> path<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#39;/&#39;</span>)[<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]
+</span></span><span style="display:flex;"><span>        form_data <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#34;filelist&#34;</span>: <span style="color:#e6db74">&#34;[{</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">path</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">:</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">%s</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">,</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">dest</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">:</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">%s</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">,</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">newname</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">:</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">%s</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">}]&#34;</span> <span style="color:#f92672">%</span> (path, destination, newname)}
+</span></span><span style="display:flex;"><span>        response <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>post(url, headers<span style="color:#f92672">=</span>self<span style="color:#f92672">.</span>headers, params<span style="color:#f92672">=</span>params, data<span style="color:#f92672">=</span>form_data)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span>(response<span style="color:#f92672">.</span>json()[<span style="color:#e6db74">&#39;errno&#39;</span>] <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>):
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#39;errno&#39;</span>: <span style="color:#ae81ff">0</span>, <span style="color:#e6db74">&#39;err_msg&#39;</span>: <span style="color:#e6db74">&#39;移动成功！&#39;</span>}
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#39;errno&#39;</span>: <span style="color:#ae81ff">1</span>, <span style="color:#e6db74">&#39;err_msg&#39;</span>: <span style="color:#e6db74">&#39;移动失败！&#39;</span>, <span style="color:#e6db74">&#39;info&#39;</span>: response<span style="color:#f92672">.</span>json()}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;&#39;&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    创建分享链接
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    fid_list为列表，例如：[1110768251780445]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    0 创建成功；1 创建失败；
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#39;&#39;&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">createShareLink</span>(self, fid_list, period<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>, pwd<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>):
+</span></span><span style="display:flex;"><span>        bdstoken <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>login_info[<span style="color:#e6db74">&#39;bdstoken&#39;</span>]
+</span></span><span style="display:flex;"><span>        url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;https://pan.baidu.com/share/set&#39;</span>
+</span></span><span style="display:flex;"><span>        params <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;bdstoken&#39;</span>: bdstoken,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;channel&#39;</span>: <span style="color:#e6db74">&#39;chunlei&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;web&#39;</span>: <span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;app_id&#39;</span>: <span style="color:#ae81ff">250528</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;logid&#39;</span>: self<span style="color:#f92672">.</span>getLogid(),
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;clienttype&#39;</span>: <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span>(<span style="color:#f92672">not</span> pwd):
+</span></span><span style="display:flex;"><span>            pwd <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>generatePwd()
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;&#39;&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        schannel=4  不知道什么意思，固定为4
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        channel_list=[]  不知道什么意思，固定为[]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        period=0  0表示永久，7表示7天
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        pwd=w4y5  分享链接的提取码，可自定义
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        fid_list=[1110768251780445]  分享文件的id列表，可调用getFileList方法获取文件列表，包含fs_id
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#39;&#39;&#39;</span>
+</span></span><span style="display:flex;"><span>        form_data <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;schannel&#39;</span>: <span style="color:#ae81ff">4</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;channel_list&#39;</span>: <span style="color:#e6db74">&#39;[]&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;period&#39;</span>: period,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;pwd&#39;</span>: pwd,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;fid_list&#39;</span>: str(fid_list),
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        response <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>post(url, headers<span style="color:#f92672">=</span>self<span style="color:#f92672">.</span>headers, params<span style="color:#f92672">=</span>params, data<span style="color:#f92672">=</span>form_data)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span>(response<span style="color:#f92672">.</span>json()[<span style="color:#e6db74">&#39;errno&#39;</span>] <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>):
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#39;errno&#39;</span>: <span style="color:#ae81ff">0</span>, <span style="color:#e6db74">&#39;err_msg&#39;</span>: <span style="color:#e6db74">&#39;创建分享链接成功！&#39;</span>, <span style="color:#e6db74">&#39;info&#39;</span>: {<span style="color:#e6db74">&#39;link&#39;</span>: response<span style="color:#f92672">.</span>json()[<span style="color:#e6db74">&#39;link&#39;</span>], <span style="color:#e6db74">&#39;pwd&#39;</span>: pwd}}
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#39;errno&#39;</span>: <span style="color:#ae81ff">1</span>, <span style="color:#e6db74">&#39;err_msg&#39;</span>: <span style="color:#e6db74">&#39;创建分享链接失败！&#39;</span>, <span style="color:#e6db74">&#39;info&#39;</span>: response<span style="color:#f92672">.</span>json()}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">getDpLogId</span>(self, uk<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">getRandomInt</span>(num):
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> str(math<span style="color:#f92672">.</span>floor((random<span style="color:#f92672">.</span>random() <span style="color:#f92672">*</span> <span style="color:#ae81ff">9</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">*</span> math<span style="color:#f92672">.</span>pow(<span style="color:#ae81ff">10</span>, num <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>)))
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">validateUk</span>(uk):
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> len(uk <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;&#39;</span>) <span style="color:#f92672">==</span> <span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">prefixInteger</span>(num, length):
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#39;&#39;</span><span style="color:#f92672">.</span>join([<span style="color:#e6db74">&#39;0&#39;</span> <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(length <span style="color:#f92672">-</span> len(num))]) <span style="color:#f92672">+</span> num
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">getCountId</span>(countid<span style="color:#f92672">=</span><span style="color:#ae81ff">30</span>):
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> countid <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">9999</span>:
+</span></span><span style="display:flex;"><span>                countid <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>                countid <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> prefixInteger(str(countid), <span style="color:#ae81ff">4</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        client <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>
+</span></span><span style="display:flex;"><span>        userid <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;00&#39;</span> <span style="color:#f92672">+</span> getRandomInt(<span style="color:#ae81ff">8</span>)
+</span></span><span style="display:flex;"><span>        sessionid <span style="color:#f92672">=</span> getRandomInt(<span style="color:#ae81ff">6</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> uk <span style="color:#f92672">and</span> validateUk(uk):
+</span></span><span style="display:flex;"><span>            userid <span style="color:#f92672">=</span> uk
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> client <span style="color:#f92672">+</span> sessionid <span style="color:#f92672">+</span> userid <span style="color:#f92672">+</span> getCountId()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">getLogid</span>(self):
+</span></span><span style="display:flex;"><span>        logid <span style="color:#f92672">=</span> base64<span style="color:#f92672">.</span>b64encode(self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>cookies<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#39;BAIDUID&#39;</span>)<span style="color:#f92672">.</span>encode())<span style="color:#f92672">.</span>decode()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> logid
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;&#39;&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    随机生成4位字符串
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#39;&#39;&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">generatePwd</span>(self, n<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>):
+</span></span><span style="display:flex;"><span>        code <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM&#39;</span>
+</span></span><span style="display:flex;"><span>        pwd<span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">0</span>, n):
+</span></span><span style="display:flex;"><span>            index <span style="color:#f92672">=</span> random<span style="color:#f92672">.</span>randrange(<span style="color:#ae81ff">0</span>,len(code))
+</span></span><span style="display:flex;"><span>            pwd <span style="color:#f92672">+=</span> code[index]
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> pwd
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
+</span></span><span style="display:flex;"><span>    baiDuPan <span style="color:#f92672">=</span> BaiDuPan()
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 验证cookies</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># baiDuPan.verifyCookie()</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 转存文件</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># fileList = baiDuPan.saveShare(&#39;https://pan.baidu.com/s/1Nnipn9HxW8cCgMfRhkHd3Q&#39;, &#39;yn4v&#39;, &#39;/&#39;)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># to_fs_id = fileList.get(&#39;extra&#39;).get(&#39;list&#39;)[0].get(&#39;to_fs_id&#39;)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 重命名</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># print(baiDuPan.rename(&#39;/计算机网络（第7版）-谢希仁-1.epub&#39;, &#39;计算机网络（第7版）-谢希仁.epub&#39;))</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 删除文件</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># print(baiDuPan.delete(&#39;/计算机网络（第7版）-谢希仁.epub&#39;))</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 移动文件</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># print(baiDuPan.move(&#39;/我的资源/计算机网络（第7版）-谢希仁.epub&#39;, &#39;/&#39;))</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 创建分享链接</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># print(baiDuPan.createShareLink([to_fs_id]))</span>
+</span></span></code></pre></div></article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+  <div>
+    <a class="flex align-center" href="https://github.com/yuanmoc/yuanmoc.github.io/edit/main/content/posts/history/%e4%bd%bf%e7%94%a8python%e5%b0%86%e7%99%be%e5%ba%a6%e7%bd%91%e7%9b%98%e6%89%b9%e9%87%8f%e8%bd%ac%e5%ad%98%e5%b9%b6%e5%88%86%e4%ba%ab.md" target="_blank" rel="noopener">
+      <img src="/svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>编辑本页</span>
+    </a>
+  </div>
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+
+
+<script src="https://utteranc.es/client.js"
+        repo="yuanmoc/blogtalks"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#前言">前言</a></li>
+        <li><a href="#代码">代码</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="zh" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="配置中心 # 启动配置中心
+在SpringBoot中使用 # 1、添加web依赖和nacos配置中心依赖
+&lt;dependency&gt; &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt; &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt; &lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;com.alibaba.boot&lt;/groupId&gt; &lt;artifactId&gt;nacos-config-spring-boot-starter&lt;/artifactId&gt; &lt;version&gt;0.2.1&lt;/version&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;com.alibaba.boot&lt;/groupId&gt; &lt;artifactId&gt;nacos-config-spring-boot-actuator&lt;/artifactId&gt; &lt;version&gt;0.2.1&lt;/version&gt; &lt;/dependency&gt; 2、在配置文件application.properties中添加nacos配置
+# Nacos配置中心地址 nacos.config.server-addr=127.0.0.1:8848 # endpoint http://localhost:8080/actuator/nacos-config # health http://localhost:8080/actuator/health # 不需要身份验证的情况下访问所有actuator端点 management.endpoints.web.exposure.include=* # 将健康信息展示给所有用户 management.endpoint.health.show-details=always 3、在配置类中启用Nacos配置中心
+@SpringBootApplication @NacosPropertySource(dataId = &#34;example&#34;, groupId = &#34;DEFAULT_GROUP&#34;, autoRefreshed = true) public class NacosConfigApplication { public static void main(String[] args) { SpringApplication.run(NacosConfigApplication.class, args); } } 其中dataId和groupId对应我们在配置中心中配置的DataId和group值。如下图 4、示例代码测试。
+@Controller @RequestMapping(&#34;config&#34;) public class ConfigController { @NacosValue(value = &#34;${useLocalCache:false}&#34;, autoRefreshed = true) private boolean useLocalCache; @RequestMapping(value = &#34;/get&#34;, method = GET) @ResponseBody public boolean get() { return useLocalCache; } } 在SpringCloud中使用 # 1、添加web和Nacos依赖">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light dark"><meta property="og:title" content="Nacos的使用" />
+<meta property="og:description" content="配置中心 # 启动配置中心
+在SpringBoot中使用 # 1、添加web依赖和nacos配置中心依赖
+&lt;dependency&gt; &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt; &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt; &lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;com.alibaba.boot&lt;/groupId&gt; &lt;artifactId&gt;nacos-config-spring-boot-starter&lt;/artifactId&gt; &lt;version&gt;0.2.1&lt;/version&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;com.alibaba.boot&lt;/groupId&gt; &lt;artifactId&gt;nacos-config-spring-boot-actuator&lt;/artifactId&gt; &lt;version&gt;0.2.1&lt;/version&gt; &lt;/dependency&gt; 2、在配置文件application.properties中添加nacos配置
+# Nacos配置中心地址 nacos.config.server-addr=127.0.0.1:8848 # endpoint http://localhost:8080/actuator/nacos-config # health http://localhost:8080/actuator/health # 不需要身份验证的情况下访问所有actuator端点 management.endpoints.web.exposure.include=* # 将健康信息展示给所有用户 management.endpoint.health.show-details=always 3、在配置类中启用Nacos配置中心
+@SpringBootApplication @NacosPropertySource(dataId = &#34;example&#34;, groupId = &#34;DEFAULT_GROUP&#34;, autoRefreshed = true) public class NacosConfigApplication { public static void main(String[] args) { SpringApplication.run(NacosConfigApplication.class, args); } } 其中dataId和groupId对应我们在配置中心中配置的DataId和group值。如下图 4、示例代码测试。
+@Controller @RequestMapping(&#34;config&#34;) public class ConfigController { @NacosValue(value = &#34;${useLocalCache:false}&#34;, autoRefreshed = true) private boolean useLocalCache; @RequestMapping(value = &#34;/get&#34;, method = GET) @ResponseBody public boolean get() { return useLocalCache; } } 在SpringCloud中使用 # 1、添加web和Nacos依赖" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yuanmoc.github.io/posts/2022/Nacos%E7%9A%84%E4%BD%BF%E7%94%A8/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2020-12-26T10:55:28+00:00" />
+<meta property="article:modified_time" content="2020-12-26T10:55:28+00:00" />
+<title>Nacos的使用 | YUANMOC</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/book.min.33a48f5432973b8ff9a82679d9e45d67f2c15d4399bd2829269455cfe390b5e8.css" integrity="sha256-M6SPVDKXO4/5qCZ52eRdZ/LBXUOZvSgpJpRVz&#43;OQteg=" crossorigin="anonymous">
+  <script defer src="/flexsearch.min.js"></script>
+  <script defer src="/zh.search.min.4cf9aae5950f195d08ab07072a39cedceeba920ee4d8df14bd3fb581cf02717d.js" integrity="sha256-TPmq5ZUPGV0IqwcHKjnO3O66kg7k2N8UvT&#43;1gc8CcX0=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>YUANMOC</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="搜索" aria-label="搜索" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-74286b56e7b99aa3cfac52c55eb97834" class="toggle"  />
+    <label for="section-74286b56e7b99aa3cfac52c55eb97834" class="flex justify-between">
+      <a role="button" class="">文档笔记</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-eb0f5223a522dd98c2608944d8591bd7" class="toggle"  />
+    <label for="section-eb0f5223a522dd98c2608944d8591bd7" class="flex justify-between">
+      <a role="button" class="">Java</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/%E6%96%87%E6%A1%A3%E7%AC%94%E8%AE%B0/java/test/" class="">测试</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-9a0e942fd76c38c5301548a2b901f29c" class="toggle"  />
+    <label for="section-9a0e942fd76c38c5301548a2b901f29c" class="flex justify-between">
+      <a role="button" class="">Spring</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-416782b8caea9c48e0932ec01f628422" class="toggle"  />
+    <label for="section-416782b8caea9c48e0932ec01f628422" class="flex justify-between">
+      <a role="button" class="">数据库</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-237795881f3f8a8cb3543c2915069ce6" class="toggle"  />
+    <label for="section-237795881f3f8a8cb3543c2915069ce6" class="flex justify-between">
+      <a role="button" class="">算法</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-561070938b635b15571e14a6af3bb967" class="toggle"  />
+    <label for="section-561070938b635b15571e14a6af3bb967" class="flex justify-between">
+      <a role="button" class="">架构</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-f149dbcae8f463483817cbbe388a4496" class="toggle"  />
+    <label for="section-f149dbcae8f463483817cbbe388a4496" class="flex justify-between">
+      <a role="button" class="">方法论</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-473eaddd3a92a7dc4b230603ef07e994" class="toggle"  />
+    <label for="section-473eaddd3a92a7dc4b230603ef07e994" class="flex justify-between">
+      <a role="button" class="">工具&amp;部署</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-00b995767d8191cdedb015981436796e" class="toggle"  />
+    <label for="section-00b995767d8191cdedb015981436796e" class="flex justify-between">
+      <a role="button" class="">团队&amp;产品</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-5e9eb52f77b1e6a6c6e7b1b2f7159627" class="toggle"  />
+    <label for="section-5e9eb52f77b1e6a6c6e7b1b2f7159627" class="flex justify-between">
+      <a role="button" class="">面试</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="/posts/"  >
+        博客
+      </a>
+  </li>
+  
+  <li>
+    <a href="https://github.com/yuanmoc"  target="_blank" rel="noopener">
+        Github
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Nacos的使用</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#配置中心">配置中心</a>
+          <ul>
+            <li><a href="#在springboot中使用">在SpringBoot中使用</a></li>
+            <li><a href="#在springcloud中使用">在SpringCloud中使用</a></li>
+            <li><a href="#多配置文件">多配置文件</a></li>
+          </ul>
+        </li>
+        <li><a href="#注册中心">注册中心</a>
+          <ul>
+            <li><a href="#服务发现">服务发现</a></li>
+            <li><a href="#服务消费">服务消费</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+<article class="markdown">
+  <h1>
+    <a href="/posts/2022/Nacos%E7%9A%84%E4%BD%BF%E7%94%A8/">Nacos的使用</a>
+  </h1>
+  
+  <h5>2020-12-26 10:55:28</h5>
+
+
+
+  
+
+  
+  <div>
+    
+      <a href="/tags/2023-05-07%E4%BB%8Ehalo%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB/">2023-05-07从halo博客迁移</a>
+  </div>
+  
+
+
+
+<h2 id="配置中心">
+  配置中心
+  <a class="anchor" href="#%e9%85%8d%e7%bd%ae%e4%b8%ad%e5%bf%83">#</a>
+</h2>
+<p>启动配置中心</p>
+<h3 id="在springboot中使用">
+  在SpringBoot中使用
+  <a class="anchor" href="#%e5%9c%a8springboot%e4%b8%ad%e4%bd%bf%e7%94%a8">#</a>
+</h3>
+<p>1、添加web依赖和nacos配置中心依赖</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span>    <span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;groupId&gt;</span>org.springframework.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;artifactId&gt;</span>spring-boot-starter-web<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;groupId&gt;</span>org.springframework.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;artifactId&gt;</span>spring-boot-starter-actuator<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;groupId&gt;</span>com.alibaba.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;artifactId&gt;</span>nacos-config-spring-boot-starter<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;version&gt;</span>0.2.1<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;groupId&gt;</span>com.alibaba.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;artifactId&gt;</span>nacos-config-spring-boot-actuator<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;version&gt;</span>0.2.1<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span></code></pre></div><p>2、在配置文件application.properties中添加nacos配置</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-properties" data-lang="properties"><span style="display:flex;"><span><span style="color:#75715e"># Nacos配置中心地址</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">nacos.config.server-addr</span><span style="color:#f92672">=</span><span style="color:#e6db74">127.0.0.1:8848</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># endpoint http://localhost:8080/actuator/nacos-config</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># health http://localhost:8080/actuator/health</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 不需要身份验证的情况下访问所有actuator端点</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">management.endpoints.web.exposure.include</span><span style="color:#f92672">=</span><span style="color:#e6db74">*</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 将健康信息展示给所有用户</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">management.endpoint.health.show-details</span><span style="color:#f92672">=</span><span style="color:#e6db74">always</span>
+</span></span></code></pre></div><p>3、在配置类中启用Nacos配置中心</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@SpringBootApplication</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@NacosPropertySource</span><span style="color:#f92672">(</span>dataId <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;example&#34;</span><span style="color:#f92672">,</span> groupId <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;DEFAULT_GROUP&#34;</span><span style="color:#f92672">,</span> autoRefreshed <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">NacosConfigApplication</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        SpringApplication<span style="color:#f92672">.</span><span style="color:#a6e22e">run</span><span style="color:#f92672">(</span>NacosConfigApplication<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> args<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>其中dataId和groupId对应我们在配置中心中配置的DataId和group值。如下图
+
+  <img src="/images/image-0cfb0c52d14542e0b582fc365ad02df5.png" alt="Nacos配置中心" /></p>
+<p>4、示例代码测试。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Controller</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@RequestMapping</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;config&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ConfigController</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@NacosValue</span><span style="color:#f92672">(</span>value <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;${useLocalCache:false}&#34;</span><span style="color:#f92672">,</span> autoRefreshed <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">boolean</span> useLocalCache<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@RequestMapping</span><span style="color:#f92672">(</span>value <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/get&#34;</span><span style="color:#f92672">,</span> method <span style="color:#f92672">=</span> GET<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@ResponseBody</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">get</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> useLocalCache<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><h3 id="在springcloud中使用">
+  在SpringCloud中使用
+  <a class="anchor" href="#%e5%9c%a8springcloud%e4%b8%ad%e4%bd%bf%e7%94%a8">#</a>
+</h3>
+<p>1、添加web和Nacos依赖</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;groupId&gt;</span>org.springframework.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;artifactId&gt;</span>spring-boot-starter-web<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;groupId&gt;</span>org.springframework.cloud<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;artifactId&gt;</span>spring-cloud-starter-alibaba-nacos-config<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;version&gt;</span>0.2.1.RELEASE<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span></code></pre></div><p>2、在boostrap.properties中配置Nacos</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-properties" data-lang="properties"><span style="display:flex;"><span><span style="color:#a6e22e">spring.cloud.nacos.config.server-addr</span><span style="color:#f92672">=</span><span style="color:#e6db74">127.0.0.1:8848</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">spring.application.name</span><span style="color:#f92672">=</span><span style="color:#e6db74">example</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">spring.cloud.nacos.config.file-extension</span><span style="color:#f92672">=</span><span style="color:#e6db74">properties</span>
+</span></span></code></pre></div><p>在 Nacos Spring Cloud 中，dataId 的完整格式如下：</p>
+<p><code>${prefix}-${spring.profiles.active}.${file-extension}</code></p>
+<ul>
+<li>prefix 默认为 <code>spring.application.name</code> 的值，也可以通过配置项 <code>spring.cloud.nacos.config.prefix</code>来配置。</li>
+<li>spring.profiles.active 即为当前环境对应的 profile，详情可以参考 Spring Boot文档。 注意：当 spring.profiles.active 为空时，对应的连接符 - 也将不存在，dataId 的拼接格式变成 <code>${prefix}.${file-extension}</code></li>
+<li>file-exetension 为配置内容的数据格式，可以通过配置项 <code>spring.cloud.nacos.config.file-extension</code> 来配置。目前只支持 properties 和 yaml 类型。</li>
+</ul>
+<p>3、示例代码</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@RestController</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@RequestMapping</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/config&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@RefreshScope</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ConfigController</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Value</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;${useLocalCache:false}&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">boolean</span> useLocalCache<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * http://localhost:8080/config/get
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@RequestMapping</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/get&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">get</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> useLocalCache<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><h3 id="多配置文件">
+  多配置文件
+  <a class="anchor" href="#%e5%a4%9a%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6">#</a>
+</h3>
+<p>很多应用都会用到多个配置文件管理配置，比如我们现在想要配置一个mysql和一个redis，但是又不想单独放在一个配置文件中，这时，我们就可以引用多个配置文件。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-properties" data-lang="properties"><span style="display:flex;"><span><span style="color:#a6e22e">spring.application.name</span><span style="color:#f92672">=</span><span style="color:#e6db74">multi-data-ids-example</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">spring.cloud.nacos.config.server-addr</span><span style="color:#f92672">=</span><span style="color:#e6db74">127.0.0.1:8848</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 配置一个应用级的配置，需要自动刷新配置。</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">spring.cloud.nacos.config.ext-config[0].data-id</span><span style="color:#f92672">=</span><span style="color:#e6db74">app.properties</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">spring.cloud.nacos.config.ext-config[0].group</span><span style="color:#f92672">=</span><span style="color:#e6db74">multi-data-ids</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">spring.cloud.nacos.config.ext-config[0].refresh</span><span style="color:#f92672">=</span><span style="color:#e6db74">true</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 配置一个Mysql数据源配置。</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">spring.cloud.nacos.config.ext-config[1].data-id</span><span style="color:#f92672">=</span><span style="color:#e6db74">datasource.properties</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">spring.cloud.nacos.config.ext-config[1].group</span><span style="color:#f92672">=</span><span style="color:#e6db74">multi-data-ids</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 配置一个Redis数据源配置。</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">spring.cloud.nacos.config.ext-config[2].data-id</span><span style="color:#f92672">=</span><span style="color:#e6db74">redis.properties</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">spring.cloud.nacos.config.ext-config[2].group</span><span style="color:#f92672">=</span><span style="color:#e6db74">multi-data-ids</span>
+</span></span></code></pre></div><p>除了这样引入，我们还可以使用注解的形式引入</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@SpringBootApplication</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@NacosPropertySources</span><span style="color:#f92672">({</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">@NacosPropertySource</span><span style="color:#f92672">(</span>dataId <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;app.properties&#34;</span><span style="color:#f92672">,</span> groupId <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;multi-data-ids&#34;</span><span style="color:#f92672">,</span> autoRefreshed <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">),</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">@NacosPropertySource</span><span style="color:#f92672">(</span>dataId <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;datasource.properties&#34;</span><span style="color:#f92672">,</span> groupId <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;multi-data-ids&#34;</span><span style="color:#f92672">,</span> autoRefreshed <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">),</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">@NacosPropertySource</span><span style="color:#f92672">(</span>dataId <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;redis.properties&#34;</span><span style="color:#f92672">,</span> groupId <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;multi-data-ids&#34;</span><span style="color:#f92672">,</span> autoRefreshed <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">})</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SpringBootMySQLApplication</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        SpringApplication<span style="color:#f92672">.</span><span style="color:#a6e22e">run</span><span style="color:#f92672">(</span>SpringBootMySQLApplication<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> args<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><h2 id="注册中心">
+  注册中心
+  <a class="anchor" href="#%e6%b3%a8%e5%86%8c%e4%b8%ad%e5%bf%83">#</a>
+</h2>
+<h3 id="服务发现">
+  服务发现
+  <a class="anchor" href="#%e6%9c%8d%e5%8a%a1%e5%8f%91%e7%8e%b0">#</a>
+</h3>
+<p>1、添加依赖</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;dependencies&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;groupId&gt;</span>org.springframework.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;artifactId&gt;</span>spring-boot-starter-web<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;groupId&gt;</span>org.springframework.cloud<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;artifactId&gt;</span>spring-cloud-starter-alibaba-nacos-discovery<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;exclusions&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;exclusion&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;groupId&gt;</span>com.alibaba.nacos<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;artifactId&gt;</span>nacos-client<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/exclusion&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/exclusions&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;groupId&gt;</span>com.alibaba.nacos<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;artifactId&gt;</span>nacos-client<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;groupId&gt;</span>org.hibernate<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;artifactId&gt;</span>hibernate-validator<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;version&gt;</span>5.1.0.Final<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/dependencies&gt;</span>
+</span></span></code></pre></div><p>2、配置Nacos服务地址</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-properties" data-lang="properties"><span style="display:flex;"><span><span style="color:#a6e22e">server.port</span><span style="color:#f92672">=</span><span style="color:#e6db74">8070</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">spring.application.name</span><span style="color:#f92672">=</span><span style="color:#e6db74">service-provider</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">spring.cloud.nacos.discovery.server-addr</span><span style="color:#f92672">=</span><span style="color:#e6db74">127.0.0.1:8848</span>
+</span></span></code></pre></div><p>3、启用服务发现,并编写测试接口</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@SpringBootApplication</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@EnableDiscoveryClient</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">NacosProviderApplication</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>		SpringApplication<span style="color:#f92672">.</span><span style="color:#a6e22e">run</span><span style="color:#f92672">(</span>NacosProviderApplication<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> args<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">@RestController</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">EchoController</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">@RequestMapping</span><span style="color:#f92672">(</span>value <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/echo/{string}&#34;</span><span style="color:#f92672">,</span> method <span style="color:#f92672">=</span> RequestMethod<span style="color:#f92672">.</span><span style="color:#a6e22e">GET</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">echo</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@PathVariable</span> String string<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;Hello Nacos Discovery &#34;</span> <span style="color:#f92672">+</span> string<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><h3 id="服务消费">
+  服务消费
+  <a class="anchor" href="#%e6%9c%8d%e5%8a%a1%e6%b6%88%e8%b4%b9">#</a>
+</h3>
+<p>1、添加依赖</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-properties" data-lang="properties"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&lt;dependencies&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    &lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    &lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    &lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        &lt;artifactId&gt;spring-cloud-starter-netflix-ribbon&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        &lt;version&gt;2.0.0.RELEASE&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    &lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    &lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        &lt;artifactId&gt;spring-cloud-starter-openfeign&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        &lt;version&gt;2.0.0.RELEASE&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    &lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    &lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        &lt;artifactId&gt;spring-cloud-starter-alibaba-nacos-discovery&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        &lt;exclusions&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">            &lt;exclusion&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                &lt;groupId&gt;com.alibaba.nacos&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                &lt;artifactId&gt;nacos-client&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">            &lt;/exclusion&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        &lt;/exclusions&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    &lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    &lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        &lt;groupId&gt;com.alibaba.nacos&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        &lt;artifactId&gt;nacos-client&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    &lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">&lt;/dependencies&gt;</span>
+</span></span></code></pre></div><p>2、配置Nacos地址</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-properties" data-lang="properties"><span style="display:flex;"><span><span style="color:#a6e22e">server.port</span><span style="color:#f92672">=</span><span style="color:#e6db74">8080</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">spring.application.name</span><span style="color:#f92672">=</span><span style="color:#e6db74">service-consumer</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">spring.cloud.nacos.discovery.server-addr</span><span style="color:#f92672">=</span><span style="color:#e6db74">127.0.0.1:8848</span>
+</span></span></code></pre></div><p>3、启用服务发现与消费</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@SpringBootApplication</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@EnableDiscoveryClient</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">NacosConsumerApplication</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@LoadBalanced</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Bean</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> RestTemplate <span style="color:#a6e22e">restTemplate</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> RestTemplate<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        SpringApplication<span style="color:#f92672">.</span><span style="color:#a6e22e">run</span><span style="color:#f92672">(</span>NacosConsumerApplication<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> args<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@RestController</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TestController</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> RestTemplate restTemplate<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">@Autowired</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">TestController</span><span style="color:#f92672">(</span>RestTemplate restTemplate<span style="color:#f92672">)</span> <span style="color:#f92672">{</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">restTemplate</span> <span style="color:#f92672">=</span> restTemplate<span style="color:#f92672">;}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">@RequestMapping</span><span style="color:#f92672">(</span>value <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/echo/{str}&#34;</span><span style="color:#f92672">,</span> method <span style="color:#f92672">=</span> RequestMethod<span style="color:#f92672">.</span><span style="color:#a6e22e">GET</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">echo</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@PathVariable</span> String str<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> restTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">getForObject</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;http://service-provider/echo/&#34;</span> <span style="color:#f92672">+</span> str<span style="color:#f92672">,</span> String<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>4、使用OpenFeign来调用</p>
+<p>Feign类</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@FeignClient</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;service-provider&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">RemoteServer</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@RequestMapping</span><span style="color:#f92672">(</span>value <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/echo/{string}&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    String <span style="color:#a6e22e">echo</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@PathVariable</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;string&#34;</span><span style="color:#f92672">)</span> String string<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>Feign远程调用，要启用@EnableFeignClients</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@SpringBootApplication</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@RestController</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@EnableDiscoveryClient</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@EnableFeignClients</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">NacosConsumerApplication</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@LoadBalanced</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Bean</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> RestTemplate <span style="color:#a6e22e">restTemplate</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> RestTemplate<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        SpringApplication<span style="color:#f92672">.</span><span style="color:#a6e22e">run</span><span style="color:#f92672">(</span>NacosConsumerApplication<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> args<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Resource</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> RemoteServer remoteServer<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@RequestMapping</span><span style="color:#f92672">(</span>value <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/feign/echo/{str}&#34;</span><span style="color:#f92672">,</span> method <span style="color:#f92672">=</span> RequestMethod<span style="color:#f92672">.</span><span style="color:#a6e22e">GET</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">feignEcho</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@PathVariable</span> String str<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> remoteServer<span style="color:#f92672">.</span><span style="color:#a6e22e">echo</span><span style="color:#f92672">(</span>str<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>完结。</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+  <div>
+    <a class="flex align-center" href="https://github.com/yuanmoc/yuanmoc.github.io/edit/main/content/posts/2022/Nacos%e7%9a%84%e4%bd%bf%e7%94%a8.md" target="_blank" rel="noopener">
+      <img src="/svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>编辑本页</span>
+    </a>
+  </div>
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+
+
+<script src="https://utteranc.es/client.js"
+        repo="yuanmoc/blogtalks"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#配置中心">配置中心</a>
+          <ul>
+            <li><a href="#在springboot中使用">在SpringBoot中使用</a></li>
+            <li><a href="#在springcloud中使用">在SpringCloud中使用</a></li>
+            <li><a href="#多配置文件">多配置文件</a></li>
+          </ul>
+        </li>
+        <li><a href="#注册中心">注册中心</a>
+          <ul>
+            <li><a href="#服务发现">服务发现</a></li>
+            <li><a href="#服务消费">服务消费</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="zh" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="RocketMQ架构图 搭建RocketMQ服务需要NameServer、Broker和RocketMQ的管理后台。
+1、docker-compose文件
+version: &#39;2&#39; services: rmqnamesrv: image: apacherocketmq/rocketmq:latest container_name: rmqnamesrv ports: - 9876:9876 volumes: - ./file/rmqnamesrv/logs:/home/rocketmq/logs command: sh mqnamesrv rmqbroker: image: apacherocketmq/rocketmq:latest container_name: rmqbroker ports: - 10909:10909 - 10911:10911 - 10912:10912 volumes: # 这里要注意一下，logs和store文件要给够权限 - ./file/rmqbroker/logs:/home/rocketmq/logs - ./file/rmqbroker/store:/home/rocketmq/store - ./env/broker.conf:/home/rocketmq/conf/broker.conf environment: JAVA_OPTS: &#34; -Duser.home=/opt&#34; JAVA_OPT_EXT: &#34;-server -Xms128m -Xmx128m -Xmn128m&#34; command: sh mqbroker -n rmqnamesrv:9876 -c /home/rocketmq/conf/broker.conf depends_on: - rmqnamesrv rmqconsole: image: styletang/rocketmq-console-ng:latest container_name: rmqconsole ports: - 8081:8080 environment: JAVA_OPTS: &#34;-Drocketmq.">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light dark"><meta property="og:title" content="Docker Compose搭建 Rocket Mq" />
+<meta property="og:description" content="RocketMQ架构图 搭建RocketMQ服务需要NameServer、Broker和RocketMQ的管理后台。
+1、docker-compose文件
+version: &#39;2&#39; services: rmqnamesrv: image: apacherocketmq/rocketmq:latest container_name: rmqnamesrv ports: - 9876:9876 volumes: - ./file/rmqnamesrv/logs:/home/rocketmq/logs command: sh mqnamesrv rmqbroker: image: apacherocketmq/rocketmq:latest container_name: rmqbroker ports: - 10909:10909 - 10911:10911 - 10912:10912 volumes: # 这里要注意一下，logs和store文件要给够权限 - ./file/rmqbroker/logs:/home/rocketmq/logs - ./file/rmqbroker/store:/home/rocketmq/store - ./env/broker.conf:/home/rocketmq/conf/broker.conf environment: JAVA_OPTS: &#34; -Duser.home=/opt&#34; JAVA_OPT_EXT: &#34;-server -Xms128m -Xmx128m -Xmn128m&#34; command: sh mqbroker -n rmqnamesrv:9876 -c /home/rocketmq/conf/broker.conf depends_on: - rmqnamesrv rmqconsole: image: styletang/rocketmq-console-ng:latest container_name: rmqconsole ports: - 8081:8080 environment: JAVA_OPTS: &#34;-Drocketmq." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://yuanmoc.github.io/posts/2022/Docker-compose%E6%90%AD%E5%BB%BARocketMQ/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-04-11T00:43:14+00:00" />
+<meta property="article:modified_time" content="2021-04-11T00:43:14+00:00" />
+<title>Docker Compose搭建 Rocket Mq | YUANMOC</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/book.min.33a48f5432973b8ff9a82679d9e45d67f2c15d4399bd2829269455cfe390b5e8.css" integrity="sha256-M6SPVDKXO4/5qCZ52eRdZ/LBXUOZvSgpJpRVz&#43;OQteg=" crossorigin="anonymous">
+  <script defer src="/flexsearch.min.js"></script>
+  <script defer src="/zh.search.min.4cf9aae5950f195d08ab07072a39cedceeba920ee4d8df14bd3fb581cf02717d.js" integrity="sha256-TPmq5ZUPGV0IqwcHKjnO3O66kg7k2N8UvT&#43;1gc8CcX0=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>YUANMOC</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="搜索" aria-label="搜索" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-74286b56e7b99aa3cfac52c55eb97834" class="toggle"  />
+    <label for="section-74286b56e7b99aa3cfac52c55eb97834" class="flex justify-between">
+      <a role="button" class="">文档笔记</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-eb0f5223a522dd98c2608944d8591bd7" class="toggle"  />
+    <label for="section-eb0f5223a522dd98c2608944d8591bd7" class="flex justify-between">
+      <a role="button" class="">Java</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/%E6%96%87%E6%A1%A3%E7%AC%94%E8%AE%B0/java/test/" class="">测试</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-9a0e942fd76c38c5301548a2b901f29c" class="toggle"  />
+    <label for="section-9a0e942fd76c38c5301548a2b901f29c" class="flex justify-between">
+      <a role="button" class="">Spring</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-416782b8caea9c48e0932ec01f628422" class="toggle"  />
+    <label for="section-416782b8caea9c48e0932ec01f628422" class="flex justify-between">
+      <a role="button" class="">数据库</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-237795881f3f8a8cb3543c2915069ce6" class="toggle"  />
+    <label for="section-237795881f3f8a8cb3543c2915069ce6" class="flex justify-between">
+      <a role="button" class="">算法</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-561070938b635b15571e14a6af3bb967" class="toggle"  />
+    <label for="section-561070938b635b15571e14a6af3bb967" class="flex justify-between">
+      <a role="button" class="">架构</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-f149dbcae8f463483817cbbe388a4496" class="toggle"  />
+    <label for="section-f149dbcae8f463483817cbbe388a4496" class="flex justify-between">
+      <a role="button" class="">方法论</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-473eaddd3a92a7dc4b230603ef07e994" class="toggle"  />
+    <label for="section-473eaddd3a92a7dc4b230603ef07e994" class="flex justify-between">
+      <a role="button" class="">工具&amp;部署</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-00b995767d8191cdedb015981436796e" class="toggle"  />
+    <label for="section-00b995767d8191cdedb015981436796e" class="flex justify-between">
+      <a role="button" class="">团队&amp;产品</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-5e9eb52f77b1e6a6c6e7b1b2f7159627" class="toggle"  />
+    <label for="section-5e9eb52f77b1e6a6c6e7b1b2f7159627" class="flex justify-between">
+      <a role="button" class="">面试</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="/posts/"  >
+        博客
+      </a>
+  </li>
+  
+  <li>
+    <a href="https://github.com/yuanmoc"  target="_blank" rel="noopener">
+        Github
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Docker Compose搭建 Rocket Mq</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents"></nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+<article class="markdown">
+  <h1>
+    <a href="/posts/2022/Docker-compose%E6%90%AD%E5%BB%BARocketMQ/">Docker Compose搭建 Rocket Mq</a>
+  </h1>
+  
+  <h5>2021-04-11 00:43:14</h5>
+
+
+
+  
+
+  
+  <div>
+    
+      <a href="/tags/2023-05-07%E4%BB%8Ehalo%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB/">2023-05-07从halo博客迁移</a>
+  </div>
+  
+
+
+
+<p>RocketMQ架构图
+
+  <img src="/images/image-f7d076aef39245daa6db0b42ee3253e4.png" alt="image.png" /></p>
+<p>搭建RocketMQ服务需要NameServer、Broker和RocketMQ的管理后台。</p>
+<p>1、docker-compose文件</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">version</span>: <span style="color:#e6db74">&#39;2&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">services</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">rmqnamesrv</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">apacherocketmq/rocketmq:latest</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">container_name</span>: <span style="color:#ae81ff">rmqnamesrv</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">ports</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">9876</span>:<span style="color:#ae81ff">9876</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">./file/rmqnamesrv/logs:/home/rocketmq/logs</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">command</span>: <span style="color:#ae81ff">sh mqnamesrv</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">rmqbroker</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">apacherocketmq/rocketmq:latest</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">container_name</span>: <span style="color:#ae81ff">rmqbroker</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">ports</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">10909</span>:<span style="color:#ae81ff">10909</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">10911</span>:<span style="color:#ae81ff">10911</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">10912</span>:<span style="color:#ae81ff">10912</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">volumes</span>: <span style="color:#75715e"># 这里要注意一下，logs和store文件要给够权限</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">./file/rmqbroker/logs:/home/rocketmq/logs</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">./file/rmqbroker/store:/home/rocketmq/store</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">./env/broker.conf:/home/rocketmq/conf/broker.conf</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">environment</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">JAVA_OPTS</span>: <span style="color:#e6db74">&#34; -Duser.home=/opt&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">JAVA_OPT_EXT</span>: <span style="color:#e6db74">&#34;-server -Xms128m -Xmx128m -Xmn128m&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">command</span>: <span style="color:#ae81ff">sh mqbroker -n rmqnamesrv:9876 -c /home/rocketmq/conf/broker.conf</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">depends_on</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">rmqnamesrv</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">rmqconsole</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">styletang/rocketmq-console-ng:latest</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">container_name</span>: <span style="color:#ae81ff">rmqconsole</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">ports</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">8081</span>:<span style="color:#ae81ff">8080</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">environment</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">JAVA_OPTS</span>: <span style="color:#e6db74">&#34;-Drocketmq.namesrv.addr=rmqnamesrv:9876 -Dcom.rocketmq.sendMessageWithVIPChannel=false&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">depends_on</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">rmqnamesrv</span>
+</span></span></code></pre></div><p>broker.conf</p>
+<pre tabindex="0"><code class="language-conf" data-lang="conf"># 所属集群名字
+brokerClusterName=DefaultCluster
+
+# broker 名字，注意此处不同的配置文件填写的不一样，如果在 broker-a.properties 使用: broker-a,
+# 在 broker-b.properties 使用: broker-b
+brokerName=broker-a
+
+# 0 表示 Master，&amp;gt; 0 表示 Slave
+brokerId=0
+
+# nameServer地址，分号分割
+# namesrvAddr=rocketmq-nameserver1:9876;rocketmq-nameserver2:9876
+
+# 启动IP,如果 docker 报 com.alibaba.rocketmq.remoting.exception.RemotingConnectException: connect to &amp;lt;192.168.0.120:10909&amp;gt; failed
+# 解决方式1 加上一句 producer.setVipChannelEnabled(false);，解决方式2 brokerIP1 设置宿主机IP，不要使用docker 内部IP
+brokerIP1=192.168.1.16
+
+# 在发送消息时，自动创建服务器不存在的topic，默认创建的队列数
+defaultTopicQueueNums=4
+
+# 是否允许 Broker 自动创建 Topic，建议线下开启，线上关闭 ！！！这里仔细看是 false，false，false
+autoCreateTopicEnable=true
+
+# 是否允许 Broker 自动创建订阅组，建议线下开启，线上关闭
+autoCreateSubscriptionGroup=true
+
+# Broker 对外服务的监听端口
+listenPort=10911
+
+# 删除文件时间点，默认凌晨4点
+deleteWhen=04
+
+# 文件保留时间，默认48小时
+fileReservedTime=120
+
+# commitLog 每个文件的大小默认1G
+mapedFileSizeCommitLog=1073741824
+
+# ConsumeQueue 每个文件默认存 30W 条，根据业务情况调整
+mapedFileSizeConsumeQueue=300000
+
+# destroyMapedFileIntervalForcibly=120000
+# redeleteHangedFileInterval=120000
+# 检测物理文件磁盘空间
+diskMaxUsedSpaceRatio=88
+# 存储路径
+# storePathRootDir=/home/ztztdata/rocketmq-all-4.1.0-incubating/store
+# commitLog 存储路径
+# storePathCommitLog=/home/ztztdata/rocketmq-all-4.1.0-incubating/store/commitlog
+# 消费队列存储
+# storePathConsumeQueue=/home/ztztdata/rocketmq-all-4.1.0-incubating/store/consumequeue
+# 消息索引存储路径
+# storePathIndex=/home/ztztdata/rocketmq-all-4.1.0-incubating/store/index
+# checkpoint 文件存储路径
+# storeCheckpoint=/home/ztztdata/rocketmq-all-4.1.0-incubating/store/checkpoint
+# abort 文件存储路径
+# abortFile=/home/ztztdata/rocketmq-all-4.1.0-incubating/store/abort
+# 限制的消息大小
+maxMessageSize=65536
+
+# flushCommitLogLeastPages=4
+# flushConsumeQueueLeastPages=2
+# flushCommitLogThoroughInterval=10000
+# flushConsumeQueueThoroughInterval=60000
+
+# Broker 的角色
+# - ASYNC_MASTER 异步复制Master
+# - SYNC_MASTER 同步双写Master
+# - SLAVE
+brokerRole=ASYNC_MASTER
+
+# 刷盘方式
+# - ASYNC_FLUSH 异步刷盘
+# - SYNC_FLUSH 同步刷盘
+flushDiskType=ASYNC_FLUSH
+
+# 发消息线程池数量
+# sendMessageThreadPoolNums=128
+# 拉消息线程池数量
+# pullMessageThreadPoolNums=128
+</code></pre></article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+  <div>
+    <a class="flex align-center" href="https://github.com/yuanmoc/yuanmoc.github.io/edit/main/content/posts/2022/Docker-compose%e6%90%ad%e5%bb%baRocketMQ.md" target="_blank" rel="noopener">
+      <img src="/svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>编辑本页</span>
+    </a>
+  </div>
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+
+
+<script src="https://utteranc.es/client.js"
+        repo="yuanmoc/blogtalks"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents"></nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

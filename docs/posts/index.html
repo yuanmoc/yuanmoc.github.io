@@ -14,7 +14,7 @@
 <link rel="icon" href="/favicon.png" type="image/x-icon">
 <link rel="stylesheet" href="/book.min.33a48f5432973b8ff9a82679d9e45d67f2c15d4399bd2829269455cfe390b5e8.css" integrity="sha256-M6SPVDKXO4/5qCZ52eRdZ/LBXUOZvSgpJpRVz&#43;OQteg=" crossorigin="anonymous">
   <script defer src="/flexsearch.min.js"></script>
-  <script defer src="/zh.search.min.0cfff9af748f68117e71b327932060d8ab7ad075f461ce7a887ed062044cd086.js" integrity="sha256-DP/5r3SPaBF&#43;cbMnkyBg2Kt60HX0Yc56iH7QYgRM0IY=" crossorigin="anonymous"></script>
+  <script defer src="/zh.search.min.bcd4c6c0afaad634b7158fe062bd1b5025ef549d3a8e1b80668f1e8aedea8f0d.js" integrity="sha256-vNTGwK&#43;q1jS3FY/gYr0bUCXvVJ06jhuAZo8eiu3qjw0=" crossorigin="anonymous"></script>
 
   <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
 <link rel="alternate" type="application/rss+xml" href="https://yuanmoc.github.io/posts/index.xml" title="YUANMOC" />
@@ -369,6 +369,11 @@ https://github.com/alex-shpak/hugo-book
       <strong>Tags</strong>
       <ul>
       
+        <li class="flex justify-between">
+          <a href="/tags/2023-05-07%E4%BB%8Ehalo%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB/">2023-05-07从halo博客迁移</a>
+          <span>76</span>
+        </li>
+      
       </ul>
     </li>
     
@@ -390,6 +395,8 @@ https://github.com/alex-shpak/hugo-book
       <a href="/posts/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/">使用hugo搭建博客</a>
     </h2>
     
+  <h5>2023-05-07 19:56:31</h5>
+
 
 
   
@@ -409,8 +416,314 @@ cp themes/hugo-book/exampleSite/* ./ # 删除其他国际化内容，就留一�
     </p>
   </article>
   
+  <article class="markdown book-post">
+    <h2>
+      <a href="/posts/history/multipass%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%BD%BF%E7%94%A8/">Multipass虚拟机使用</a>
+    </h2>
+    
+  <h5>2023-04-29 10:53:24</h5>
+
+
 
   
+
+  
+  <div>
+    
+      <a href="/tags/2023-05-07%E4%BB%8Ehalo%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB/">2023-05-07从halo博客迁移</a>
+  </div>
+  
+
+
+
+
+    <p>使用brew安装
+brew install --cask multipass 可选的安装:(图形界面)
+brew install --cask microsoft-remote-desktop 创建虚拟机
+multipass launch --name vm01 --mem 2G --disk 40G --cpus 2 &ndash;name, -n, 指出虚拟机实例的名称, 默认为primary
+&ndash;mem, -m, 虚拟机所用的物理内存, 默认为1GB
+&ndash;disk, -d, 磁盘大小, 默认为5GB
+&ndash;cpus, -c, 使用的CPU核数, 默认为1
+impish, 使用的Ubuntu版本, 采用multipass find可以找出所有支持的版本, 最新版为22.04.
+图形界面
+有一些开发环境不得不用图形界面, 这里也采用了官网推荐的一个方法4, 通过迂回的方式安装并显示图形界面. 因为需要安装软件包, 这里需要先进行镜像的配置, 主要的方法就参考清华镜像了5, 这里需要注意: 如果你用的也是arm架构的话, 镜像源需要采用的是ubuntu-port sudo apt update sudo apt install ubuntu-desktop xrdp 设置密码
+sudo passwd root 然后使用 microsoft-remote-desktop 连接虚拟机
+使用虚拟机
+multipass exec vm01 -- lsb_release -a multipass shell vm01 常用命令
+        <a href="/posts/history/multipass%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%BD%BF%E7%94%A8/">...</a>
+      
+    </p>
+  </article>
+  
+  <article class="markdown book-post">
+    <h2>
+      <a href="/posts/history/MySQL%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B%E4%B8%ADCursor%E7%9A%84%E4%BD%BF%E7%94%A8/">My Sql存储过程中 Cursor的使用</a>
+    </h2>
+    
+  <h5>2023-04-26 15:53:23</h5>
+
+
+
+  
+
+  
+  <div>
+    
+      <a href="/tags/2023-05-07%E4%BB%8Ehalo%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB/">2023-05-07从halo博客迁移</a>
+  </div>
+  
+
+
+
+
+    <p> BEGIN DECLARE _done INT DEFAULT false; DECLARE _name,_pwd VARCHAR(50); -- 定义游标，并将sql结果集赋值到游标中 DECLARE my_cursor CURSOR FOR (SELECT userName,pwd from sys_user_menu WHERE menuId=22); -- 声明当游标遍历完后将标志变量置成某个值 DECLARE CONTINUE HANDLER FOR NOT found SET _done=true; -- 打开游标 OPEN my_cursor; -- 声明开始循环 my_loop:LOOP -- 将游标中的值赋值给变量 FETCH my_cursor INTO _name,_pwd; -- 判断是否结束循环，一定要放到FETCH之后，如果放到fetch之前， -- 先判断done，这个时候done的值还是之前的循环的值，因此就会导致循环一次 IF _done THEN LEAVE my_loop; END IF; -- SELECT _doctor; INSERT INTO sys_user (userName,pwd) VALUES (_name,_pwd); -- 结束循环 END LOOP my_loop; -- 关闭游标 CLOSE my_cursor; END 
+    </p>
+  </article>
+  
+  <article class="markdown book-post">
+    <h2>
+      <a href="/posts/history/ESik%E5%88%86%E8%AF%8D&#43;pingyin%E5%88%86%E8%AF%8D%E7%9A%84%E4%BD%BF%E7%94%A8/">Esik分词 Pingyin分词的使用</a>
+    </h2>
+    
+  <h5>2023-04-21 16:29:39</h5>
+
+
+
+  
+
+  
+  <div>
+    
+      <a href="/tags/2023-05-07%E4%BB%8Ehalo%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB/">2023-05-07从halo博客迁移</a>
+  </div>
+  
+
+
+
+
+    <p>1、在线联网安装 # 插件的版本与ES的版本要一致
+# 安装IK分词器拼音插件(Github官网) elasticsearch-plugin install https://github.com/medcl/elasticsearch-analysis-pinyin/releases/download/v6.7.0/elasticsearch-analysis-pinyin-6.7.0.zip # 安装IK分词器插件(Github官网) elasticsearch-plugin install https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v6.7.0/elasticsearch-analysis-ik-v6.7.0.zip 2、离线安装 # # 安装IK分词器拼音插件 mkdir $ES_PATH/pinyin cd $ES_PATH/pinyin # 下载 wget install https://github.com/medcl/elasticsearch-analysis-pinyin/releases/download/v6.7.0/elasticsearch-analysis-pinyin-6.7.0.zip # 解压 unzip elasticsearch-analysis-pinyin-6.7.0.zip -d ./ # 安装IK分词器插件 mkdir $ES_PATH/ik cd $ES_PATH/ik # 下载 wget install https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v6.7.0/elasticsearch-analysis-ik-v6.7.0.zip # 解压 unzip elasticsearch-analysis-ik-v6.7.0.zip -d ./ 3、测试 # 测试pingyin分词
+# Kibana方式 GET _analyze { &#34;text&#34;:&#34;刘德华&#34;, &#34;analyzer&#34;:&#34;pinyin&#34; } # 返回拼音表示安装完成 { &#34;tokens&#34; : [ { &#34;token&#34; : &#34;liu&#34;, &#34;start_offset&#34; : 0, &#34;end_offset&#34; : 0, &#34;type&#34; : &#34;word&#34;, &#34;position&#34; : 0 }, { &#34;token&#34; : &#34;de&#34;, &#34;start_offset&#34; : 0, &#34;end_offset&#34; : 0, &#34;type&#34; : &#34;word&#34;, &#34;position&#34; : 1 }, { &#34;token&#34; : &#34;hua&#34;, &#34;start_offset&#34; : 0, &#34;end_offset&#34; : 0, &#34;type&#34; : &#34;word&#34;, &#34;position&#34; : 2 }, { &#34;token&#34; : &#34;ldh&#34;, &#34;start_offset&#34; : 0, &#34;end_offset&#34; : 0, &#34;type&#34; : &#34;word&#34;, &#34;position&#34; : 2 } ] } 测试ik ik_max_word分词，还有 ik_smart 的
+        <a href="/posts/history/ESik%E5%88%86%E8%AF%8D&#43;pingyin%E5%88%86%E8%AF%8D%E7%9A%84%E4%BD%BF%E7%94%A8/">...</a>
+      
+    </p>
+  </article>
+  
+  <article class="markdown book-post">
+    <h2>
+      <a href="/posts/history/ES%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">Es的基本使用</a>
+    </h2>
+    
+  <h5>2023-04-19 16:47:01</h5>
+
+
+
+  
+
+  
+  <div>
+    
+      <a href="/tags/2023-05-07%E4%BB%8Ehalo%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB/">2023-05-07从halo博客迁移</a>
+  </div>
+  
+
+
+
+
+    <p>创建索引 # 创建文档
+POST /{索引库名} { &#34;settings&#34;: { &#34;number_of_shards&#34;: 1, &#34;number_of_replicas&#34;: 0 }, &#34;mappings&#34;: { &#34;properties&#34;: { &#34;color&#34;: { &#34;type&#34;: &#34;keyword&#34; }, &#34;make&#34;: { &#34;type&#34;: &#34;keyword&#34; } } } } 修改映射
+PUT /{索引名称}/_mapping { &#34;properties&#34;:{ &#34;name&#34;:{ &#34;type&#34;:&#34;text&#34; }, &#34;age&#34;:{ &#34;type&#34;:&#34;integer&#34; } } } 查看映射 GET /{索引库名}/_mapping
+插入 # 添加文档
+POST /{索引库名}/_doc { &#34;name&#34;:&#34;李四&#34;, &#34;age&#34;:29, &#34;address&#34;:&#34;天津&#34; } 批量处理 针对不同的操作类型，第二行的请求体是不一样的 （1）index 和 create 第二行是source数据体 （2）delete 没有第二行 （3）update 第二行可以是partial doc，upsert或者是script
+POST /{索引库名}/_bulk {&#34;create&#34;:{&#34;_index&#34;:&#34;索引名&#34;, &#34;_id&#34;:&#34;文档&#34;}} // 动作 {&#34;field1&#34;:&#34;value1&#34;} //请求体 删除文档 : DELETE /{索引库名}/_doc/文档id
+        <a href="/posts/history/ES%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">...</a>
+      
+    </p>
+  </article>
+  
+  <article class="markdown book-post">
+    <h2>
+      <a href="/posts/history/Git%E6%8F%90%E4%BA%A4%E8%A7%84%E8%8C%83/">Git提交规范</a>
+    </h2>
+    
+  <h5>2023-04-11 11:31:04</h5>
+
+
+
+  
+
+  
+  <div>
+    
+      <a href="/tags/2023-05-07%E4%BB%8Ehalo%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB/">2023-05-07从halo博客迁移</a>
+  </div>
+  
+
+
+
+
+    <p>Git提交规范 # 格式：
+&lt;type&gt;(&lt;scope&gt;): &lt;subject&gt; [&lt;ISSUE_ID&gt;] &lt;body&gt; &lt;footer&gt; 例子：
+feat(user): Add user registration [777] Use Tencent cloud verification code to verify mobile phone and add user registration function https://github.com/one-user/a-project/issues/777 以下是字段说明 # type [必须] # 用于说明 commit 的类别，只允许使用下面几种标识：
+feat：新功能（feature） fix：修补bug docs：文档（documentation） style： 格式（不影响代码运行的变动） refactor：重构（即不是新增功能，也不是修改bug的代码变动） perf：优化 test：增加测试 chore：构建过程或辅助工具的变动 revert：撤销上一次的 commit
+scope [必须] # 用于说明修改的范围，基本上有有以下几种情形：
+all：表示大范围的修改 loation：表示小范围的修改 module：表示修改了某个模块 例如：feat(user): add user login
+subject [必须] # 用于表示本次提交修改的简要说明，尽量简短
+ISSUE_ID [可选] # 添加在 git issues 中需求或者 bug 修复对应的 issues 记录ID
+        <a href="/posts/history/Git%E6%8F%90%E4%BA%A4%E8%A7%84%E8%8C%83/">...</a>
+      
+    </p>
+  </article>
+  
+  <article class="markdown book-post">
+    <h2>
+      <a href="/posts/history/pyppeeter%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">Pyppeeter的基本使用</a>
+    </h2>
+    
+  <h5>2022-11-23 21:53:55</h5>
+
+
+
+  
+
+  
+  <div>
+    
+      <a href="/tags/2023-05-07%E4%BB%8Ehalo%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB/">2023-05-07从halo博客迁移</a>
+  </div>
+  
+
+
+
+
+    <p>背景 # 抓包时，遇到一些网页的信息与渲染页面上的不一样，原因是抓到的数据还没有渲染，所以不一样。 pyppeeter就可以解决这个问题，还可以进行一些页面上的自动化操作。从而达到我想要的效果，在这里记录下来基本的使用方法。
+基本使用 # 安装
+pip3 install pyppeteer
+import asyncio from pyppeteer import launch async def test(): browser = await launch(headless=False, args=[&#39;--disable-infobars&#39;]) page = await browser.newPage() await page.setViewport({&#39;width&#39;:1366,&#39;height&#39;:768}) # 是否启用JS，enabled设为False，则无渲染效果 await page.setJavaScriptEnabled(enabled=True) response = await page.goto(&#39;https://baidu.com/&#39;) #获取status、headers、url # print(response.status) # print(response.headers) # print(response.url) #获取当前页标题 # print(await page.title()) #获取当前页内容 await asyncio.sleep(2) print(await page.content()) #文本类型 # print(await response.text()) # cookie操作 # print(await page.cookies()) # 获取cookie,[{&#39;name&#39;:xx,&#39;value&#39;:xxx...},...] # page.deleteCookie() 删除cookie # page.
+        <a href="/posts/history/pyppeeter%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">...</a>
+      
+    </p>
+  </article>
+  
+  <article class="markdown book-post">
+    <h2>
+      <a href="/posts/history/python%E4%BD%BF%E7%94%A8execjs%E8%B0%83%E7%94%A8js%E6%96%B9%E6%B3%95/">Python使用execjs调用js方法</a>
+    </h2>
+    
+  <h5>2022-11-12 14:54:30</h5>
+
+
+
+  
+
+  
+  <div>
+    
+      <a href="/tags/2023-05-07%E4%BB%8Ehalo%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB/">2023-05-07从halo博客迁移</a>
+  </div>
+  
+
+
+
+
+    <p>背景： 在使用python抓包时，要使用到js的相关解密方法，使用python写相关解密方法实现会有一些问题，有时js的加密方法是混淆过的，无法直译过来，所以直接调用js的方法是最方便的。
+下面是execjs使用的相关记录：
+1、先在本地安装node环境，因为在使用的时候会调用到。
+brew install node 2、编写方法调用js
+安装要使用到的crypto-js模块
+npm install crypto-js 编写方法调用
+import execjs node = execjs.get() ctx = node.compile(&#34;&#34;&#34; const CryptoJS = require(&#39;crypto-js&#39;); //引用AES源码js function decrypt(data) { const SECRET_KEY = &#39;pengzhihui&#39; const encryptedHexStr = CryptoJS.enc.Base64.parse(data); const str = CryptoJS.enc.Utf8.stringify(encryptedHexStr); const decrypt = CryptoJS.AES.decrypt(str, SECRET_KEY); const decryptedStr = decrypt.toString(CryptoJS.enc.Utf8); return JSON.parse(decryptedStr) } &#34;&#34;&#34;) res = ctx.call(&#39;decrypt&#39;, detail) 
+    </p>
+  </article>
+  
+  <article class="markdown book-post">
+    <h2>
+      <a href="/posts/history/Function%E7%BC%96%E7%A8%8B%E4%BC%A0%E9%80%92%E4%B8%89%E4%B8%AA%E5%8F%82%E6%95%B0/">Function编程传递三个参数</a>
+    </h2>
+    
+  <h5>2022-11-11 10:04:21</h5>
+
+
+
+  
+
+  
+  <div>
+    
+      <a href="/tags/2023-05-07%E4%BB%8Ehalo%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB/">2023-05-07从halo博客迁移</a>
+  </div>
+  
+
+
+
+
+    <p>Function 编程传递三个参数 # java 内置的Function 类有两个参数Function和三个参数BiFunction的，但是有时就需要传递更多的参数，才能达到我们使用的场景。以下记录两个传递多少参数的用法。
+比如计算三个数相加
+a + b + c 自己编写一个@FunctionalInterface，支持接收多个参数 # @FunctionalInterface public interface ThreeParamFunction&lt;T, U, K, R&gt; { R apply(T t, U u, K k); } ThreeParamFunction&lt;Integer, Integer, Integer, Integer&gt; threeParamFunction = (a,b,c) -&gt; { return a + b + c; } Integer add = threeParamFunction.apply(1,2,3); // 6 使用多个@FunctionalInterface来拼接 # BiFunction &lt;Integer, Integer, Function&lt;Integer, Integer&gt;&gt; multiAdder = (a, b) -&gt; c -&gt; { return a + b + c; }; Integer add = multiAdder.
+        <a href="/posts/history/Function%E7%BC%96%E7%A8%8B%E4%BC%A0%E9%80%92%E4%B8%89%E4%B8%AA%E5%8F%82%E6%95%B0/">...</a>
+      
+    </p>
+  </article>
+  
+  <article class="markdown book-post">
+    <h2>
+      <a href="/posts/history/%E4%BD%BF%E7%94%A8python%E5%B0%86%E7%99%BE%E5%BA%A6%E7%BD%91%E7%9B%98%E6%89%B9%E9%87%8F%E8%BD%AC%E5%AD%98%E5%B9%B6%E5%88%86%E4%BA%AB/">使用python将百度网盘批量转存并分享</a>
+    </h2>
+    
+  <h5>2022-10-16 13:56:56</h5>
+
+
+
+  
+
+  
+  <div>
+    
+      <a href="/tags/2023-05-07%E4%BB%8Ehalo%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB/">2023-05-07从halo博客迁移</a>
+  </div>
+  
+
+
+
+
+    <p>前言 # 需要将一批百度网盘资源批量保存到自己的网盘，并分享出来使用，传统手动转存和分享的方式太慢了，所以编写了以下程序快速达到目的。
+代码 # import base64 import requests import re import time import random import math from urllib.parse import unquote import ddddocr class BaiDuPan(object): def __init__(self): # 创建session并设置初始登录Cookie self.session = requests.session() self.session.cookies[&#39;BAIDUID&#39;] = &#39;&#39; self.session.cookies[&#39;BDUSS&#39;] = &#39;&#39; self.session.cookies[&#39;STOKEN&#39;] = &#39;&#39; self.headers = { &#39;Host&#39;: &#39;pan.baidu.com&#39;, &#39;User-Agent&#39;: &#39;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36&#39;, } self.login_info = { &#39;bdstoken&#39;: &#39;&#39;, &#39;username&#39;: &#39;&#39; } &#39;&#39;&#39; 验证Cookie是否已登录 返回值errno代表的意思： 0 有效的Cookie；1 init方法中未配置登录Cookie；2 无效的Cookie &#39;&#39;&#39; def verifyCookie(self): if(self.
+        <a href="/posts/history/%E4%BD%BF%E7%94%A8python%E5%B0%86%E7%99%BE%E5%BA%A6%E7%BD%91%E7%9B%98%E6%89%B9%E9%87%8F%E8%BD%AC%E5%AD%98%E5%B9%B6%E5%88%86%E4%BA%AB/">...</a>
+      
+    </p>
+  </article>
+  
+
+  
+    <ul class="pagination pagination-default">
+      <li class="page-item disabled">
+        <a aria-disabled="true" aria-label="First" class="page-link" role="button" tabindex="-1"><span aria-hidden="true">&laquo;&laquo;</span></a>
+      </li>
+      <li class="page-item disabled">
+        <a aria-disabled="true" aria-label="Previous" class="page-link" role="button" tabindex="-1"><span aria-hidden="true">&laquo;</span></a>
+      </li>
+      <li class="page-item active">
+        <a aria-current="page" aria-label="Page 1" class="page-link" role="button">1</a>
+      </li>
+      <li class="page-item">
+        <a href="/posts/page/2/" aria-label="Page 2" class="page-link" role="button">2</a>
+      </li>
+      <li class="page-item">
+        <a href="/posts/page/3/" aria-label="Page 3" class="page-link" role="button">3</a>
+      </li>
+      <li class="page-item">
+        <a href="/posts/page/4/" aria-label="Page 4" class="page-link" role="button">4</a>
+      </li>
+      <li class="page-item">
+        <a href="/posts/page/5/" aria-label="Page 5" class="page-link" role="button">5</a>
+      </li>
+      <li class="page-item">
+        <a href="/posts/page/2/" aria-label="Next" class="page-link" role="button"><span aria-hidden="true">&raquo;</span></a>
+      </li>
+      <li class="page-item">
+        <a href="/posts/page/8/" aria-label="Last" class="page-link" role="button"><span aria-hidden="true">&raquo;&raquo;</span></a>
+      </li>
+    </ul>
  
       
 
@@ -419,9 +732,9 @@ cp themes/hugo-book/exampleSite/* ./ # 删除其他国际化内容，就留一�
   <div class="flex flex-wrap justify-between">
 
 
-  <div><a class="flex align-center" href="https://github.com/yuanmoc/yuanmoc.github.io/commit/bc19f41fee67a414ceff91aa9967c695c46c9286" title='最后修改者 yuanmoc | May 5, 2023' target="_blank" rel="noopener">
+  <div><a class="flex align-center" href="https://github.com/yuanmoc/yuanmoc.github.io/commit/bc19f41fee67a414ceff91aa9967c695c46c9286" title='最后修改者 yuanmoc | 2023-05-05 21:21:11' target="_blank" rel="noopener">
       <img src="/svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>May 5, 2023</span>
+      <span>2023-05-05 21:21:11</span>
     </a>
   </div>
 
@@ -473,6 +786,11 @@ cp themes/hugo-book/exampleSite/* ./ # 删除其他国际化内容，就留一�
     <li class="book-section-flat">
       <strong>Tags</strong>
       <ul>
+      
+        <li class="flex justify-between">
+          <a href="/tags/2023-05-07%E4%BB%8Ehalo%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB/">2023-05-07从halo博客迁移</a>
+          <span>76</span>
+        </li>
       
       </ul>
     </li>
