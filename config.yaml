@@ -35,7 +35,12 @@ menu:
     - name: "Github"
       url: "https://github.com/yuanmoc"
       weight: 10
-
+    - name: "常用导航"
+      url: "/links"
+      weight: 12
+    - name: "网园资讯工作室🔗"
+      url: "https://wangyuan.info/"
+      weight: 16
 params:
   # (Optional, default light) Sets color theme: light, dark or auto.
   # Theme 'auto' switches between dark and light modes based on browser/os preferences
