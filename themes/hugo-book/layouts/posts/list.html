@@ -4,13 +4,10 @@
     <h2>
       <a href="{{ .RelPermalink }}">{{ partial "docs/title.html" . }}</a>
     </h2>
-    {{ partial "docs/post-meta" . }}
-    <p>
-      {{- .Summary -}}
-      {{ if .Truncated }}
-        <a href="{{ .RelPermalink }}">...</a>
-      {{ end }}
-    </p>
+    <div style="border: 1px solid rgba(225, 225, 212, 0.5); padding: 0 12px;">
+      {{- .Content | truncate 120 -}}
+      <a href="{{ .RelPermalink }}" style="font-size: 12px;float: right;">继续阅读</a>
+    </div>
   </article>
   {{ end }}
 

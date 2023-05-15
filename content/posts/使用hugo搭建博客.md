@@ -11,7 +11,7 @@ date: 2023-05-07T19:56:31+08:00
 # bookSearchExclude: false
 ---
 
-# 在 MAC M1 PRO 上安装hugo并搭建博客
+在 MAC M1 PRO 上安装hugo并搭建博客
 
 ## 安装hugo
 (如果是其他机器，请按照官网安装教程[点击直达地址](https://gohugo.io/installation/))
