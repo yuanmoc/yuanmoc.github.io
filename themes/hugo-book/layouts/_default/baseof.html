@@ -42,7 +42,24 @@
     {{ end }}
   </main>
 
-  {{ partial "docs/inject/body" . }}
+  <footer class="html-footer">
+    {{ partial "docs/html-footer" . }}
+  </footer>
+
+<style>
+  .html-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    background-color: #333;
+    color: #fff;
+    width: 100%;
+    padding: 6px;
+    text-align: center;
+  }
+</style>
+
+{{ partial "docs/inject/body" . }}
 </body>
 </html>
 
