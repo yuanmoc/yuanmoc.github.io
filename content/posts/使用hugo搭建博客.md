@@ -1,6 +1,5 @@
 ---
 title: "使用hugo搭建博客"
-weight: 1
 draft: false
 bookComments: true
 date: 2023-05-07T19:56:31+08:00
