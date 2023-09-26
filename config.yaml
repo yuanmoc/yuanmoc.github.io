@@ -37,6 +37,9 @@ menu:
       weight: 10
     - name: "常用导航"
       url: "/links"
+      weight: 11
+    - name: "工具"
+      url: "/tools"
       weight: 12
     - name: "网园资讯工作室🔗"
       url: "https://wangyuan.info/"
@@ -78,7 +81,7 @@ params:
   # Enable "Edit this page" links for 'doc' page type.
   # Disabled by default. Uncomment to enable. Requires 'BookRepo' param.
   # Edit path must point to root directory of repo.
-  BookEditPath: edit/main
+  # BookEditPath: edit/main
 
   # Configure the date format used on the pages
   # - In git information
