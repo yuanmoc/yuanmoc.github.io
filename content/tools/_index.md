@@ -13,6 +13,13 @@ type: docs
         </div>
         <span class="description"></span>
     </div>
+    <div class="data" onclick="window.open('./随机字/', '_self');">
+            <div>
+                <image src="/favicon.png">
+                    <span class="name">随机字</span>
+            </div>
+            <span class="description"></span>
+        </div>
 </div>
 
 
