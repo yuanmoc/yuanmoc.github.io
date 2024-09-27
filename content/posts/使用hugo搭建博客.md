@@ -59,7 +59,7 @@ mv content.en content
 ## 修改配置
 这里使用了config.yaml配置文件，其他的删除,如：config.toml
 ```bash
-# 就使用中文，把 languages 这块修改成以下配置
+# 就使用中文，把 languages 这块修改成以下配置123
 defaultContentLanguage: "zh"
 languages:
   zh:
