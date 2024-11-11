@@ -113,6 +113,7 @@ params:
   # (Optional, experimental, default false) Enables a drop-down menu for translations only if a translation is present.
   BookTranslatedOnly: false
 
+  # test
   utteranc:
     enable: true
     repo: "yuanmoc/blogtalks" ##换成自己得
