@@ -1,6 +1,28 @@
-public/
-exampleSite/public/
+# Node modules
+**/node_modules/**
+
+# Build files
+docs-shared/lib/
+packages/*/lib/
+
+# Vuepress Cache
+**/.vuepress/.cache/**
+# Vuepress Temp
+**/.vuepress/.temp/**
+# Vuepress Output
+**/.vuepress/dist
+dist/
+
+# npm config
+.npmrc
+
+# Typescript build info
+*.tsbuildinfo
+
+# Coverage Files
+coverage/
+
+# macOS
 .DS_Store
-.hugo_build.lock
+
 .idea
-.git

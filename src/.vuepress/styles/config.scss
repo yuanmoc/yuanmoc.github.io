@@ -1,0 +1,23 @@
+// you can change config here
+$theme-color: #096dd9;
+
+/* 自定义 heroText 的样式 */
+.vp-blog-hero-image {
+  display: none;
+}
+.vp-blog-hero-title {
+  font-size: 4.5rem !important;
+  background: -webkit-linear-gradient(45deg, #5D67E8, #ef4444);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+.vp-blog-hero-description {
+  box-sizing: border-box;
+  display: block;
+  max-width: 768px;
+  --tw-text-opacity: 1;
+  color: rgb(100 116 139 / var(--tw-text-opacity));
+  text-align: center;
+}

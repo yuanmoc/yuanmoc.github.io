@@ -1,0 +1,38 @@
+name: Deploy static content to Pages
+
+on:
+  push:
+    branches: ["hopeblog"]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    steps:
+      - name: checkout hopeblog
+        uses: actions/checkout@v4
+        with:
+          ref: hopeblog
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Docs
+        run: npm run docs:build
+
+      - name: Deploy to gh pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          repo: yuanmoc/yuanmoc.github.io
+          target_branch: gh-pages
+          folder: src/.vuepress/dist
+          single-commit: true
+          token: ${{ secrets.GITHUB_TOKEN }}
