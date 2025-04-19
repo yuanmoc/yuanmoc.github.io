@@ -1,10 +1,11 @@
 ---
-title: "Jvm参数"
-date: 2020-07-28 11:02:39.424000
-tag:
-  - 2023-05-07从halo博客迁移
-category:
-  - 无
+title: Jvm参数
+date: 2020-07-28 11:02:39
+permalink: /posts/1bee30/
+category: 
+  - history
+tag: 
+  - 默认
 ---
 
 **调优的目的**

@@ -1,10 +1,11 @@
 ---
-title: "Es的基本使用"
-date: 2023-04-19 16:47:01.858000
-tag:
-  - 2023-05-07从halo博客迁移
-category:
-  - 无
+title: Es的基本使用
+date: 2023-04-19 16:47:01
+permalink: /posts/aa0cb0/
+category: 
+  - history
+tag: 
+  - 默认
 ---
 ## 创建索引
 创建文档 

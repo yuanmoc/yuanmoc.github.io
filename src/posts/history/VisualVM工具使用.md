@@ -1,10 +1,11 @@
 ---
-title: "Visual Vm工具使用"
-date: 2021-04-05 16:00:48.450000
-tag:
-  - 2023-05-07从halo博客迁移
-category:
-  - 无
+title: Visual Vm工具使用
+date: 2021-04-05 16:00:48
+permalink: /posts/a7e516/
+category: 
+  - history
+tag: 
+  - 默认
 ---
 ## 作用
 jvisualVM是JDK自带的Java性能分析工具，在JDK的bin目录下，文件名就叫jvisualVM.exe。

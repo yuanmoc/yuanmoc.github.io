@@ -1,10 +1,11 @@
 ---
-title: "My Sql存储过程中 Cursor的使用"
-date: 2023-04-26 15:53:23.176000
-tag:
-  - 2023-05-07从halo博客迁移
-category:
-  - 无
+title: My Sql存储过程中 Cursor的使用
+date: 2023-04-26 15:53:23
+permalink: /posts/8ab2ca/
+category: 
+  - history
+tag: 
+  - 默认
 ---
 ```sql
 

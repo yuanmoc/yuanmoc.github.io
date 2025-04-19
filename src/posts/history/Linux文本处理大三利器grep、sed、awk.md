@@ -1,10 +1,11 @@
 ---
-title: "Linux文本处理大三利器grep、sed、awk"
-date: 2020-08-24 20:24:58.801000
-tag:
-  - 2023-05-07从halo博客迁移
-category:
-  - 无
+title: Linux文本处理大三利器grep、sed、awk
+date: 2020-08-24 20:24:58
+permalink: /posts/198511/
+category: 
+  - history
+tag: 
+  - 默认
 ---
 ## grep
 

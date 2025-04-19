@@ -1,6 +1,11 @@
 ---
-title: "使用playwright截图驾照题目"
-date: 2023-07-27T20:33:50+08:00
+title: 使用playwright截图驾照题目
+date: 2023-07-27 12:33:50
+permalink: /posts/a99398/
+category: 
+  - 默认
+tag: 
+  - 默认
 ---
 
 ## 目的

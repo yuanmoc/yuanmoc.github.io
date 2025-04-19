@@ -1,10 +1,11 @@
 ---
-title: "My Batis打印日志"
-date: 2021-06-02 14:14:36.256000
-tag:
-  - 2023-05-07从halo博客迁移
-category:
-  - 无
+title: My Batis打印日志
+date: 2021-06-02 14:14:36
+permalink: /posts/515551/
+category: 
+  - history
+tag: 
+  - 默认
 ---
 在Mybatis 的配置文件中添加：
 

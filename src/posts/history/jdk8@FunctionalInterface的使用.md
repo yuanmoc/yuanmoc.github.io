@@ -1,10 +1,11 @@
 ---
-title: "Jdk8@ Functional Interface的使用"
-date: 2021-05-21 17:49:04.209000
-tag:
-  - 2023-05-07从halo博客迁移
-category:
-  - 无
+title: Jdk8@ Functional Interface的使用
+date: 2021-05-21 17:49:04
+permalink: /posts/f0c933/
+category: 
+  - history
+tag: 
+  - 默认
 ---
 
 简介

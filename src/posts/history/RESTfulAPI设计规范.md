@@ -1,10 +1,11 @@
 ---
-title: "Restful Api设计规范"
-date: 2020-07-17 11:49:19.164000
-tag:
-  - 2023-05-07从halo博客迁移
-category:
-  - 无
+title: Restful Api设计规范
+date: 2020-07-17 11:49:19
+permalink: /posts/bbcf61/
+category: 
+  - history
+tag: 
+  - 默认
 ---
 
 

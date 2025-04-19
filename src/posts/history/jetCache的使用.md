@@ -1,10 +1,11 @@
 ---
-title: "Jet Cache的使用"
-date: 2020-12-26 23:01:39.750000
-tag:
-  - 2023-05-07从halo博客迁移
-category:
-  - 无
+title: Jet Cache的使用
+date: 2020-12-26 23:01:39
+permalink: /posts/2c2436/
+category: 
+  - history
+tag: 
+  - 默认
 ---
 jetcahce是阿里出品的一套缓存系统，下面进行简单的使用，同时附上[官方文档](https://github.com/alibaba/jetcache/wiki/Home_CN)地址。
 

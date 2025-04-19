@@ -1,10 +1,11 @@
 ---
-title: "Mysqlon使用遇坑"
-date: 2021-06-03 09:57:46.371000
-tag:
-  - 2023-05-07从halo博客迁移
-category:
-  - 无
+title: Mysqlon使用遇坑
+date: 2021-06-03 09:57:46
+permalink: /posts/0698f2/
+category: 
+  - history
+tag: 
+  - 默认
 ---
 本来想查询分组下id最大的一条数据，语句如下：
 

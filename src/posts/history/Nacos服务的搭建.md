@@ -1,10 +1,11 @@
 ---
-title: "Nacos服务的搭建"
-date: 2020-12-19 12:16:30.417000
-tag:
-  - 2023-05-07从halo博客迁移
-category:
-  - 无
+title: Nacos服务的搭建
+date: 2020-12-19 12:16:30
+permalink: /posts/cd0e81/
+category: 
+  - history
+tag: 
+  - 默认
 ---
 Nacos 是一个服务注册中心和服务配置中心一体化的组件。需要我们去安装Nacos服务，并运行。
 

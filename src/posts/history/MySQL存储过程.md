@@ -1,10 +1,11 @@
 ---
-title: "My Sql存储过程"
-date: 2020-07-18 11:31:40.665000
-tag:
-  - 2023-05-07从halo博客迁移
-category:
-  - 无
+title: My Sql存储过程
+date: 2020-07-18 11:31:40
+permalink: /posts/a0a1ad/
+category: 
+  - history
+tag: 
+  - 默认
 ---
 存储过程是为了完成特定功能的SQL语句集，经编译创建并保存在数据库中，用户可通过指定存储过程的名字并给定参数来调用执行。
 

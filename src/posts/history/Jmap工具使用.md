@@ -1,10 +1,11 @@
 ---
-title: "Jmap工具使用"
-date: 2021-04-05 15:40:47.175000
-tag:
-  - 2023-05-07从halo博客迁移
-category:
-  - 无
+title: Jmap工具使用
+date: 2021-04-05 15:40:47
+permalink: /posts/d0194f/
+category: 
+  - history
+tag: 
+  - 默认
 ---
 ## 作用：
 

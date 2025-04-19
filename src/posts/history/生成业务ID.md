@@ -1,10 +1,11 @@
 ---
-title: "生成业务 ID"
-date: 2021-05-13 16:13:14.427000
-tag:
-  - 2023-05-07从halo博客迁移
-category:
-  - 无
+title: 生成业务 ID
+date: 2021-05-13 16:13:14
+permalink: /posts/68f8cf/
+category: 
+  - history
+tag: 
+  - 默认
 ---
 
 生成唯一的业务ID号

@@ -1,10 +1,11 @@
 ---
-title: "Jvm常用工具"
-date: 2021-05-14 19:11:57.744000
-tag:
-  - 2023-05-07从halo博客迁移
-category:
-  - 无
+title: Jvm常用工具
+date: 2021-05-14 19:11:57
+permalink: /posts/2b9fe2/
+category: 
+  - history
+tag: 
+  - 默认
 ---
 # JVM常用工具
 

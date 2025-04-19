@@ -1,10 +1,11 @@
 ---
-title: "Sql条件语句"
-date: 2020-08-21 19:21:16.590000
-tag:
-  - 2023-05-07从halo博客迁移
-category:
-  - 无
+title: Sql条件语句
+date: 2020-08-21 19:21:16
+permalink: /posts/7e194b/
+category: 
+  - history
+tag: 
+  - 默认
 ---
 ## IF表达式
 

@@ -1,10 +1,11 @@
 ---
-title: "Contos7添加swap内存"
-date: 2022-10-09 21:56:13.621000
-tag:
-  - 2023-05-07从halo博客迁移
-category:
-  - 无
+title: Contos7添加swap内存
+date: 2022-10-09 21:56:13
+permalink: /posts/ab7fc2/
+category: 
+  - history
+tag: 
+  - 默认
 ---
 Swap介绍：
 

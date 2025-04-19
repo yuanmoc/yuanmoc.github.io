@@ -1,10 +1,11 @@
 ---
-title: "写个python脚本，每天定时登录"
-date: 2021-09-13 21:35:28.258000
-tag:
-  - 2023-05-07从halo博客迁移
-category:
-  - 无
+title: 写个python脚本，每天定时登录
+date: 2021-09-13 21:35:28
+permalink: /posts/37cfe7/
+category: 
+  - history
+tag: 
+  - 默认
 ---
 写一个脚本，每天登录获取积分。
 

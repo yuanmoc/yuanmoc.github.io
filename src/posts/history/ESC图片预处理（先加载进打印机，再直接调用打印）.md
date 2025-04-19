@@ -1,10 +1,11 @@
 ---
-title: "Esc图片预处理（先加载进打印机，再直接调用打印）"
-date: 2021-04-10 15:10:20.196000
-tag:
-  - 2023-05-07从halo博客迁移
-category:
-  - 无
+title: Esc图片预处理（先加载进打印机，再直接调用打印）
+date: 2021-04-10 15:10:20
+permalink: /posts/ae1f30/
+category: 
+  - history
+tag: 
+  - 默认
 ---
 # ESC图片预处理
 

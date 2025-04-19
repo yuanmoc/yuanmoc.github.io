@@ -1,10 +1,11 @@
 ---
-title: "Centos7安装 Docker"
-date: 2021-06-12 12:20:57.667000
-tag:
-  - 2023-05-07从halo博客迁移
-category:
-  - 无
+title: Centos7安装 Docker
+date: 2021-06-12 12:20:57
+permalink: /posts/ca4ec0/
+category: 
+  - history
+tag: 
+  - 默认
 ---
 ## 在centos7 上安装 Docker
 

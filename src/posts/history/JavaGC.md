@@ -1,10 +1,11 @@
 ---
-title: "Java Gc"
-date: 2020-07-27 17:04:15.369000
-tag:
-  - 2023-05-07从halo博客迁移
-category:
-  - 无
+title: Java Gc
+date: 2020-07-27 17:04:15
+permalink: /posts/5544ac/
+category: 
+  - history
+tag: 
+  - 默认
 ---
 
 **堆的回收区域**

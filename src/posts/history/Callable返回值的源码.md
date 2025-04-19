@@ -1,10 +1,11 @@
 ---
-title: "Callable返回值的源码"
-date: 2020-07-20 10:31:48.979000
-tag:
-  - 2023-05-07从halo博客迁移
-category:
-  - 无
+title: Callable返回值的源码
+date: 2020-07-20 10:31:48
+permalink: /posts/ff25da/
+category: 
+  - history
+tag: 
+  - 默认
 ---
 分析一下Callable是如何拿到返回值的
 

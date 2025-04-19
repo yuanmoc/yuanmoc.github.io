@@ -1,10 +1,11 @@
 ---
-title: "Cpcl指令打印图片"
-date: 2021-10-14 11:59:33.567000
-tag:
-  - 2023-05-07从halo博客迁移
-category:
-  - 无
+title: Cpcl指令打印图片
+date: 2021-10-14 11:59:33
+permalink: /posts/414487/
+category: 
+  - history
+tag: 
+  - 默认
 ---
 ```java
 

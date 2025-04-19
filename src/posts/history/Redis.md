@@ -1,10 +1,11 @@
 ---
-title: "Redis"
-date: 2020-07-29 15:12:45.800000
-tag:
-  - 2023-05-07从halo博客迁移
-category:
-  - 无
+title: Redis
+date: 2020-07-29 15:12:45
+permalink: /posts/f87d3a/
+category: 
+  - history
+tag: 
+  - 默认
 ---
 
 ## Redis的线程模型

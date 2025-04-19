@@ -1,10 +1,11 @@
 ---
-title: "Pyppeeter的基本使用"
-date: 2022-11-23 21:53:55.700000
-tag:
-  - 2023-05-07从halo博客迁移
-category:
-  - 无
+title: Pyppeeter的基本使用
+date: 2022-11-23 21:53:55
+permalink: /posts/bc3173/
+category: 
+  - history
+tag: 
+  - 默认
 ---
 ## 背景
 抓包时，遇到一些网页的信息与渲染页面上的不一样，原因是抓到的数据还没有渲染，所以不一样。

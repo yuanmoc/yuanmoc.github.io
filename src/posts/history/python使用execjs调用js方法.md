@@ -1,10 +1,11 @@
 ---
-title: "Python使用execjs调用js方法"
-date: 2022-11-12 14:54:30.900000
-tag:
-  - 2023-05-07从halo博客迁移
-category:
-  - 无
+title: Python使用execjs调用js方法
+date: 2022-11-12 14:54:30
+permalink: /posts/06bde3/
+category: 
+  - history
+tag: 
+  - 默认
 ---
 背景：
 在使用python抓包时，要使用到js的相关解密方法，使用python写相关解密方法实现会有一些问题，有时js的加密方法是混淆过的，无法直译过来，所以直接调用js的方法是最方便的。

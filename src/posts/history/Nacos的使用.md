@@ -1,10 +1,11 @@
 ---
-title: "Nacos的使用"
-date: 2020-12-26 10:55:28.499000
-tag:
-  - 2023-05-07从halo博客迁移
-category:
-  - 无
+title: Nacos的使用
+date: 2020-12-26 10:55:28
+permalink: /posts/a3384b/
+category: 
+  - history
+tag: 
+  - 默认
 ---
 
 ## 配置中心

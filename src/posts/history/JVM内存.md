@@ -1,10 +1,11 @@
 ---
-title: "Jvm内存"
-date: 2020-07-27 12:02:12.709000
-tag:
-  - 2023-05-07从halo博客迁移
-category:
-  - 无
+title: Jvm内存
+date: 2020-07-27 12:02:12
+permalink: /posts/490212/
+category: 
+  - history
+tag: 
+  - 默认
 ---
 
 

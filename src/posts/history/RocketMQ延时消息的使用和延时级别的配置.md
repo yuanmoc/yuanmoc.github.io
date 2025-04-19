@@ -1,10 +1,11 @@
 ---
-title: "Rocket Mq延时消息的使用和延时级别的配置"
-date: 2021-04-13 17:14:47.343000
-tag:
-  - 2023-05-07从halo博客迁移
-category:
-  - 无
+title: Rocket Mq延时消息的使用和延时级别的配置
+date: 2021-04-13 17:14:47
+permalink: /posts/73cb6a/
+category: 
+  - history
+tag: 
+  - 默认
 ---
 # RocketMQ延时消息的使用和延时级别的配置
 

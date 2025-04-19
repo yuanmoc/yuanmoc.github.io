@@ -1,10 +1,11 @@
 ---
-title: "Rocket Mq的介绍"
-date: 2021-04-11 00:10:12.110000
-tag:
-  - 2023-05-07从halo博客迁移
-category:
-  - 无
+title: Rocket Mq的介绍
+date: 2021-04-11 00:10:12
+permalink: /posts/e4b041/
+category: 
+  - history
+tag: 
+  - 默认
 ---
 RocketMQ 架构图
 ![image.png](/images/image-bb86482048c94e20ad0bf9d904a0ada0.png)

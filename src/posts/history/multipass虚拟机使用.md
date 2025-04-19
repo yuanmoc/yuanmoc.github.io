@@ -1,10 +1,11 @@
 ---
-title: "Multipass虚拟机使用"
-date: 2023-04-29 10:53:24.873000
-tag:
-  - 2023-05-07从halo博客迁移
-category:
-  - 无
+title: Multipass虚拟机使用
+date: 2023-04-29 10:53:24
+permalink: /posts/152e55/
+category: 
+  - history
+tag: 
+  - 默认
 ---
 
 使用brew安装

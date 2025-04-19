@@ -1,10 +1,11 @@
 ---
-title: "Git提交规范"
-date: 2023-04-11 11:31:04.201000
-tag:
-  - 2023-05-07从halo博客迁移
-category:
-  - 无
+title: Git提交规范
+date: 2023-04-11 11:31:04
+permalink: /posts/33b505/
+category: 
+  - history
+tag: 
+  - 默认
 ---
 # Git提交规范
 格式：

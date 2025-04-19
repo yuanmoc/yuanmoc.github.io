@@ -1,10 +1,11 @@
 ---
-title: "Jconsole使用"
-date: 2021-04-05 17:18:54.161000
-tag:
-  - 2023-05-07从halo博客迁移
-category:
-  - 无
+title: Jconsole使用
+date: 2021-04-05 17:18:54
+permalink: /posts/452b5e/
+category: 
+  - history
+tag: 
+  - 默认
 ---
 开启JMX管理功能
 

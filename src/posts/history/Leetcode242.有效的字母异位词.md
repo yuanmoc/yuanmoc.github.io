@@ -1,10 +1,11 @@
 ---
-title: "Leetcode242.有效的字母异位词"
-date: 2020-07-14 18:02:24.265000
-tag:
-  - 2023-05-07从halo博客迁移
-category:
-  - 无
+title: Leetcode242.有效的字母异位词
+date: 2020-07-14 18:02:24
+permalink: /posts/c3faaa/
+category: 
+  - history
+tag: 
+  - 默认
 ---
 题目
 ```txt

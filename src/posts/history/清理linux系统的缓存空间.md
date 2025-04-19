@@ -1,10 +1,11 @@
 ---
-title: "清理linux系统的缓存空间"
-date: 2022-10-09 22:46:27.912000
-tag:
-  - 2023-05-07从halo博客迁移
-category:
-  - 无
+title: 清理linux系统的缓存空间
+date: 2022-10-09 22:46:27
+permalink: /posts/c59622/
+category: 
+  - history
+tag: 
+  - 默认
 ---
 
 背景：

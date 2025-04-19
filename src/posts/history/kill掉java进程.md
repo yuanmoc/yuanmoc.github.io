@@ -1,10 +1,11 @@
 ---
-title: "Kill掉java进程"
-date: 2021-05-11 14:58:11.388000
-tag:
-  - 2023-05-07从halo博客迁移
-category:
-  - 无
+title: Kill掉java进程
+date: 2021-05-11 14:58:11
+permalink: /posts/f82053/
+category: 
+  - history
+tag: 
+  - 默认
 ---
 开发时有可能会出现端口被占用，或者异常能出时，重启，端口会被占用的情况。
 这里需要kill无用的进程。

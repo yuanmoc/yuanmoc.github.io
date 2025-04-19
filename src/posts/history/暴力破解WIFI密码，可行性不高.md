@@ -1,10 +1,11 @@
 ---
-title: "暴力破解 Wifi密码，可行性不高"
-date: 2022-02-26 22:07:09.207000
-tag:
-  - 2023-05-07从halo博客迁移
-category:
-  - 无
+title: 暴力破解 Wifi密码，可行性不高
+date: 2022-02-26 22:07:09
+permalink: /posts/d4da7e/
+category: 
+  - history
+tag: 
+  - 默认
 ---
 ## 设置使用外置网卡
 

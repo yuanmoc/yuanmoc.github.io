@@ -1,10 +1,11 @@
 ---
-title: "Function编程传递三个参数"
-date: 2022-11-11 10:04:21.545000
-tag:
-  - 2023-05-07从halo博客迁移
-category:
-  - 无
+title: Function编程传递三个参数
+date: 2022-11-11 10:04:21
+permalink: /posts/a79e9f/
+category: 
+  - history
+tag: 
+  - 默认
 ---
 # Function 编程传递三个参数
 

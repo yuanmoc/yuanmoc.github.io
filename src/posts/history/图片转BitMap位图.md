@@ -1,10 +1,11 @@
 ---
-title: "图片转 Bit Map位图"
-date: 2021-01-26 23:14:53.190000
-tag:
-  - 2023-05-07从halo博客迁移
-category:
-  - 无
+title: 图片转 Bit Map位图
+date: 2021-01-26 23:14:53
+permalink: /posts/72a5df/
+category: 
+  - history
+tag: 
+  - 默认
 ---
 记录一下如何生成位图字节码
 

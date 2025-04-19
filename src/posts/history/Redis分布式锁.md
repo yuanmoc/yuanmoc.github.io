@@ -1,10 +1,11 @@
 ---
-title: "Redis分布式锁"
-date: 2021-12-29 00:45:40.918000
-tag:
-  - 2023-05-07从halo博客迁移
-category:
-  - 无
+title: Redis分布式锁
+date: 2021-12-29 00:45:40
+permalink: /posts/65baca/
+category: 
+  - history
+tag: 
+  - 默认
 ---
 
 ```xml

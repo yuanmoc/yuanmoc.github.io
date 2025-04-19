@@ -1,10 +1,11 @@
 ---
-title: "Esik分词 Pingyin分词的使用"
-date: 2023-04-21 16:29:39.736000
-tag:
-  - 2023-05-07从halo博客迁移
-category:
-  - 无
+title: Esik分词 Pingyin分词的使用
+date: 2023-04-21 16:29:39
+permalink: /posts/2571dd/
+category: 
+  - history
+tag: 
+  - 默认
 ---
 ## 1、在线联网安装
 
