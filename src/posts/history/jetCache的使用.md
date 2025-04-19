@@ -1,11 +1,15 @@
 ---
 title: Jet Cache的使用
 date: 2020-12-26 23:01:39
-permalink: /posts/2c2436/
+permalink: /posts/606d9c.html
 category: 
   - history
 tag: 
-  - 默认
+  - Redis
+  - 缓存
+  - List
+  - 注解
+  - Map
 ---
 jetcahce是阿里出品的一套缓存系统，下面进行简单的使用，同时附上[官方文档](https://github.com/alibaba/jetcache/wiki/Home_CN)地址。
 

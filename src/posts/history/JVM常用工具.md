@@ -1,11 +1,15 @@
 ---
 title: Jvm常用工具
 date: 2021-05-14 19:11:57
-permalink: /posts/2b9fe2/
+permalink: /posts/607b92.html
 category: 
   - history
 tag: 
-  - 默认
+  - JVM
+  - Stack
+  - Map
+  - ORM
+  - G1
 ---
 # JVM常用工具
 

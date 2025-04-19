@@ -1,11 +1,12 @@
 ---
 title: Mysql不同字符集表关联导致索引失效
 date: 2022-01-06 11:25:45
-permalink: /posts/df64d1/
+permalink: /posts/a3a5c5.html
 category: 
   - history
 tag: 
-  - 默认
+  - 脚本
+  - 解决方案
 ---
 背景：
 在做业务初始化时，出现join表关联没有走索引的情况，原来只要执行半个小时的脚本，现在要执行几个小时，经排查，是两个表的字符集不一样，旧表的字符集是utf8，而新表的字符集都是utf8mb4，而导致关联时不走索引。

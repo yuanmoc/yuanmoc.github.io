@@ -1,11 +1,12 @@
 ---
 title: Multipass虚拟机使用
 date: 2023-04-29 10:53:24
-permalink: /posts/152e55/
+permalink: /posts/0996bc.html
 category: 
   - history
 tag: 
-  - 默认
+  - CAS
+  - List
 ---
 
 使用brew安装

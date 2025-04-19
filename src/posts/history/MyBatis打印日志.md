@@ -1,11 +1,12 @@
 ---
 title: My Batis打印日志
 date: 2021-06-02 14:14:36
-permalink: /posts/515551/
+permalink: /posts/2f779c.html
 category: 
   - history
 tag: 
-  - 默认
+  - Set
+  - MyBatis
 ---
 在Mybatis 的配置文件中添加：
 

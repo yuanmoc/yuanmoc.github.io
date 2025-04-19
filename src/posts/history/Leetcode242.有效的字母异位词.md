@@ -1,11 +1,12 @@
 ---
 title: Leetcode242.有效的字母异位词
 date: 2020-07-14 18:02:24
-permalink: /posts/c3faaa/
+permalink: /posts/a08686.html
 category: 
   - history
 tag: 
-  - 默认
+  - Map
+  - HashMap
 ---
 题目
 ```txt

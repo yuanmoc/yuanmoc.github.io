@@ -1,11 +1,14 @@
 ---
 title: 暴力破解 Wifi密码，可行性不高
 date: 2022-02-26 22:07:09
-permalink: /posts/d4da7e/
+permalink: /posts/ede0d4.html
 category: 
   - history
 tag: 
-  - 默认
+  - CAS
+  - Set
+  - Git
+  - 脚本
 ---
 ## 设置使用外置网卡
 

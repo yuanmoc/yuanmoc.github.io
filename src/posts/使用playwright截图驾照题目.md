@@ -1,11 +1,13 @@
 ---
 title: 使用playwright截图驾照题目
 date: 2023-07-27 12:33:50
-permalink: /posts/a99398/
+permalink: /posts/c252f2.html
 category: 
   - 默认
 tag: 
-  - 默认
+  - 自动化测试
+  - 端到端测试
+  - 测试工具
 ---
 
 ## 目的

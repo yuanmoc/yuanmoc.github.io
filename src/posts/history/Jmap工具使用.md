@@ -1,11 +1,15 @@
 ---
 title: Jmap工具使用
 date: 2021-04-05 15:40:47
-permalink: /posts/d0194f/
+permalink: /posts/0c6586.html
 category: 
   - history
 tag: 
-  - 默认
+  - Map
+  - Spring
+  - JVM
+  - ORM
+  - G1
 ---
 ## 作用：
 

@@ -1,11 +1,15 @@
 ---
 title: Docker Compose搭建 Rocket Mq
 date: 2021-04-11 00:43:14
-permalink: /posts/2b245a/
+permalink: /posts/57a47c.html
 category: 
   - history
 tag: 
-  - 默认
+  - RocketMQ
+  - Map
+  - Docker
+  - 线程池
+  - List
 ---
 RocketMQ架构图
 ![image.png](/images/image-f7d076aef39245daa6db0b42ee3253e4.png)

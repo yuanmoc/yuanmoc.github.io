@@ -1,11 +1,12 @@
 ---
 title: Esc图片预处理（先加载进打印机，再直接调用打印）
 date: 2021-04-10 15:10:20
-permalink: /posts/ae1f30/
+permalink: /posts/71217f.html
 category: 
   - history
 tag: 
-  - 默认
+  - List
+  - ArrayList
 ---
 # ESC图片预处理
 

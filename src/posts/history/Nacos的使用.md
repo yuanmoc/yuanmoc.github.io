@@ -1,11 +1,15 @@
 ---
 title: Nacos的使用
 date: 2020-12-26 10:55:28
-permalink: /posts/a3384b/
+permalink: /posts/489901.html
 category: 
   - history
 tag: 
-  - 默认
+  - Spring
+  - Nacos
+  - Map
+  - MySQL
+  - Redis
 ---
 
 ## 配置中心

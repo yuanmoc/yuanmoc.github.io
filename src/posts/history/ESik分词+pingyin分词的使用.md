@@ -1,11 +1,15 @@
 ---
 title: Esik分词 Pingyin分词的使用
 date: 2023-04-21 16:29:39
-permalink: /posts/2571dd/
+permalink: /posts/aa687c.html
 category: 
   - history
 tag: 
-  - 默认
+  - Set
+  - Elasticsearch
+  - Git
+  - Map
+  - CAS
 ---
 ## 1、在线联网安装
 

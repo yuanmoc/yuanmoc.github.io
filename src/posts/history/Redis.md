@@ -1,11 +1,15 @@
 ---
 title: Redis
 date: 2020-07-29 15:12:45
-permalink: /posts/f87d3a/
+permalink: /posts/5f8c83.html
 category: 
   - history
 tag: 
-  - 默认
+  - 缓存
+  - 数据库
+  - Redis
+  - volatile
+  - 多线程
 ---
 
 ## Redis的线程模型

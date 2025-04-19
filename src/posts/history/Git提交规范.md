@@ -1,11 +1,12 @@
 ---
 title: Git提交规范
 date: 2023-04-11 11:31:04
-permalink: /posts/33b505/
+permalink: /posts/120fb2.html
 category: 
   - history
 tag: 
-  - 默认
+  - Git
+  - 重构
 ---
 # Git提交规范
 格式：

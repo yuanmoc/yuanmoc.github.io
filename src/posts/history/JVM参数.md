@@ -1,11 +1,15 @@
 ---
 title: Jvm参数
 date: 2020-07-28 11:02:39
-permalink: /posts/1bee30/
+permalink: /posts/6d8e18.html
 category: 
   - history
 tag: 
-  - 默认
+  - CMS
+  - VisualVM
+  - 多线程
+  - JVM
+  - 缓存
 ---
 
 **调优的目的**

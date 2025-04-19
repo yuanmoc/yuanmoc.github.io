@@ -1,11 +1,11 @@
 ---
 title: Jconsole使用
 date: 2021-04-05 17:18:54
-permalink: /posts/452b5e/
+permalink: /posts/acbdc7.html
 category: 
   - history
 tag: 
-  - 默认
+  - JVM
 ---
 开启JMX管理功能
 

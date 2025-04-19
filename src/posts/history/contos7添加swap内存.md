@@ -1,11 +1,11 @@
 ---
 title: Contos7添加swap内存
 date: 2022-10-09 21:56:13
-permalink: /posts/ab7fc2/
+permalink: /posts/402981.html
 category: 
   - history
 tag: 
-  - 默认
+  - Map
 ---
 Swap介绍：
 

@@ -1,7 +1,7 @@
 ---
 title: Function编程传递三个参数
 date: 2022-11-11 10:04:21
-permalink: /posts/a79e9f/
+permalink: /posts/e02c07.html
 category: 
   - history
 tag: 

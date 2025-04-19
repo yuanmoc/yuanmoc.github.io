@@ -1,11 +1,15 @@
 ---
 title: 使用jetcache@ Create Cache创建两个缓存对象，发现配置全部使用了第一个
 date: 2021-10-28 15:28:43
-permalink: /posts/7a11aa/
+permalink: /posts/7e6f55.html
 category: 
   - history
 tag: 
-  - 默认
+  - 缓存
+  - Set
+  - Map
+  - List
+  - HashMap
 ---
 使用@CreateCache创建两个缓存对象，由于这两个缓存对象都使用的 area 和 name 是一样的，导致了创建的第二个缓存对象没有生效，而是使用了第一个缓存对象。
 

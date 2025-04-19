@@ -1,11 +1,12 @@
 ---
 title: Rocket Mq的介绍
 date: 2021-04-11 00:10:12
-permalink: /posts/e4b041/
+permalink: /posts/4c83eb.html
 category: 
   - history
 tag: 
-  - 默认
+  - 消息队列
+  - RocketMQ
 ---
 RocketMQ 架构图
 ![image.png](/images/image-bb86482048c94e20ad0bf9d904a0ada0.png)

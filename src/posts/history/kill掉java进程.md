@@ -1,7 +1,7 @@
 ---
 title: Kill掉java进程
 date: 2021-05-11 14:58:11
-permalink: /posts/f82053/
+permalink: /posts/b6f8b4.html
 category: 
   - history
 tag: 

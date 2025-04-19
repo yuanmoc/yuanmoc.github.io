@@ -1,11 +1,15 @@
 ---
 title: Redis分布式锁
 date: 2021-12-29 00:45:40
-permalink: /posts/65baca/
+permalink: /posts/e4a243.html
 category: 
   - history
 tag: 
-  - 默认
+  - Map
+  - Redis
+  - List
+  - ExecutorService
+  - Set
 ---
 
 ```xml

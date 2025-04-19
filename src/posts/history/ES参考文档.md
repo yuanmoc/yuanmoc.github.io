@@ -1,7 +1,7 @@
 ---
 title: Es参考文档
 date: 2022-02-14 11:11:21
-permalink: /posts/91d084/
+permalink: /posts/27e9a9.html
 category: 
   - history
 tag: 

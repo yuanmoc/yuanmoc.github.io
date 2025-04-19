@@ -1,11 +1,11 @@
 ---
 title: My Sql存储过程中 Cursor的使用
 date: 2023-04-26 15:53:23
-permalink: /posts/8ab2ca/
+permalink: /posts/533ebc.html
 category: 
   - history
 tag: 
-  - 默认
+  - Set
 ---
 ```sql
 

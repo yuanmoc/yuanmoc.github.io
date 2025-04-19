@@ -1,11 +1,13 @@
 ---
 title: 图片转 Bit Map位图
 date: 2021-01-26 23:14:53
-permalink: /posts/72a5df/
+permalink: /posts/c622dc.html
 category: 
   - history
 tag: 
-  - 默认
+  - Map
+  - 字节流
+  - ORM
 ---
 记录一下如何生成位图字节码
 

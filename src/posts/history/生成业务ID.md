@@ -1,11 +1,12 @@
 ---
 title: 生成业务 ID
 date: 2021-05-13 16:13:14
-permalink: /posts/68f8cf/
+permalink: /posts/4da75c.html
 category: 
   - history
 tag: 
-  - 默认
+  - ORM
+  - volatile
 ---
 
 生成唯一的业务ID号

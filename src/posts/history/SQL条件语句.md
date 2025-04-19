@@ -1,11 +1,14 @@
 ---
 title: Sql条件语句
 date: 2020-08-21 19:21:16
-permalink: /posts/7e194b/
+permalink: /posts/7b7d1e.html
 category: 
   - history
 tag: 
-  - 默认
+  - List
+  - CAS
+  - Set
+  - 数据库
 ---
 ## IF表达式
 

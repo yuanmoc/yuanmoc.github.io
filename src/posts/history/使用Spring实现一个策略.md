@@ -1,11 +1,15 @@
 ---
 title: 使用 Spring实现一个策略
 date: 2020-12-26 17:51:08
-permalink: /posts/9f9044/
+permalink: /posts/1b3526.html
 category: 
   - history
 tag: 
-  - 默认
+  - Spring
+  - 注解
+  - Map
+  - 策略模式
+  - Set
 ---
 在很多场景中，我们都需要根据不同的行为调用不同的一个实现业务逻辑，这里就可以使用策略模式来实现。
 

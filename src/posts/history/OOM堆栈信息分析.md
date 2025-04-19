@@ -1,11 +1,14 @@
 ---
 title: Oom堆栈信息分析
 date: 2021-08-22 16:49:50
-permalink: /posts/9fafe4/
+permalink: /posts/1b0da1.html
 category: 
   - history
 tag: 
-  - 默认
+  - Stack
+  - Map
+  - 微服务
+  - ORM
 ---
 先把一台有问题的服务从微服务摘下来，其他服务重启，保证线上运行正常，然后在这台服务上进行分析原因。
 

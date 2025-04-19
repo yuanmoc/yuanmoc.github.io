@@ -1,11 +1,12 @@
 ---
 title: 使用hugo搭建博客
 date: 2023-05-07 11:56:31
-permalink: /posts/831000/
+permalink: /posts/69963c.html
 category: 
   - 默认
 tag: 
-  - 默认
+  - Git
+  - Set
 ---
 
 在 MAC M1 PRO 上安装hugo并搭建博客

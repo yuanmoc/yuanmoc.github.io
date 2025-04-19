@@ -1,11 +1,13 @@
 ---
 title: Es的基本使用
 date: 2023-04-19 16:47:01
-permalink: /posts/aa0cb0/
+permalink: /posts/d64a92.html
 category: 
   - history
 tag: 
-  - 默认
+  - Map
+  - Set
+  - CAS
 ---
 ## 创建索引
 创建文档 

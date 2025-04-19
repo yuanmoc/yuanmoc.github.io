@@ -1,11 +1,13 @@
 ---
 title: Frp内网穿透使用
 date: 2021-01-09 22:41:55
-permalink: /posts/1e5800/
+permalink: /posts/225add.html
 category: 
   - history
 tag: 
-  - 默认
+  - List
+  - Git
+  - 脚本
 ---
 由于项目要开发调试第三方的回调，回调地址必须是外网的一个ip地址或者域名，为了方便调试应用，下面搭建一个外网穿透服务来使用，把外网地址映射到本地机器上。
 

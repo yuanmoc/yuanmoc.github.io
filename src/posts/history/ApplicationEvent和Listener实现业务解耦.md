@@ -1,11 +1,15 @@
 ---
 title: Application Event和 Listener实现业务解耦
 date: 2021-06-26 17:24:22
-permalink: /posts/c847d8/
+permalink: /posts/655f47.html
 category: 
   - history
 tag: 
-  - 默认
+  - List
+  - Spring
+  - Set
+  - MySQL
+  - JDBC
 ---
 
 ApplicationEvent以及Listener是Spring为我们提供的一个事件监听、订阅的实现，内部实现原理是观察者设计模式，设计初衷是为了系统业务逻辑解耦，提高可扩展性及可维护性。事件发布者并不需要考虑谁去监听，监听具体的内容是什么，发布者的工作只是为了发布时间而已。

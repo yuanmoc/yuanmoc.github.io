@@ -2,7 +2,7 @@
 icon: circle-info
 title: intro
 date: 2025-04-18 11:40:44
-permalink: /docs/0daded/
+permalink: /docs/eb0620.html
 category: 
   - 默认
 tag: 

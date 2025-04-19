@@ -1,11 +1,15 @@
 ---
 title: My Sql存储过程
 date: 2020-07-18 11:31:40
-permalink: /posts/a0a1ad/
+permalink: /posts/ae8e89.html
 category: 
   - history
 tag: 
-  - 默认
+  - Set
+  - MySQL
+  - CAS
+  - 数据库
+  - List
 ---
 存储过程是为了完成特定功能的SQL语句集，经编译创建并保存在数据库中，用户可通过指定存储过程的名字并给定参数来调用执行。
 

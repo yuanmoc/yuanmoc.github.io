@@ -1,11 +1,15 @@
 ---
 title: Java8新特性
 date: 2020-07-29 11:41:55
-permalink: /posts/dc8473/
+permalink: /posts/c3d88f.html
 category: 
   - history
 tag: 
-  - 默认
+  - 注解
+  - ORM
+  - Optional
+  - List
+  - Map
 ---
 ## Lambda表达式
 

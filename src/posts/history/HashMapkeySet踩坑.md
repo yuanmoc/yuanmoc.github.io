@@ -1,11 +1,14 @@
 ---
 title: Hash Mapkey Set踩坑
 date: 2021-11-06 14:32:29
-permalink: /posts/3fa3c8/
+permalink: /posts/4e2495.html
 category: 
   - history
 tag: 
-  - 默认
+  - Set
+  - Map
+  - HashMap
+  - HashSet
 ---
 
 在HashMap中使用keySet获取一个Set对象，然后移除Set对象中的值，发现会把HashMap中的值也移除掉了。

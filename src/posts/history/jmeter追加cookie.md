@@ -1,11 +1,11 @@
 ---
 title: Jmeter追加cookie
 date: 2022-05-10 20:02:50
-permalink: /posts/e22c25/
+permalink: /posts/ad9e92.html
 category: 
   - history
 tag: 
-  - 默认
+  - JMeter
 ---
 
 使用 BeanShell 进行对线程cookie进行追加。
