@@ -36,7 +36,7 @@ function setFrontmatter(sourceDir, themeConfig) {
         if ( matterData.home === true ) {
             return
         }
-        console.log(chalk.blue('start '),"write frontmatter(写入frontmatter)：", file.filePath)
+        // console.log(chalk.blue('start '),"write frontmatter(写入frontmatter)：", file.filePath)
 
         // 已有FrontMatter，但是没有title、date、permalink、categories、tags数据的
         if (!matterData.hasOwnProperty('title')) { // 标题
@@ -56,6 +56,13 @@ function setFrontmatter(sourceDir, themeConfig) {
                 prefix = "/docs/"
             } else if (file.filePath.indexOf('/posts/') > 1) {
                 prefix = "/posts/"
+            } else {
+                let filePathArr = file.filePath.split(path.sep) // path.sep用于兼容不同系统下的路径斜杠
+                let ind = filePathArr.indexOf("src")
+                // 下一级取前缀名，下下级是文件名
+                if (ind !== -1 && ind + 2 < filePathArr.length) {
+                    prefix = "/"+filePathArr[ind + 1]+"/"
+                }
             }
             matterData.permalink = getPermalink(prefix);
             hasChange = true;
