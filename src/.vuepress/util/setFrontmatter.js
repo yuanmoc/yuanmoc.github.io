@@ -20,6 +20,8 @@ const tags = tagStr.split(",");
 // 重新设置标签
 const resetTag = false
 const resetPermalink = false
+// 重新设置时间
+const setMatterData = false
 
 /**
  * 给.md文件设置frontmatter(标题、日期、永久链接等数据)
@@ -95,7 +97,7 @@ function setFrontmatter(sourceDir, themeConfig) {
             })
         }
 
-        if (hasChange) {
+        if (hasChange || setMatterData) {
             if (matterData.date && type(matterData.date) === 'date') {
                 matterData.date = repairDate(matterData.date) // 修复时间格式
             }
