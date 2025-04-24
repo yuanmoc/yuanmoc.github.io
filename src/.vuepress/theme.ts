@@ -138,7 +138,13 @@ export default hopeTheme({
     blog: {
       // 过滤只要posts文件夹的内容
       filter: (page, localePath) => {
-        return page.path.startsWith('/posts/');
+        // 非 posts 页面，不进行sitemap索引
+        if (!page.path.startsWith('/posts/')) {
+          page.frontmatter.sitemap = false
+          return false;
+        } else {
+          return true;
+        }
       }
     },
 
