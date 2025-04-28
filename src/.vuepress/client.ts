@@ -1,12 +1,11 @@
 import { defineClientConfig } from "vuepress/client";
-import TestDisplay from "./components/TestDisplay.vue";
-import "vuepress-theme-hope/presets/hr-driving-car.scss"
+import DailyInfo from "./components/DailyInfo.vue";
 import "vuepress-theme-hope/presets/bounce-icon.scss"
 
 export default defineClientConfig({
     enhance: ({ app, router, siteData }) => {
         // https://theme-hope.vuejs.press/zh/guide/component/global.html
-        // 引入组件，在md中可以直接 <TestDisplay /> 调用
-        app.component("TestDisplay", TestDisplay);
+        // 引入组件，在md中可以直接 <DailyInfo /> 调用
+        app.component("DailyInfo", DailyInfo);
     },
 });

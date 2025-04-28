@@ -4,6 +4,7 @@ import jsonToYaml from 'json2yaml'
 import chalk from 'chalk' // 命令行打印美化
 import os from 'os';
 import path from "path";
+import { watch } from "chokidar";
 
 const excludeDirectory = [
     '.vuepress',
@@ -12,6 +13,8 @@ const excludeDirectory = [
     '.idea',
     '.git',
     'node_modules',
+    '.DS_Store',
+    'README.md'
 ]
 
 // 预设标签类型
@@ -21,13 +24,14 @@ const tags = tagStr.split(",");
 const resetTag = false
 const resetPermalink = false
 // 重新设置时间
-const setMatterData = false
+const reSetMatterData = false
 
 /**
  * 给.md文件设置frontmatter(标题、日期、永久链接等数据)
  */
-function setFrontmatter(sourceDir, themeConfig) {
-    const { category: isCategory, tag: isTag, defaultText = '默认', extendFrontmatter } = themeConfig
+function setFrontmatter(sourceDir) {
+    const defaultText = '默认';
+
     const files = readFileList(sourceDir) // 读取所有md文件数据
 
     files.forEach(file => {
@@ -48,7 +52,13 @@ function setFrontmatter(sourceDir, themeConfig) {
 
         // 已有FrontMatter,但是没有title、date、permalink、categories、tags数据的
         if (!matterData.hasOwnProperty('title')) { // 标题
-            matterData.title = file.name;
+            // 检查是否为数字字符串
+            const isNumericString = !isNaN(parseFloat(file.name)) && isFinite(file.name);
+            if (isNumericString) {
+                matterData.title = `${file.name}T`;
+            } else {
+                matterData.title = file.name;
+            }
             hasChange = true;
         }
 
@@ -76,28 +86,18 @@ function setFrontmatter(sourceDir, themeConfig) {
             hasChange = true;
         }
 
-        if (!matterData.hasOwnProperty('pageComponent') && matterData.article !== false) { // 是文章页才添加分类和标签
-            if (isCategory !== false && !matterData.hasOwnProperty('category')) { // 分类
+        if (!matterData.hasOwnProperty('pageComponent') && matterData.article !== false && file.filePath.indexOf('/posts/') > 1) { // 是文章页才添加分类和标签
+            if (!matterData.hasOwnProperty('category')) { // 分类
                 matterData.category = getCategories(file, defaultText)
                 hasChange = true;
             }
-            if (isTag !== false && !matterData.hasOwnProperty('tag') || resetTag) { // 标签
+            if (!matterData.hasOwnProperty('tag') || resetTag) { // 标签
                 matterData.tag = matchTags(fileMatterObj.content, defaultText);
                 hasChange = true;
             }
         }
 
-        // 扩展自动生成frontmatter的字段
-        if (type(extendFrontmatter) === 'object') {
-            Object.keys(extendFrontmatter).forEach(keyName => {
-                if (!matterData.hasOwnProperty(keyName)) {
-                    matterData[keyName] = extendFrontmatter[keyName]
-                    hasChange = true;
-                }
-            })
-        }
-
-        if (hasChange || setMatterData) {
+        if (hasChange || reSetMatterData) {
             if (matterData.date && type(matterData.date) === 'date') {
                 matterData.date = repairDate(matterData.date) // 修复时间格式
             }
@@ -153,43 +153,44 @@ function matchTags(content, defaultTag) {
 }
 
 function readFileList(dir, filesList = []) {
+    const fileDir = fs.statSync(dir);
+    if (fileDir.isFile()) {
+        generatorFileInfo(dir, filesList);
+        return filesList;
+    }
+
     const files = fs.readdirSync(dir);
-    files.forEach((item, index) => {
-        let filePath = path.join(dir, item);
-        const stat = fs.statSync(filePath);
-        if (stat.isDirectory() && !excludeDirectory.includes(item)) {
-            readFileList(path.join(dir, item), filesList);  //递归读取文件
-        } else {
-            // if (path.basename(dir) !== 'docs') { // 过滤docs目录级下的文件
-            //     return
-            // }
-
-            const filename = path.basename(filePath)
-            const fileNameArr = filename.split('.')
-            const firstDotIndex = filename.indexOf('.');
-            const lastDotIndex = filename.lastIndexOf('.');
-
-            let name = null, type = null;
-            if (fileNameArr.length === 2) { // 没有序号的文件
-                name = fileNameArr[0]
-                type = fileNameArr[1]
-            } else if (fileNameArr.length >= 3) { // 有序号的文件(或文件名中间有'.')
-                name = filename.substring(firstDotIndex + 1, lastDotIndex)
-                type = filename.substring(lastDotIndex + 1)
-            }
-
-            if (type === 'md') { // 过滤非md文件
-                filesList.push({
-                    name,
-                    filePath
-                });
-            }
-
+    files.forEach((filename, index) => {
+        const filePath = path.join(dir, filename);
+        if (!excludeDirectory.includes(filename)) {
+            readFileList(filePath, filesList);  //递归读取文件
         }
     });
     return filesList;
 }
 
+function generatorFileInfo(filePath,  filesList = []) {
+    const filename = path.basename(filePath)
+    const fileNameArr = filename.split('.')
+    const firstDotIndex = filename.indexOf('.');
+    const lastDotIndex = filename.lastIndexOf('.');
+
+    let name = null, type = null;
+    if (fileNameArr.length === 2) { // 没有序号的文件
+        name = fileNameArr[0]
+        type = fileNameArr[1]
+    } else if (fileNameArr.length >= 3) { // 有序号的文件(或文件名中间有'.')
+        name = filename.substring(firstDotIndex + 1, lastDotIndex)
+        type = filename.substring(lastDotIndex + 1)
+    }
+
+    if (type === 'md') { // 过滤非md文件
+        filesList.push({
+            name,
+            filePath
+        })
+    }
+}
 
 
 // 获取文件创建时间
@@ -227,4 +228,32 @@ function zero (d) {
 }
 
 
-export default setFrontmatter;
+export default (options) => (app) => {
+    // 此处的代码会在插件被加载时立即执行（早于所有生命周期钩子）
+    const sourceDir = app.options.source;
+    // 首次启动检查
+    setFrontmatter(sourceDir)
+
+    return {
+        name: 'vuepress-plugin-set-frontmatter',
+        onInitialized() {
+
+        },
+        onWatched: (app, watchers, restart) => {
+            // 添加自定义文件监听器
+            const customWatcher =  watch(
+                "**/*.md",
+                {
+                    cwd: sourceDir,
+                    ignoreInitial: false,
+                },
+            );
+            watchers.push(customWatcher)  // 必须加入 watchers 数组
+
+            // 监听文件修改事件
+            customWatcher.on('change', (filePath) => {
+                setFrontmatter(path.join(sourceDir, filePath))
+            })
+        }
+    }
+}

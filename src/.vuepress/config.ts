@@ -2,6 +2,7 @@ import { defineUserConfig } from "vuepress";
 
 import theme from "./theme.js";
 import setFrontmatter from "./util/setFrontmatter.js"
+import dailyListPlugin from "./util/dailyListPlugin.js"
 
 export default defineUserConfig({
   base: "/",
@@ -12,17 +13,13 @@ export default defineUserConfig({
 
   theme,
 
-  // 在构建前执行自动生成 front matter 的函数
-  onWatched: (app, ctx) => {
-    setFrontmatter(app.options.source, app.options)
-  },
-  // 编译时生成
-  // onGenerated: (app) => {
-  //   setFrontmatter(app.options.source, app.options)
-  // }
-
   // 和 PWA 一起启用
   // shouldPrefetch: false,
   // debug: true,
 
+  // 自定义插件
+  plugins: [
+    dailyListPlugin(),
+    setFrontmatter()
+  ],
 });

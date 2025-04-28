@@ -27,6 +27,12 @@ export default hopeTheme({
   footer: "<a style='color: #282c34' href='https://beian.miit.gov.cn/'>粤ICP备20065374号</a>",
   displayFooter: true,
 
+  //  显示最后更新时间
+  lastUpdated: false,
+
+  // 是否显示页面贡献者
+  contributors: false,
+
   // 博客相关
   blog: {
     description: "开发者",
@@ -134,7 +140,10 @@ export default hopeTheme({
 
   // 在这里配置主题提供的插件
   plugins: {
-
+    // 不生成README.md目录文件
+    catalog: {
+      exclude: ["/daily/", "/docs/"],
+    },
     blog: {
       // 过滤只要posts文件夹的内容
       filter: (page, localePath) => {
