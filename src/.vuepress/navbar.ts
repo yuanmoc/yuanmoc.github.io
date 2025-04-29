@@ -1,16 +1,19 @@
 import { navbar } from "vuepress-theme-hope";
 
+// icon: https://icon-sets.iconify.design/
 export default navbar([
   "/",
   { text: "文章", link: "/article/" , icon: "material-symbols:post-rounded"},
   { text: "分类", link: "/category/", icon: "tabler:category-filled" },
   { text: "标签", link: "/tag/", icon: "material-symbols:tag-rounded" },
   { text: "归档", link: "/timeline/", icon: "gravity-ui:list-timeline" },
-  {
-    text: "文档",
-    icon: "f7:doc-on-doc-fill",
-    prefix: "/docs/",
-    children: [
+  { text: "secret", link: "/posts/eb0620.html", icon: "fontisto:user-secret" },
+
+  // {
+  //   text: "文档",
+  //   icon: "f7:doc-on-doc-fill",
+  //   prefix: "/docs/",
+  //   children: [
     //   {
     //     text: "苹果",
     //     icon: "pen-to-square",
@@ -22,8 +25,8 @@ export default navbar([
     //       "4",
     //     ],
     //   },
-      { text: "介绍", icon: "f7:doc-fill", link: "intro" },
-    ],
-  },
+    //   { text: "介绍", icon: "f7:doc-fill", link: "intro" },
+    // ],
+  // },
 
 ]);

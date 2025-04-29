@@ -50,7 +50,7 @@ export default hopeTheme({
   // 加密配置
   encrypt: {
     config: {
-      "/docs/": {
+      "/secret/eb0620.html": {
         hint: "本人可见",
         password: "6666",
       },
@@ -152,6 +152,7 @@ export default hopeTheme({
           page.frontmatter.sitemap = false
           return false;
         } else {
+          page.frontmatter.sidebar = false
           return true;
         }
       }

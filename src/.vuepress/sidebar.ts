@@ -10,5 +10,5 @@ export default sidebar({
   // }
 
   // 自动列出文档的目录
-  '/docs/': "structure",
+  '/mcs/': "structure",
 });
