@@ -50,8 +50,8 @@ export default hopeTheme({
   // 加密配置
   encrypt: {
     config: {
-      "/secret/eb0620.html": {
-        hint: "本人可见",
+      "/posts/eb0620.html": {
+        hint: "大佬请出门右拐！",
         password: "6666",
       },
     },
