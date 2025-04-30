@@ -3,6 +3,7 @@ import { defineUserConfig } from "vuepress";
 import theme from "./theme.js";
 import setFrontmatter from "./util/setFrontmatter.js"
 import dailyListPlugin from "./util/dailyListPlugin.js"
+import { baiduAnalyticsPlugin } from '@vuepress/plugin-baidu-analytics'
 
 export default defineUserConfig({
   base: "/",
@@ -20,6 +21,9 @@ export default defineUserConfig({
   // 自定义插件
   plugins: [
     dailyListPlugin(),
-    setFrontmatter()
+    setFrontmatter(),
+    baiduAnalyticsPlugin({
+      id: "1a2e8709a79bd587207c1e48121859d7"
+    }),
   ],
 });
