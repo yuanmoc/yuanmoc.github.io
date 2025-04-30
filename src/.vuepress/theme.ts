@@ -148,7 +148,9 @@ export default hopeTheme({
       // 过滤只要posts文件夹的内容
       filter: (page, localePath) => {
         // 非 posts 页面，不进行sitemap索引
-        page.frontmatter.sidebar = false
+        if (!page.path.startsWith('/mcs/')) {
+          page.frontmatter.sidebar = false
+        }
         if (!page.path.startsWith('/posts/') || page.frontmatter.article === false) {
           page.frontmatter.sitemap = false
           return false;
