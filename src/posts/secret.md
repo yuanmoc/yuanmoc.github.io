@@ -4,6 +4,7 @@ title: secret
 date: 2025-04-18 11:40:44
 permalink: /posts/eb0620.html
 comment: true
+article: false
 category: 
   - 默认
 tag: 
