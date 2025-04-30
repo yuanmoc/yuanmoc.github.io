@@ -4,7 +4,7 @@ import { navbar } from "vuepress-theme-hope";
 export default navbar([
   "/",
   { text: "文章", link: "/article/" , icon: "material-symbols:post-rounded"},
-  { text: "分类", link: "/category/", icon: "tabler:category-filled" },
+  // { text: "分类", link: "/category/", icon: "tabler:category-filled" },
   { text: "标签", link: "/tag/", icon: "material-symbols:tag-rounded" },
   { text: "归档", link: "/timeline/", icon: "gravity-ui:list-timeline" },
   { text: "secret", link: "/posts/eb0620.html", icon: "fontisto:user-secret" },
