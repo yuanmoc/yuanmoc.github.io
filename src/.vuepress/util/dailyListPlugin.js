@@ -4,11 +4,11 @@ import {toBase64} from '@jsonjoy.com/base64';
 
 const dailyListPlugin = (options) => (app) => ({
     name: 'vuepress-plugin-daily',
-    // 初始化之后，所有的页面已经加载完毕
-    async onInitialized(app) {
+
+    async onPrepared() {
         // 获取页面内容，分成小组
         const articles = app.pages
-            .filter(page => page.path.startsWith('/daily/'))
+            .filter(page => page.path.startsWith('/daily/') && page.path !== '/daily/')
             .map(page => ({
                 date: page.frontmatter.date,
                 content: page.contentRendered, // markdown 解码后抱着内容
@@ -27,31 +27,33 @@ const dailyListPlugin = (options) => (app) => ({
                 return resultArray;
             }, []);
 
-        let articlesJson = []
 
-        // 加密传输
-        articles.forEach((group, groupIndex) => {
+        // 文章分组大小
+        await app.writeTemp('daily-num.js', `export const dailyNum = ${articles.length}`);
+
+         // 加密保存文章信息
+         articles.forEach(async (group, groupIndex) => {
             const groupString = JSON.stringify(group);
             const groupUint8Array = new Uint8Array(Buffer.from(groupString, 'utf8'));
-            articlesJson.push(toBase64(new Uint8Array(groupUint8Array)))
+            await app.writeTemp(`daily-${groupIndex}.js`, `export const dailyData = '${toBase64(new Uint8Array(groupUint8Array))}'`);
         })
+    },
+
+        // 初始化之后，所有的页面已经加载完毕
+    async onInitialized(app) {
 
         // 创建页面
-        const homepage = await createPage(app, {
+        const dailyPage = await createPage(app, {
             path: '/daily/',
             // 设置 frontmatter
             frontmatter: {
                 sidebar: false
             },
             // 设置 markdown 内容
-            content: `<DailyInfo :articles="articlesPops"/>
-<script setup>
-const articlesPops = ${JSON.stringify(articlesJson)};
-</script>
-`,
+            content: `<DailyInfo />`,
         })
         // 把它添加到 `app.pages`
-        app.pages.push(homepage)
+        app.pages.push(dailyPage)
     },
 })
 
