@@ -104,6 +104,18 @@ function setFrontmatter(sourceDir) {
             }
         }
 
+        // 自动补充日常中的时间信息
+        if (file.filePath.indexOf('/daily/') > 1) {
+            const regex = /(^@date:)(\s+\d{4}-\d{1,2}-\d{1,2}\s+\d{1,2}:\d{1,2}:\d{1,2})?/gm;
+            fileMatterObj.content = fileMatterObj.content.replace(regex, (match, prefix, date) => {
+                if (!date) {
+                    hasChange = true;
+                    return prefix + " " + dateFormat(new Date());
+                }
+                return match;
+            })
+        }
+
         if (hasChange || reSetMatterData) {
             if (matterData.date && type(matterData.date) === 'date') {
                 matterData.date = repairDate(matterData.date) // 修复时间格式
