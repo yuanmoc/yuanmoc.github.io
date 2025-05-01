@@ -18,9 +18,8 @@ export default defineUserConfig({
   // shouldPrefetch: false,
   // debug: true,
 
-  // 自定义插件
+  // 自定义插件，插件会按顺序执行，先执行模板里，再执行自定义
   plugins: [
-    dailyListPlugin(),
     setFrontmatter(),
     baiduAnalyticsPlugin({
       id: "1a2e8709a79bd587207c1e48121859d7"
@@ -42,6 +41,8 @@ export default defineUserConfig({
           }
         })
       }
-    }
+    },
+    // 最后执行
+    dailyListPlugin(),
   ],
 });

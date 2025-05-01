@@ -5,7 +5,10 @@ import {toBase64} from '@jsonjoy.com/base64';
 const dailyListPlugin = (options) => (app) => ({
     name: 'vuepress-plugin-daily',
 
-    async onPrepared() {
+    // 初始化之后，所有的页面已经加载完毕
+    // onInitialized 先执行，onPrepared再执行
+    // onPrepared 会生成路由信息
+    async onInitialized(app) {
         // 获取页面内容，分成小组
         const articles = app.pages
             .filter(page => page.path.startsWith('/daily/') && page.path !== '/daily/')
@@ -27,23 +30,18 @@ const dailyListPlugin = (options) => (app) => ({
                 return resultArray;
             }, []);
 
-        // 不需要再生成html和js页面了，移除
-        app.pages = app.pages.filter(page => !page.path.includes('/daily/'));
-
-
         // 文章分组大小
         await app.writeTemp('daily-num.js', `export const dailyNum = ${articles.length}`);
 
-         // 加密保存文章信息
-         articles.forEach(async (group, groupIndex) => {
+        // 加密保存文章信息
+        articles.forEach(async (group, groupIndex) => {
             const groupString = JSON.stringify(group);
             const groupUint8Array = new Uint8Array(Buffer.from(groupString, 'utf8'));
             await app.writeTemp(`daily-${groupIndex}.js`, `export const dailyData = '${toBase64(new Uint8Array(groupUint8Array))}'`);
         })
-    },
 
-        // 初始化之后，所有的页面已经加载完毕
-    async onInitialized(app) {
+        // 不需要再生成html和js页面了，移除
+        app.pages = app.pages.filter(page => !page.path.startsWith('/daily/'))
 
         // 创建页面
         const dailyPage = await createPage(app, {
