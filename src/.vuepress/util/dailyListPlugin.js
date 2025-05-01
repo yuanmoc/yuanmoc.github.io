@@ -27,6 +27,9 @@ const dailyListPlugin = (options) => (app) => ({
                 return resultArray;
             }, []);
 
+        // 不需要再生成html和js页面了，移除
+        app.pages = app.pages.filter(page => !page.path.includes('/daily/'));
+
 
         // 文章分组大小
         await app.writeTemp('daily-num.js', `export const dailyNum = ${articles.length}`);
