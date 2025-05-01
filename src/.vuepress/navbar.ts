@@ -7,7 +7,7 @@ export default navbar([
   // { text: "分类", link: "/category/", icon: "tabler:category-filled" },
   { text: "标签", link: "/tag/", icon: "material-symbols:tag-rounded" },
   { text: "归档", link: "/timeline/", icon: "gravity-ui:list-timeline" },
-  { text: "secret", link: "/posts/eb0620.html", icon: "fontisto:user-secret" },
+  { text: "secret", link: "/secret/to.html", icon: "fontisto:user-secret" },
 
   // {
   //   text: "文档",

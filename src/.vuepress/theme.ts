@@ -50,7 +50,7 @@ export default hopeTheme({
   // 加密配置
   encrypt: {
     config: {
-      "/posts/eb0620.html": {
+      "/secret/": {
         hint: "大佬请出门右拐！",
         password: "6666",
       },
@@ -151,7 +151,7 @@ export default hopeTheme({
         if (!page.path.startsWith('/mcs/')) {
           page.frontmatter.sidebar = false
         }
-        if (!page.path.startsWith('/posts/') || page.frontmatter.article === false) {
+        if (!page.path.startsWith('/posts/')) {
           page.frontmatter.sitemap = false
           return false;
         } else {

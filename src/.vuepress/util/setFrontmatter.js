@@ -42,7 +42,13 @@ function setFrontmatter(sourceDir) {
 
         // 已有FrontMatter
         let matterData = fileMatterObj.data;
+
         let hasChange = false;
+        // 是否是新创建的MatterData，也就是之前还没有
+        let isNewMatterData = false
+        if (!matterData || Object.keys(matterData).length === 0) {
+            isNewMatterData = true
+        }
 
         // 主页,不需要处理
         if ( matterData.home === true ) {
@@ -62,7 +68,8 @@ function setFrontmatter(sourceDir) {
             hasChange = true;
         }
 
-        if (!matterData.hasOwnProperty('date')) { // 日期
+        //  已经创建了的Frontmatter，不需要对日期进行处理
+        if (!matterData.hasOwnProperty('date') && isNewMatterData) { // 日期
             const stat = fs.statSync(file.filePath);
             matterData.date = dateFormat(getBirthtime(stat));
             hasChange = true;
@@ -86,7 +93,7 @@ function setFrontmatter(sourceDir) {
             hasChange = true;
         }
 
-        if (!matterData.hasOwnProperty('pageComponent') && matterData.article !== false && file.filePath.indexOf('/posts/') > 1) { // 是文章页才添加分类和标签
+        if (matterData.article !== false && file.filePath.indexOf('/posts/') > 1) { // 是文章页才添加分类和标签
             if (!matterData.hasOwnProperty('category')) { // 分类
                 matterData.category = getCategories(file, defaultText)
                 hasChange = true;
