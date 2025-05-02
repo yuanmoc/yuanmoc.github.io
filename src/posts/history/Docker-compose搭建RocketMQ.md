@@ -12,7 +12,7 @@ tag:
   - List
 ---
 RocketMQ架构图
-![image.png](/images/image-f7d076aef39245daa6db0b42ee3253e4.png)
+![image.png](https://fastly.jsdelivr.net/gh/yuanmoc/statics/images/image-f7d076aef39245daa6db0b42ee3253e4.webp)
 
 搭建RocketMQ服务需要NameServer、Broker和RocketMQ的管理后台。
 

@@ -14,7 +14,7 @@ tag:
 
 ## Redis的线程模型
 
-![Redis的线程模型](/images/image-7f51944478e145e0abded47ff5571670.png)
+![Redis的线程模型](https://fastly.jsdelivr.net/gh/yuanmoc/statics/images/image-7f51944478e145e0abded47ff5571670.webp)
 
 
 - 客户端 socket01 向 redis 的 server socket 请求建立连接，此时 server socket 会产生一个 AE_READABLE 事件，IO 多路复用程序监听到 server socket 产生的事件后，将该事件压入队列中。文件事件分派器从队列中获取该事件，交给连接应答处理器。连接应答处理器会创建一个能与客户端通信的 socket01，并将该 socket01 的 AE_READABLE 事件与命令请求处理器关联。
@@ -66,7 +66,7 @@ aof可以带来更高的数据安全性，aof中有3中同步策略，（1.每�
 - 先删除缓存中的数据，然后再去更新数据库，最后更新缓存中的数据
   单线程一看，没有什么问题，但是多线程时，就出现了问题。
 
-![更新失败流程](/images/image-916f6a6aeb734f238ee6aa11376dd04b.png)
+![更新失败流程](https://fastly.jsdelivr.net/gh/yuanmoc/statics/images/image-916f6a6aeb734f238ee6aa11376dd04b.webp)
 
 1-3、用户1请求【更新数据】，先删除缓存数据，再更新数据库中的数据，此时还没有更新完成，数据库中的数据还是旧的。
 4-7、这时，用户2请求【获取数据】，从缓存中获取，缓存中没有，从数据库中获取，获取到后更新缓存数据，此时，缓存中的数据为旧数据。
@@ -84,9 +84,9 @@ aof可以带来更高的数据安全性，aof中有3中同步策略，（1.每�
 
 （2）先更新数据库，再删除缓存，如果删除失败重试。
 
-![缓存与数据库一致方案二](/images/image-c9fa0dbf49ae4bbc8a33d5b320773fbb.png)
+![缓存与数据库一致方案二](https://fastly.jsdelivr.net/gh/yuanmoc/statics/images/image-c9fa0dbf49ae4bbc8a33d5b320773fbb.webp)
 
 （3）先更新数据库，使用订阅数据库log_bin方式，再删除缓存，如果删除失败重试。
 
-![缓存与数据库一致方案三](/images/image-060dc0f472294ad78659c907268eefb0.png)
+![缓存与数据库一致方案三](https://fastly.jsdelivr.net/gh/yuanmoc/statics/images/image-060dc0f472294ad78659c907268eefb0.webp)
 

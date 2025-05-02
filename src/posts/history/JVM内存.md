@@ -15,7 +15,7 @@ tag:
 
 ## 内存区域
 
-![内存区域](/images/image-2f14605eb4da4779b6f188fe763df53d.png)
+![内存区域](https://fastly.jsdelivr.net/gh/yuanmoc/statics/images/image-2f14605eb4da4779b6f188fe763df53d.webp)
 
 **程序计数器**
 
@@ -49,7 +49,7 @@ tag:
 
 ## 内存模型JMM
 
-![JMM内存模型](/images/image-8853b0c3f5d8475393e83757579b4f63.png)
+![JMM内存模型](https://fastly.jsdelivr.net/gh/yuanmoc/statics/images/image-8853b0c3f5d8475393e83757579b4f63.webp)
 
 **定义**
 JMM定义了线程和主内存之间的抽象关系。

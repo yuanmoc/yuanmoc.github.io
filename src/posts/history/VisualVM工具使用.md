@@ -20,10 +20,10 @@ jvisualvm可以监控本地、远程的java进程，实时查看进程的cpu、�
 插件安装：https://visualvm.github.io/pluginscenters.html
 
 下载
-![image.png](/images/image-18e84dfa361c4b2bb5b3df8a17c3b684.png)
+![image.png](https://fastly.jsdelivr.net/gh/yuanmoc/statics/images/image-18e84dfa361c4b2bb5b3df8a17c3b684.webp)
 
 下载要安装的插件
-![image.png](/images/image-d1a84c7bdb76432ba98ab5288a53551e.png)
+![image.png](https://fastly.jsdelivr.net/gh/yuanmoc/statics/images/image-d1a84c7bdb76432ba98ab5288a53551e.webp)
 
 打开visualVM工具，在工具->插件->已下载，选择下载好的插件安装。
 
@@ -33,4 +33,4 @@ jvisualvm可以监控本地、远程的java进程，实时查看进程的cpu、�
 
 点击文件->载入，选择我们导出好的dump文件即可。
 
-![image.png](/images/image-5edc213f90994f84b7d716a4733f3c31.png)
+![image.png](https://fastly.jsdelivr.net/gh/yuanmoc/statics/images/image-5edc213f90994f84b7d716a4733f3c31.webp)

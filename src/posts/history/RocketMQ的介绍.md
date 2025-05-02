@@ -9,7 +9,7 @@ tag:
   - RocketMQ
 ---
 RocketMQ 架构图
-![image.png](/images/image-bb86482048c94e20ad0bf9d904a0ada0.png)
+![image.png](https://fastly.jsdelivr.net/gh/yuanmoc/statics/images/image-bb86482048c94e20ad0bf9d904a0ada0.webp)
 
 有四大部分：NameServer，Broker，Producer，Consumer。
 

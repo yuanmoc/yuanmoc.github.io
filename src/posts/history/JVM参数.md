@@ -22,7 +22,7 @@ tag:
 
 Java内置的VisualVM
 
-![VisualVM](/images/image-0e5fbf79aed34d629402c33631fa12d2.png)
+![VisualVM](https://fastly.jsdelivr.net/gh/yuanmoc/statics/images/image-0e5fbf79aed34d629402c33631fa12d2.webp)
 
 **JVM参数**
 

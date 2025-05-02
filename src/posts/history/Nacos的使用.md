@@ -63,7 +63,7 @@ public class NacosConfigApplication {
 ```
 
 其中dataId和groupId对应我们在配置中心中配置的DataId和group值。如下图
-![Nacos配置中心](/images/image-0cfb0c52d14542e0b582fc365ad02df5.png)
+![Nacos配置中心](https://fastly.jsdelivr.net/gh/yuanmoc/statics/images/image-0cfb0c52d14542e0b582fc365ad02df5.webp)
 
 4、示例代码测试。
 ```java

@@ -12,7 +12,7 @@ tag:
 ---
 ## 设置使用外置网卡
 
-![image-20210529221059025](/images/567e5c6e3afd4fe9b5e859e2cf72d5fe.png)
+![image-20210529221059025](https://fastly.jsdelivr.net/gh/yuanmoc/statics/images/567e5c6e3afd4fe9b5e859e2cf72d5fe.webp)
 
 
 ## 操作步骤
@@ -123,7 +123,7 @@ sudo airodump-ng -c 1 --bssid F8:8C:21:8F:43:67 -w /home/kali/me/12321  wlan0mon
 
 这里是空的，没有抓取成功。
 
-![image-20210529223055505](/images/d3b1fb366bd444a8855481e3b9e7f616.png)
+![image-20210529223055505](https://fastly.jsdelivr.net/gh/yuanmoc/statics/images/d3b1fb366bd444a8855481e3b9e7f616.webp)
 
 
 
@@ -139,7 +139,7 @@ sudo aireplay-ng -0 10 -a F8:8C:21:8F:43:67 -c 52:D2:F5:0A:DF:2F wlan0mon
 
 抓取成功，接下来是破解了。
 
-![image-20210529223311113](/images/1b1805e030ef42169e515b54fccb3be5.png)
+![image-20210529223311113](https://fastly.jsdelivr.net/gh/yuanmoc/statics/images/1b1805e030ef42169e515b54fccb3be5.webp)
 
 
 

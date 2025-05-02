@@ -10,7 +10,7 @@ tag:
 
 **堆的回收区域**
 
-![GC](/images/image-e3306adf515a4f35bcb374771abd444d.png)
+![GC](https://fastly.jsdelivr.net/gh/yuanmoc/statics/images/image-e3306adf515a4f35bcb374771abd444d.webp)
 
 
 - 新生代（Young Generation）NewSize和MaxNewSize分别可以控制年轻代的初始大小和最大的大小。
@@ -30,7 +30,7 @@ tag:
 
 **GC过程**
 
-![image.png](/images/image-13ac21ec2d554676a0502c67b0995704.png)
+![image.png](https://fastly.jsdelivr.net/gh/yuanmoc/statics/images/image-13ac21ec2d554676a0502c67b0995704.webp)
 
 1-2、当new新对象时，Eden空间满了，使用复制算法把存活的对象复制到空的S0(S1)上。
 3-4、判断S1中存活对象的年龄值，当年龄值+1达到15时（默认15，可修改），对象将进入老年代，当没有满足时，就复制进去S0中。
