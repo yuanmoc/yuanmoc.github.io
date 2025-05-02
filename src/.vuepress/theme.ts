@@ -67,38 +67,38 @@ export default hopeTheme({
 
   // 此处开启了很多功能用于演示，你应仅保留用到的功能。
   markdown: {
-    align: true,
-    attrs: true,
-    codeTabs: true,
-    component: true,
-    demo: true,
-    figure: true,
-    gfm: true,
-    imgLazyload: true,
-    imgSize: true,
-    include: true,
-    mark: true,
-    plantuml: true,
-    spoiler: true,
-    stylize: [
-      {
-        matcher: "Recommended",
-        replacer: ({ tag }) => {
-          if (tag === "em")
-            return {
-              tag: "Badge",
-              attrs: { type: "tip" },
-              content: "Recommended",
-            };
-        },
-      },
-    ],
-    sub: true,
-    sup: true,
-    tabs: true,
-    tasklist: true,
-    vPre: true,
-    markmap: true,
+    // markdown-include https://ecosystem.vuejs.press/zh/plugins/markdown/markdown-include.html
+    include: true, // 导入文件
+    // markdown-ext https://ecosystem.vuejs.press/zh/plugins/markdown/markdown-ext.html
+    gfm: true, // 是否调整行为和功能，使其更类似于 GitHub Flavored Markdown。
+    vPre: true, // 是否启用 v-pre 块支持。
+    component: true, // 是否启用组件代码块支持。
+    tasklist: true, // 任务列表
+
+    // markdown-image https://ecosystem.vuejs.press/zh/plugins/markdown/markdown-image.html
+    figure: true, // 是否启用图片 Figure 支持。
+    imgLazyload: true, // 是否使用原生方式懒加载页面图片。
+    imgSize: true, // 是否启用图片尺寸支持。strict 需要显式设置 0 来忽略宽度或高度。
+    obsidianImgSize: true, // 是否启用 Obsidian 图片尺寸支持。
+    imgMark: true, // 是否启用图片标记。
+
+    // markdown-tab https://ecosystem.vuejs.press/zh/plugins/markdown/markdown-tab.html
+    codeTabs: true, // 代码选项卡
+    tabs: true, // 选项卡
+
+    // markdown-stylize https://ecosystem.vuejs.press/zh/plugins/markdown/markdown-stylize.html
+    sub: true, // 上标
+    sup: true, // 下标
+    align: true, // 对齐
+    attrs: true,  // 属性
+    spoiler: true, // 是否启用剧透支持。
+    mark: true, // 是否启用标记支持。
+
+    // 其他
+    demo: true, // 用于同时展示片段渲染和片段代码。
+    plantuml: false, // 是否启用 plantuml 支持。（主要是用例图，时序图等）
+    markmap: false, // 从 Markdown 生成思维导图
+
 
     // 取消注释它们如果你需要 TeX 支持
     // math: {

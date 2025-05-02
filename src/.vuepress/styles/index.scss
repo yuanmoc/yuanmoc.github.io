@@ -1,1 +1,89 @@
-// place your custom styles here
+.gallery-container {
+  position: relative;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  width: 100%;
+  display: flex;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch; /* 优化移动端滚动 */
+  /* 隐藏滚动条 */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+/* 隐藏 Chrome/Safari 的滚动条 */
+.gallery-container::-webkit-scrollbar {
+  display: none;
+}
+
+.gallery-page {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  padding: 10px;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  min-height: 0; /* 修复 grid 布局溢出问题 */
+  height: 100%;
+  align-content: space-between;
+  position: relative;
+}
+
+.gallery-page img {
+  width: 100%;
+  height: 150px; /* 固定高度，根据需要调整 */
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+  cursor: pointer;
+}
+
+.gallery-page img:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.gallery-page  .page-number {
+  position: absolute;
+  bottom: -3px;
+  font-size: 10px;
+  color: #7d7676;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.1);
+  padding: 1px 12px;
+  border-radius: 20px;
+  user-select: none;
+}
+
+.gallery-page img.placeholder {
+  opacity: 0;  // 全透明
+  pointer-events: none; /* 禁止点击、悬停等事件 */
+  cursor: default !important; /* 恢复默认光标 */
+  transition: none !important; /* 移除悬停动效 */
+}
+
+.gallery-sum {
+  user-select: none;
+  font-size: 10px;
+  color: #7d7676;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .page-number {
+    font-size: 14px;
+    padding: 6px 16px;
+    bottom: 15px;
+  }
+
+  .gallery-page {
+    grid-template-columns: repeat(2, 1fr); /* 小屏幕显示2列 */
+  }
+
+  .gallery-page img {
+    height: 100px;
+  }
+}
