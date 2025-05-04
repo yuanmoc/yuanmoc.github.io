@@ -92,7 +92,7 @@ export default defineUserConfig({
             let pageImgsLength = pageImgs.length
             if (pageImgsLength < chunkSize) {
               while (pageImgsLength < chunkSize && hasNextPage) {
-                pageImgs.push('<img class="placeholder" />')
+                pageImgs.push('<img class="placeholder" no-view/>')
                 pageImgsLength++;
               }
             }

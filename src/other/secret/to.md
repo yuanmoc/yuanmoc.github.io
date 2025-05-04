@@ -75,3 +75,9 @@ onUnmounted(() => {
 })
 
 </script>
+
+<style scoped>
+#markdown-content {
+  user-select: none;
+}
+</style>
