@@ -159,6 +159,15 @@ export default hopeTheme({
         }
       }
     },
+    search: {
+      // 过滤只要posts文件夹的内容
+      isSearchable: (page, localePath) => {
+        if (page.path.startsWith('/posts/')) {
+          return true;
+        }
+        return false;
+      }
+    },
     sitemap: {
       changefreq: "weekly"
     },
