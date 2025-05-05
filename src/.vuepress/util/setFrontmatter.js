@@ -106,7 +106,7 @@ function setFrontmatter(sourceDir) {
 
         // 自动补充日常中的时间信息
         if (file.filePath.indexOf('/daily/') > 1) {
-            const regex = /(^@date:)(\s+\d{4}-\d{1,2}-\d{1,2}\s+\d{1,2}:\d{1,2}:\d{1,2})?/gm;
+            const regex = /(^===\s+daily)(\s+\d{4}-\d{1,2}-\d{1,2}\s+\d{1,2}:\d{1,2}:\d{1,2})?/gm;
             fileMatterObj.content = fileMatterObj.content.replace(regex, (match, prefix, date) => {
                 if (!date) {
                     hasChange = true;
@@ -254,7 +254,7 @@ export default (options) => (app) => {
     setFrontmatter(sourceDir)
 
     return {
-        name: 'vuepress-plugin-set-frontmatter',
+        name: 'vuepress-set-frontmatter-plugin',
         onInitialized() {
 
         },

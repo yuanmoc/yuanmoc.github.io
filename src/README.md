@@ -29,6 +29,10 @@ projects:
   name: 吃花椒的喵酱
   link: https://ys.xjinfeng.top
 
+- icon: https://dnick.cn/favicon.ico
+  name: 必须再活五十年
+  link: https://dnick.cn
+
 - icon: fluent-mdl2:add-friend
   name: 申请友链
   link: /apply-friend.html

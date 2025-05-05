@@ -74,6 +74,7 @@ export default hopeTheme({
     vPre: true, // 是否启用 v-pre 块支持。
     component: true, // 是否启用组件代码块支持。
     tasklist: true, // 任务列表
+    breaks: true,
 
     // markdown-image https://ecosystem.vuejs.press/zh/plugins/markdown/markdown-image.html
     figure: true, // 是否启用图片 Figure 支持。

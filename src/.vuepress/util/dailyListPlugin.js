@@ -1,9 +1,10 @@
 import { createPage } from 'vuepress/core'
 import { dateSorter } from "@vuepress/helper";
 import {toBase64} from '@jsonjoy.com/base64';
+import {markdownContainerPlugin} from "@vuepress/plugin-markdown-container";
 
-const dailyListPlugin = (options) => (app) => ({
-    name: 'vuepress-plugin-daily',
+export const dailyListPlugin = (options) => (app) => ({
+    name: 'vuepress-daily-plugin',
 
     // 初始化之后，所有的页面已经加载完毕
     // onInitialized 先执行，onPrepared再执行
@@ -12,14 +13,14 @@ const dailyListPlugin = (options) => (app) => ({
         // 获取页面内容，分成小组
         const articles = app.pages
             .filter(page => page.path.startsWith('/daily/') && page.path !== '/daily/')
-            .map(page => ({
-                date: page.frontmatter.date,
-                content: page.contentRendered, // markdown 解码后抱着内容
-            }))
+            .reduce((resultArray, item, index) => {
+                return handlerPage(item).concat(resultArray || [])
+            }, [])
             .sort((a,b) =>
                 dateSorter(a.date, b.date)
             ).reduce((resultArray, item, index) => {
-                const chunkIndex = Math.floor(index / 10);
+                // 比例放大，让旧的数据多存在一个js
+                const chunkIndex = Math.floor(Math.sqrt( 8 * (index / 10)) / 2);
 
                 if(!resultArray[chunkIndex]) {
                     resultArray[chunkIndex] = []; // 新建一个子数组
@@ -58,5 +59,46 @@ const dailyListPlugin = (options) => (app) => ({
     },
 })
 
-export default dailyListPlugin
+function handlerPage(page) {
+    let result = []
+    const regex = /daily\s+(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})([\s\S]*?)(?=daily|$)/g;
+    let match;
+    let count = 0
+    while ((match = regex.exec(page.contentRendered))!== null) {
+        count++
+        result.push({
+            id: new Date(match[1]).getTime(),
+            date: match[1],
+            content: match[2].trim()
+        });
+    }
+    //  如果不能分隔，直接整个显示
+    if (count === 0) {
+        result.push({
+            id: new Date(page.frontmatter.date,).getTime(),
+            date: page.frontmatter.date,
+            content: page.contentRendered
+        });
+    }
+    return result;
+}
+
+// 日常容器
+export const dateContainer = markdownContainerPlugin({
+    type: "daily",
+    validate: (params) => {
+        return params.trim().match(/^daily\s+(.*)$/);
+    },
+    render: (tokens, idx, options, env, self) => {
+        const token = tokens[idx];
+        // 处理容器开始标签
+        if (token.nesting === 1) {
+            return `${token.info.trim()}<div>`
+        } else {
+            return `</div>`
+        }
+    },
+    marker: "="
+})
+
 

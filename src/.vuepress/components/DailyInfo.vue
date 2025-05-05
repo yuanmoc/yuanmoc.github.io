@@ -96,42 +96,10 @@ const updateLocalLike = async (id) => {
 // 当前显示的文章列表
 const fetchDailyData = async () => {
   const decodedArticlesValue = await decodedArticles(currentPage.value)
-  const splitData = regexList(decodedArticlesValue)
   // 分隔排序
-  displayedArticles.value = [...(displayedArticles.value || []), ...(splitData || [])]
+  displayedArticles.value = [...(displayedArticles.value || []), ...(decodedArticlesValue || [])]
 };
 
-// 解析一个markdown中有多个记录
-const regexList = (contents) => {
-  const result = [];
-  // const regex = /<p>@date: (.*?)<\/p>([\s\S]*?)(?=<p>@date: |$)/gms;
-  const regex = /<p>@date: (.*?)<\/p>((?:(?!<p>@date:).)*)/gms;
-  contents.forEach((content) => {
-    let match
-    let count = 0
-    while ((match = regex.exec(content.content)) !== null) {
-      count++
-      result.push({
-        id: new Date(match[1]).getTime(),
-        date: match[1],
-        content: match[2].trim() // 去除可能的换行和空格
-      });
-    }
-    //  如果不能分隔，直接整个显示
-    if (count === 0) {
-      result.push({
-        id: new Date(match[1]).getTime(),
-        date: content.date,
-        content: content.content // 去除可能的换行和空格
-      });
-    }
-  })
-  return result.sort((a,b) => {
-    const dateA = new Date(a.date);
-    const dateB = new Date(b.date);
-    return dateB - dateA; // 降序排序，最新的文章在前面
-  })
-}
 
 // 解码文章数据
 const decodedArticles = async (index) => {
@@ -223,6 +191,8 @@ watch(currentPage, fetchDailyData, { immediate: true });
 /*点赞功能*/
 
 .like-container {
+  position: relative;
+  bottom: 6px;
   display: flex;
   justify-content: center;
   align-items: center;
