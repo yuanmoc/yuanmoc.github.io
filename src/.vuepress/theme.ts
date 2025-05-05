@@ -11,7 +11,7 @@ export default hopeTheme({
     url: "#",
   },
 
-  logo: "/logo.png",
+  logo: "/logo.webp",
 
   // 配置github图标
   // repo: "vuepress-theme-hope/vuepress-theme-hope",
@@ -193,8 +193,10 @@ export default hopeTheme({
       components: ["Badge", "VPCard"],
     },
 
+    // 太卡了，不使用
     icon: {
-      prefix: "fa6-solid:",
+      assets: [
+      ]
     },
 
     // 如果你需要 PWA。安装 @vuepress/plugin-pwa 并取消下方注释

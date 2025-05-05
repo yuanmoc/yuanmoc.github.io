@@ -1,7 +1,7 @@
 ---
 title: secret
 permalink: /secret/to.html
-icon: fontisto:user-secret
+icon: /assets/icon/la--user-secret.svg
 ---
 
 ::: center

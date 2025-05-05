@@ -1,7 +1,7 @@
 ---
 title: 申请友链
 permalink: /apply-friend.html
-icon: fluent-mdl2:add-friend
+icon: /assets/icon/fluent-mdl2--add-friend.svg
 ---
 
 
