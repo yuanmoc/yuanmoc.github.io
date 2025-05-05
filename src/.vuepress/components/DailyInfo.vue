@@ -1,17 +1,18 @@
 <template>
   <div class="article-list-container">
-    <ul class="space-y-4">
-      <div v-for="article in displayedArticles" :key="article.id" class="vp-article-wrapper c-height">
+    <div class="vp-article-wrapper">
+      <div v-for="article in displayedArticles" :key="article.id" class="vp-article-item">
+        <div v-html="article.content"></div>
+        <div class="horizontal-line"></div>
         <div class="floating-time">{{ formatDate(article.date) }}</div>
-        <div v-html="article.content" class="vp-article-item"></div>
-        <div class="like-container" style="display: none;">
+        <div class="like-container">
           <button @click="toggleLike(article.id)" :class="{ 'liked': isLiked[article.id] }" class="like-button">
             <span class="like-icon"></span>
           </button>
           <span class="like-count">{{ likes?.[article.id] || 0 }}</span>
         </div>
       </div>
-    </ul>
+    </div>
     <!-- 加载提示 -->
     <div class="loading-indicator">
       <div v-if="dailyNum <= currentPage">~我是有底线的~</div>
@@ -42,6 +43,7 @@ onMounted(async () => {
   // 点赞数据
   const storedIsLiked = localStorage.getItem('isLiked');
   isLiked.value = storedIsLiked ? JSON.parse(storedIsLiked) : {}
+  likes.value = isLiked.value
 
   // 异步加载 dailyNum
   const { dailyNum: num } = await import("@temp/daily-num");
@@ -61,6 +63,7 @@ onUnmounted(() => {
 });
 
 const toggleLike = async id => {
+  console.log("点赞功能尚未实现，没有找到可以使用的api接口！(可以更新/修改内容api接口，且可以跨域。)")
   if (isLiked.value[id]) {
     // 已经点赞过
     return
@@ -71,7 +74,7 @@ const toggleLike = async id => {
     likes.value[id] = 1
   }
   // 保存点赞信息
-  isLiked.value[id] = true;
+  isLiked.value[id] = 1;
   localStorage.setItem('isLiked', JSON.stringify(isLiked.value));
   await updateLocalLike(id)
 }
@@ -79,7 +82,7 @@ const toggleLike = async id => {
 
 const updateLocalLike = async (id) => {
   // 更新点赞数据
-  // const onLineLikes = await getLikes()
+  const onLineLikes = {} // await getLikes()
   for (const [key, value] of Object.entries(onLineLikes)) {
     if (key.toString() === id.toString()) {
       likes.value[key] = value + 1;
@@ -196,33 +199,35 @@ watch(currentPage, fetchDailyData, { immediate: true });
 
 <style scoped>
 
-.loading-indicator {
-  text-align: center;
-  padding: 30px;
+.vp-article-item {
+  margin-bottom: 28px;
 }
 
-.loading-cursor {
-  cursor: pointer;
+.horizontal-line {
+  border-top: 1px dashed #ccc; /* 虚线样式 */
+  margin: 15px 0;
+  width: 100%;
 }
+
+/*时间*/
 
 .floating-time {
-  padding: 3px 15px;
-  background-color: #67676c;
-  color: white;
+  color: #7d7676;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 13px;
-  border-radius: 6px;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-  z-index: 9999;
-  display: inline-block;
-  margin-bottom: 6px;
+  display: contents;
+  float: left;
+  user-select: none;
 }
+
+/*点赞功能*/
 
 .like-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 6px;
+  float: right;
+  user-select: none;
 }
 
 .like-button {
@@ -255,4 +260,16 @@ watch(currentPage, fetchDailyData, { immediate: true });
   font-weight: bold;
   color: #333;
 }
+
+/*加载更多*/
+
+.loading-indicator {
+  text-align: center;
+  padding: 30px;
+}
+
+.loading-cursor {
+  cursor: pointer;
+}
+
 </style>
