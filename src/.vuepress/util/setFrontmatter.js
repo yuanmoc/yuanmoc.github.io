@@ -272,6 +272,10 @@ export default (options) => (app) => {
             // 监听文件修改事件
             customWatcher.on('change', (filePath) => {
                 setFrontmatter(path.join(sourceDir, filePath))
+                // 如果修改的是daily文件，重启一下服务
+                if (filePath.indexOf('daily/') > -1) {
+                    restart()
+                }
             })
         }
     }
