@@ -26,7 +26,8 @@
   <!-- 左上Y  -->
   <path d="M 225 165 L 225 188 M 205 155 L 225 165 L 245 155"
         stroke="#6958bc" stroke-width="12" fill="none">
-    <animateMotion path="M 0 0 L 40 20 Z" dur="5s" repeatCount="indefinite" />
+      <!-- 360度旋转动画 -->
+      <animateTransform attributeName="transform" type="rotate" from="0 225 165" to="360 225 165" dur="3s" repeatCount="indefinite"/>
   </path>
 
   <!-- 左上侧的圆形 -->
