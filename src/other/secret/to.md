@@ -2,6 +2,7 @@
 title: secret
 permalink: /secret/to.html
 icon: /assets/icon/la--user-secret.svg
+comment: false
 ---
 
 ::: center

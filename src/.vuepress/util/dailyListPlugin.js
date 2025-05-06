@@ -49,7 +49,8 @@ export const dailyListPlugin = (options) => (app) => ({
             path: '/daily/',
             // 设置 frontmatter
             frontmatter: {
-                sidebar: false
+                sidebar: false,
+                comment: false
             },
             // 设置 markdown 内容
             content: `<DailyInfo />`,
