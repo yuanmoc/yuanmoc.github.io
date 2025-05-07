@@ -55,7 +55,10 @@ onMounted(async () => {
   document.addEventListener('scroll', handleScroll);
 
   // 获取点赞数据 {1746090400000: 1}
-  likes.value = await getLikes()
+  const onLinkLikes = await getLikes()
+  if (onLinkLikes &&  Object.keys(onLinkLikes).length !== 0) {
+    likes.value = onLinkLikes
+  }
 
 })
 
