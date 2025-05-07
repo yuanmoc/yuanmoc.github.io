@@ -44,7 +44,7 @@ onMounted(async () => {
   // 点赞数据
   const storedIsLiked = localStorage.getItem('isLiked');
   isLiked.value = storedIsLiked ? JSON.parse(storedIsLiked) : {}
-  likes.value = isLiked.value
+  likes.value = {...isLiked.value}
 
   // 异步加载 dailyNum
   const { dailyNum: num } = await import("@temp/daily-num");
