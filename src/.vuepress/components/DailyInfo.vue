@@ -24,6 +24,7 @@
 <script setup>
 import {ref, onMounted, onUnmounted, watch} from 'vue';
 import { fromBase64 } from '@jsonjoy.com/base64';
+import { getLikes, updateLikes } from "../util/mocky.js"
 
 // 页码
 const dailyNum = ref();
@@ -54,7 +55,7 @@ onMounted(async () => {
   document.addEventListener('scroll', handleScroll);
 
   // 获取点赞数据 {1746090400000: 1}
-  // likes.value = await getLikes()
+  likes.value = await getLikes()
 
 })
 
@@ -63,7 +64,7 @@ onUnmounted(() => {
 });
 
 const toggleLike = async id => {
-  console.log("点赞功能尚未实现，没有找到可以使用的api接口！(可以更新/修改内容api接口，且可以跨域。)")
+  // console.log("点赞功能尚未实现，没有找到可以使用的api接口！(可以更新/修改内容api接口，且可以跨域。)")
   if (isLiked.value[id]) {
     // 已经点赞过
     return
@@ -82,7 +83,7 @@ const toggleLike = async id => {
 
 const updateLocalLike = async (id) => {
   // 更新点赞数据
-  const onLineLikes = {} // await getLikes()
+  const onLineLikes =  await getLikes()
   for (const [key, value] of Object.entries(onLineLikes)) {
     if (key.toString() === id.toString()) {
       likes.value[key] = value + 1;
@@ -90,7 +91,7 @@ const updateLocalLike = async (id) => {
       likes.value[key] = value;
     }
   }
-  // await updateLikes(likes.value)
+  await updateLikes(likes.value)
 }
 
 // 当前显示的文章列表
