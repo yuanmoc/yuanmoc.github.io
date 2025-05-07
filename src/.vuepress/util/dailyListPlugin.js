@@ -68,7 +68,7 @@ function handlerPage(page) {
     while ((match = regex.exec(page.contentRendered))!== null) {
         count++
         result.push({
-            id: new Date(match[1]).getTime(),
+            id: formatDate(match[1]),
             date: match[1],
             content: match[2].trim()
         });
@@ -76,12 +76,28 @@ function handlerPage(page) {
     //  如果不能分隔，直接整个显示
     if (count === 0) {
         result.push({
-            id: new Date(page.frontmatter.date,).getTime(),
+            id: formatDate(page.frontmatter.date),
             date: page.frontmatter.date,
             content: page.contentRendered
         });
     }
     return result;
+}
+
+// 格式化时间成id
+function formatDate(dateString) {
+    try {
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hour = String(date.getHours()).padStart(2, '0');
+        const minute = String(date.getMinutes()).padStart(2, '0');
+        const second = String(date.getSeconds()).padStart(2, '0');
+        return year+month+day+hour+minute+second;
+    } catch (e) {
+        return ""
+    }
 }
 
 // 日常容器

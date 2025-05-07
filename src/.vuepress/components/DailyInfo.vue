@@ -57,9 +57,10 @@ onMounted(async () => {
   // 获取点赞数据 {1746090400000: 1}
   const onLinkLikes = await getLikes()
   if (onLinkLikes &&  Object.keys(onLinkLikes).length !== 0) {
-    likes.value = onLinkLikes
+    Object.keys(onLinkLikes).forEach(key => {
+      likes.value[key] = onLinkLikes[key]
+    })
   }
-
 })
 
 onUnmounted(() => {
