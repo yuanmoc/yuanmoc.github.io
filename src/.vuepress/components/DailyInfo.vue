@@ -24,7 +24,7 @@
 <script setup>
 import {ref, onMounted, onUnmounted, watch} from 'vue';
 import { fromBase64 } from '@jsonjoy.com/base64';
-import { getLikes, updateLikes } from "../util/mocky.js"
+import { getLikes, updateLikes } from "../util/jsonstorage.js"
 
 // 页码
 const dailyNum = ref();
