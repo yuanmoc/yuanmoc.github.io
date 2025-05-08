@@ -2,8 +2,6 @@
 title: Linux文本处理大三利器grep、sed、awk
 date: 2020-08-24 20:24:58
 permalink: /posts/899fc5.html
-category: 
-  - history
 tag: 
   - 默认
 ---

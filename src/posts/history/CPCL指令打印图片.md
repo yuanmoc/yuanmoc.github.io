@@ -2,8 +2,6 @@
 title: Cpcl指令打印图片
 date: 2021-10-14 11:59:33
 permalink: /posts/9f706d.html
-category: 
-  - history
 tag: 
   - 字节流
   - CAS

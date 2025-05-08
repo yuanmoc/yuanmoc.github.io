@@ -2,8 +2,6 @@
 title: Jet Cache的使用
 date: 2020-12-26 23:01:39
 permalink: /posts/606d9c.html
-category: 
-  - history
 tag: 
   - Redis
   - 缓存

@@ -2,8 +2,6 @@
 title: 生成业务 ID
 date: 2021-05-13 16:13:14
 permalink: /posts/4da75c.html
-category: 
-  - history
 tag: 
   - ORM
   - volatile

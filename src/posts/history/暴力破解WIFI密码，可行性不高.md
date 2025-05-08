@@ -2,8 +2,6 @@
 title: 暴力破解 Wifi密码，可行性不高
 date: 2022-02-26 22:07:09
 permalink: /posts/ede0d4.html
-category: 
-  - history
 tag: 
   - CAS
   - Set

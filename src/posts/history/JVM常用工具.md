@@ -2,8 +2,6 @@
 title: Jvm常用工具
 date: 2021-05-14 19:11:57
 permalink: /posts/607b92.html
-category: 
-  - history
 tag: 
   - JVM
   - Stack

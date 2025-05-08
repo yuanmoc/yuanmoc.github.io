@@ -2,8 +2,6 @@
 title: Callable返回值的源码
 date: 2020-07-20 10:31:48
 permalink: /posts/d1171f.html
-category: 
-  - history
 tag: 
   - Set
   - ExecutorService

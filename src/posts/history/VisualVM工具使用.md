@@ -2,8 +2,6 @@
 title: Visual Vm工具使用
 date: 2021-04-05 16:00:48
 permalink: /posts/1ea79d.html
-category: 
-  - history
 tag: 
   - VisualVM
   - Map

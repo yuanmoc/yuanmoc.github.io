@@ -2,8 +2,6 @@
 title: Mysqlon使用遇坑
 date: 2021-06-03 09:57:46
 permalink: /posts/7e4100.html
-category: 
-  - history
 tag: 
   - 默认
 ---

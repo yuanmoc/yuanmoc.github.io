@@ -2,8 +2,6 @@
 title: Nacos服务的搭建
 date: 2020-12-19 12:16:30
 permalink: /posts/6f1a56.html
-category: 
-  - history
 tag: 
   - Nacos
   - Prometheus

@@ -2,8 +2,6 @@
 title: Python使用execjs调用js方法
 date: 2022-11-12 14:54:30
 permalink: /posts/502240.html
-category: 
-  - history
 tag: 
   - 默认
 ---

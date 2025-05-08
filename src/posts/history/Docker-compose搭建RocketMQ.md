@@ -2,8 +2,6 @@
 title: Docker Compose搭建 Rocket Mq
 date: 2021-04-11 00:43:14
 permalink: /posts/57a47c.html
-category: 
-  - history
 tag: 
   - RocketMQ
   - Map

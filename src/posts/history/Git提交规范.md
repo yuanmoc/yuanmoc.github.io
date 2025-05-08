@@ -2,8 +2,6 @@
 title: Git提交规范
 date: 2023-04-11 11:31:04
 permalink: /posts/120fb2.html
-category: 
-  - history
 tag: 
   - Git
   - 重构

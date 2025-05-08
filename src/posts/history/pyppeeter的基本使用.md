@@ -2,8 +2,6 @@
 title: Pyppeeter的基本使用
 date: 2022-11-23 21:53:55
 permalink: /posts/e73f5f.html
-category: 
-  - history
 tag: 
   - Set
 ---

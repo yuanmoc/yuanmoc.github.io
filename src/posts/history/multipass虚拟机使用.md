@@ -2,8 +2,6 @@
 title: Multipass虚拟机使用
 date: 2023-04-29 10:53:24
 permalink: /posts/0996bc.html
-category: 
-  - history
 tag: 
   - CAS
   - List

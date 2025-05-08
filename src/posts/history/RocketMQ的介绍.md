@@ -2,8 +2,6 @@
 title: Rocket Mq的介绍
 date: 2021-04-11 00:10:12
 permalink: /posts/4c83eb.html
-category: 
-  - history
 tag: 
   - 消息队列
   - RocketMQ

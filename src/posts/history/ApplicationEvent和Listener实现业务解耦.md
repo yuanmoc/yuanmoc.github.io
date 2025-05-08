@@ -2,8 +2,6 @@
 title: Application Event和 Listener实现业务解耦
 date: 2021-06-26 17:24:22
 permalink: /posts/655f47.html
-category: 
-  - history
 tag: 
   - List
   - Spring

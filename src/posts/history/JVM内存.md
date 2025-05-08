@@ -2,8 +2,6 @@
 title: Jvm内存
 date: 2020-07-27 12:02:12
 permalink: /posts/44acac.html
-category: 
-  - history
 tag: 
   - JMM
   - Stack

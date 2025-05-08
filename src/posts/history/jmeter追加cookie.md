@@ -2,8 +2,6 @@
 title: Jmeter追加cookie
 date: 2022-05-10 20:02:50
 permalink: /posts/ad9e92.html
-category: 
-  - history
 tag: 
   - JMeter
 ---

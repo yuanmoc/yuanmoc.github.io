@@ -2,8 +2,6 @@
 title: Jdk8@ Functional Interface的使用
 date: 2021-05-21 17:49:04
 permalink: /posts/e5be43.html
-category: 
-  - history
 tag: 
   - Map
   - ExecutorService

@@ -2,8 +2,6 @@
 title: Nacos的使用
 date: 2020-12-26 10:55:28
 permalink: /posts/489901.html
-category: 
-  - history
 tag: 
   - Spring
   - Nacos

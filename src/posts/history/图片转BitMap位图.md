@@ -2,8 +2,6 @@
 title: 图片转 Bit Map位图
 date: 2021-01-26 23:14:53
 permalink: /posts/c622dc.html
-category: 
-  - history
 tag: 
   - Map
   - 字节流

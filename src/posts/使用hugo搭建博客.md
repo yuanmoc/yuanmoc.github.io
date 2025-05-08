@@ -2,8 +2,6 @@
 title: 使用hugo搭建博客
 date: 2023-05-07 11:56:31
 permalink: /posts/69963c.html
-category: 
-  - 默认
 tag: 
   - Git
   - Set

@@ -2,8 +2,6 @@
 title: 写个python脚本，每天定时登录
 date: 2021-09-13 21:35:28
 permalink: /posts/285ae4.html
-category: 
-  - history
 tag: 
   - 脚本
   - ORM

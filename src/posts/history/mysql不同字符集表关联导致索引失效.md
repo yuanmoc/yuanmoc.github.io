@@ -2,8 +2,6 @@
 title: Mysql不同字符集表关联导致索引失效
 date: 2022-01-06 11:25:45
 permalink: /posts/a3a5c5.html
-category: 
-  - history
 tag: 
   - 脚本
   - 解决方案

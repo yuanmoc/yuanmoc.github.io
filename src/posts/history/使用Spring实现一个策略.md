@@ -2,8 +2,6 @@
 title: 使用 Spring实现一个策略
 date: 2020-12-26 17:51:08
 permalink: /posts/1b3526.html
-category: 
-  - history
 tag: 
   - Spring
   - 注解

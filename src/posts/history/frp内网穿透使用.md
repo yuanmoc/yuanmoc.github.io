@@ -2,8 +2,6 @@
 title: Frp内网穿透使用
 date: 2021-01-09 22:41:55
 permalink: /posts/225add.html
-category: 
-  - history
 tag: 
   - List
   - Git

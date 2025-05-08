@@ -2,8 +2,6 @@
 title: 使用jetcache@ Create Cache创建两个缓存对象，发现配置全部使用了第一个
 date: 2021-10-28 15:28:43
 permalink: /posts/7e6f55.html
-category: 
-  - history
 tag: 
   - 缓存
   - Set

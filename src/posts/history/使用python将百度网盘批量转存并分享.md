@@ -2,8 +2,6 @@
 title: 使用python将百度网盘批量转存并分享
 date: 2022-10-16 13:56:56
 permalink: /posts/cbae53.html
-category: 
-  - history
 tag: 
   - List
   - ORM

@@ -2,8 +2,6 @@
 title: 更新 ID Eagit分支信息
 date: 2022-01-21 10:41:51
 permalink: /posts/ce0d6f.html
-category: 
-  - history
 tag: 
   - Git
   - 缓存

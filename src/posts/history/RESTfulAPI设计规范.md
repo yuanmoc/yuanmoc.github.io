@@ -2,8 +2,6 @@
 title: Restful Api设计规范
 date: 2020-07-17 11:49:19
 permalink: /posts/788c9a.html
-category: 
-  - history
 tag: 
   - List
 ---

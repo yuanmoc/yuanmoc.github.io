@@ -1,4 +1,5 @@
 import {defineUserConfig} from "vuepress";
+import { viteBundler } from '@vuepress/bundler-vite'
 
 import theme from "./theme.js";
 import setFrontmatter from "./util/setFrontmatter.js"
@@ -8,6 +9,13 @@ import galleryContainer from "./util/galleryContainer.js"
 import modifyFrontmatterDate from "./util/modifyFrontmatterDate.js"
 
 export default defineUserConfig({
+  bundler: viteBundler({
+    viteOptions: {
+      server: {
+      }
+    },
+    vuePluginOptions: {},
+  }),
   base: "/",
 
   lang: "zh-CN",

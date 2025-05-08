@@ -94,10 +94,11 @@ function setFrontmatter(sourceDir) {
         }
 
         if (matterData.article !== false && file.filePath.indexOf('/posts/') > 1) { // 是文章页才添加分类和标签
-            if (!matterData.hasOwnProperty('category')) { // 分类
-                matterData.category = getCategories(file, defaultText)
-                hasChange = true;
-            }
+            // 不要分类信息
+            // if (!matterData.hasOwnProperty('category')) { // 分类
+            //     matterData.category = getCategories(file, defaultText)
+            //     hasChange = true;
+            // }
             if (!matterData.hasOwnProperty('tag') || resetTag) { // 标签
                 matterData.tag = matchTags(fileMatterObj.content, defaultText);
                 hasChange = true;

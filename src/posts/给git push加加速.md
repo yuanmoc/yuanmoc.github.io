@@ -2,8 +2,6 @@
 title: 给git push加加速
 date: 2025-04-19 16:03:04
 permalink: /posts/17b38b.html
-category: 
-  - 默认
 tag: 
   - Git
   - Set

@@ -5,7 +5,7 @@ export default navbar([
   "/",
   { text: "文章", link: "/article/" , icon: "/assets/icon/material-symbols--post-rounded.svg"},
   { text: "标签", link: "/tag/", icon: "/assets/icon/material-symbols--tag-rounded.svg" },
-  { text: "归档", link: "/timeline/", icon: "/assets/icon/gravity-ui--list-timeline.svg" },
+  // { text: "归档", link: "/timeline/", icon: "/assets/icon/gravity-ui--list-timeline.svg" },
   { text: "secret", link: "/secret/to.html", icon: "/assets/icon/la--user-secret.svg" },
 
   // {

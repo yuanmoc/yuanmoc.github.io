@@ -2,8 +2,6 @@
 title: 清理linux系统的缓存空间
 date: 2022-10-09 22:46:27
 permalink: /posts/201d9e.html
-category: 
-  - history
 tag: 
   - Jenkins
   - 缓存

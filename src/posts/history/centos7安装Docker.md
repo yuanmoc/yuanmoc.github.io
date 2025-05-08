@@ -2,8 +2,6 @@
 title: Centos7安装 Docker
 date: 2021-06-12 12:20:57
 permalink: /posts/31cca2.html
-category: 
-  - history
 tag: 
   - Docker
   - List

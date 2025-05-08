@@ -2,8 +2,6 @@
 title: Java Gc
 date: 2020-07-27 17:04:15
 permalink: /posts/0f9df4.html
-category: 
-  - history
 tag: 
   - JVM
 ---

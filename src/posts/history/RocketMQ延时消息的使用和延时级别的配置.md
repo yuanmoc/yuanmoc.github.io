@@ -2,8 +2,6 @@
 title: Rocket Mq延时消息的使用和延时级别的配置
 date: 2021-04-13 17:14:47
 permalink: /posts/385094.html
-category: 
-  - history
 tag: 
   - RocketMQ
 ---

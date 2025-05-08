@@ -2,8 +2,6 @@
 title: My Sql存储过程
 date: 2020-07-18 11:31:40
 permalink: /posts/ae8e89.html
-category: 
-  - history
 tag: 
   - Set
   - MySQL

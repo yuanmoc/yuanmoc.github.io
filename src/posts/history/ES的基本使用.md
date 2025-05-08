@@ -2,8 +2,6 @@
 title: Es的基本使用
 date: 2023-04-19 16:47:01
 permalink: /posts/d64a92.html
-category: 
-  - history
 tag: 
   - Map
   - Set
