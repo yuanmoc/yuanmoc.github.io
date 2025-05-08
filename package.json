@@ -18,10 +18,10 @@
     "vuepress-theme-hope": "2.0.0-rc.84"
   },
   "dependencies": {
-    "@jsonjoy.com/base64": "^1.1.2",
     "@vuepress/plugin-baidu-analytics": "^2.0.0-rc.98",
     "@vuepress/plugin-markdown-container": "^2.0.0-rc.99",
     "@vuepress/plugin-search": "^2.0.0-rc.98",
+    "crypto-js": "^4.2.0",
     "json2yaml": "^1.1.0",
     "markmap-lib": "^0.18.11",
     "markmap-toolbar": "^0.18.10",

@@ -1,7 +1,8 @@
 import { createPage } from 'vuepress/core'
 import { dateSorter } from "@vuepress/helper";
-import {toBase64} from '@jsonjoy.com/base64';
 import {markdownContainerPlugin} from "@vuepress/plugin-markdown-container";
+import CryptoJS from 'crypto-js';
+
 
 export const dailyListPlugin = (options) => (app) => ({
     name: 'vuepress-daily-plugin',
@@ -33,12 +34,15 @@ export const dailyListPlugin = (options) => (app) => ({
 
         // 文章分组大小
         await app.writeTemp('daily-num.js', `export const dailyNum = ${articles.length}`);
-
-        // 加密保存文章信息
+        const encryptedKey = CryptoJS.MD5(app.options.title);
+        // // 加密保存文章信息
         articles.forEach(async (group, groupIndex) => {
             const groupString = JSON.stringify(group);
-            const groupUint8Array = new Uint8Array(Buffer.from(groupString, 'utf8'));
-            await app.writeTemp(`daily-${groupIndex}.js`, `export const dailyData = '${toBase64(new Uint8Array(groupUint8Array))}'`);
+            const encrypted = CryptoJS.AES.encrypt(groupString, encryptedKey, {
+                mode: CryptoJS.mode.ECB,
+                padding: CryptoJS.pad.Pkcs7
+            });
+            await app.writeTemp(`${CryptoJS.MD5(groupIndex)}.js`, `export const dailyData = '${encrypted.toString()}'`);
         })
 
         // 不需要再生成html和js页面了，移除

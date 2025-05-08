@@ -1,13 +1,9 @@
 // https://jsonblob.com/
-import { fromBase64 } from '@jsonjoy.com/base64';
 
-const id = 'MTM2OTU0NjU1NTA3NzYxNTYxNg=='
-
-const decodedUint8Array = fromBase64(id);
-const decodedString = new TextDecoder().decode(decodedUint8Array);
+const id = '1369546555077615616'
 
 export async function getLikes() {
-    const response = await fetch(`https://jsonblob.com/api/jsonBlob/${decodedString}`, {
+    const response = await fetch(`https://jsonblob.com/api/jsonBlob/${id}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -22,7 +18,7 @@ export async function getLikes() {
 }
 
 export async function updateLikes(data) {
-    const response = await fetch(`https://jsonblob.com/api/jsonBlob/${decodedString}`, {
+    const response = await fetch(`https://jsonblob.com/api/jsonBlob/${id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',

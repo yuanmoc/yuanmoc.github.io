@@ -23,8 +23,9 @@
 
 <script setup>
 import {ref, onMounted, onUnmounted, watch} from 'vue';
-import { fromBase64 } from '@jsonjoy.com/base64';
+import CryptoJS from 'crypto-js';
 import { getLikes, updateLikes } from "../util/jsonstorage.js"
+import { useSiteLocaleData } from "vuepress/client";
 
 // 页码
 const dailyNum = ref();
@@ -39,6 +40,8 @@ const displayedArticles = ref([])
 const likes = ref({})
 // 历史所有点击存在本地的like
 const isLiked = ref({});
+// key
+const decryptedKey = CryptoJS.MD5(useSiteLocaleData().value.title);
 
 onMounted(async () => {
   // 点赞数据
@@ -111,10 +114,14 @@ const decodedArticles = async (index) => {
   if (index < 0 || index >= dailyNum.value) {
     return []
   }
-  const {dailyData} = await import(`@temp/daily-${index}.js`)
-  const decodedUint8Array = fromBase64(dailyData);
-  const decodedString = new TextDecoder().decode(decodedUint8Array);
-  return JSON.parse(decodedString);
+  const {dailyData} = await import(`@temp/${CryptoJS.MD5(index)}.js`)
+
+  const decrypted = CryptoJS.AES.decrypt(dailyData, decryptedKey, {
+    mode: CryptoJS.mode.ECB,
+    padding: CryptoJS.pad.Pkcs7
+  });
+  const decryptedText = decrypted.toString(CryptoJS.enc.Utf8);
+  return JSON.parse(decryptedText);
 }
 
 // 时间格式化
