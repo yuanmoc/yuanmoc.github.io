@@ -1,8 +1,13 @@
 <template>
   <div class="article-list-container">
+    <DailyPassword v-if="showDailyPassword" :encryptedKey="encryptedKey" @submitPassword="handlePasswordInput" @close="closePasswordInput"/>
     <div class="vp-article-wrapper">
       <div v-for="article in displayedArticles" :key="article.id" class="vp-article-item">
-        <div v-html="article.content"></div>
+        <div v-if="!article.password" v-html="article.content"></div>
+        <div v-else>
+          &zwnj;写了又怕别人看到，直接6666星级加密！&zwnj;
+          <div class="eye-toggle" @click="handleDecrypt(article)"></div>
+        </div>
         <div class="horizontal-line"></div>
         <div class="floating-time">{{ formatDate(article.date) }}</div>
         <div class="like-container">
@@ -25,7 +30,6 @@
 import {ref, onMounted, onUnmounted, watch} from 'vue';
 import CryptoJS from 'crypto-js';
 import { getLikes, updateLikes } from "../util/jsonstorage.js"
-import { useSiteLocaleData } from "vuepress/client";
 
 // 页码
 const dailyNum = ref();
@@ -40,8 +44,20 @@ const displayedArticles = ref([])
 const likes = ref({})
 // 历史所有点击存在本地的like
 const isLiked = ref({});
-// key
-const decryptedKey = CryptoJS.MD5(useSiteLocaleData().value.title);
+
+// 是否显示密码框
+const showDailyPassword = ref(false)
+// 输入的密码
+const password = ref('')
+// 当前解密内容
+const currentEncryptedArticles = ref()
+
+const props = defineProps({
+  encryptedKey: {
+    type: String,
+    required: true
+  }
+});
 
 onMounted(async () => {
   // 点赞数据
@@ -50,7 +66,7 @@ onMounted(async () => {
   likes.value = {...isLiked.value}
 
   // 异步加载 dailyNum
-  const { dailyNum: num } = await import("@temp/daily-num");
+  const { dailyNum: num } = await import("@temp/daily");
   dailyNum.value = num;
   // 开始加载第一页
   currentPage.value = 0
@@ -69,6 +85,38 @@ onMounted(async () => {
 onUnmounted(() => {
   document.removeEventListener('scroll', handleScroll);
 });
+
+const handleDecrypt = (article) => {
+  if (!article.password) {
+    return;
+  }
+  currentEncryptedArticles.value = article
+  if (props.encryptedKey === CryptoJS.MD5(password.value).toString()) {
+    // 已经输入密码，直接使用密码解密
+    handlePasswordInput(password.value)
+  } else {
+    // 弹出密码输入框进行验证
+    showDailyPassword.value = true
+  }
+}
+
+const handlePasswordInput = (pwd) => {
+  password.value = pwd;
+  if (currentEncryptedArticles.value.password ) {
+    const decrypted = CryptoJS.AES.decrypt(currentEncryptedArticles.value.content, password.value, {
+      iv: password.value,
+      mode: CryptoJS.mode.ECB,
+      padding: CryptoJS.pad.Pkcs7
+    });
+    currentEncryptedArticles.value.content = decrypted.toString(CryptoJS.enc.Utf8);
+    currentEncryptedArticles.value.password = false;
+  }
+  closePasswordInput()
+}
+
+const closePasswordInput = () => {
+  showDailyPassword.value = false
+}
 
 const toggleLike = async id => {
   // console.log("点赞功能尚未实现，没有找到可以使用的api接口！(可以更新/修改内容api接口，且可以跨域。)")
@@ -115,13 +163,18 @@ const decodedArticles = async (index) => {
     return []
   }
   const {dailyData} = await import(`@temp/${CryptoJS.MD5(index)}.js`)
-
-  const decrypted = CryptoJS.AES.decrypt(dailyData, decryptedKey, {
-    mode: CryptoJS.mode.ECB,
-    padding: CryptoJS.pad.Pkcs7
-  });
-  const decryptedText = decrypted.toString(CryptoJS.enc.Utf8);
-  return JSON.parse(decryptedText);
+  const dailyDataJson = JSON.parse(dailyData)
+  dailyDataJson.forEach(daily => {
+    if(!daily.password) {
+      const decrypted = CryptoJS.AES.decrypt(daily.content, props.encryptedKey, {
+        iv: props.encryptedKey,
+        mode: CryptoJS.mode.ECB,
+        padding: CryptoJS.pad.Pkcs7
+      });
+      daily.content = decrypted.toString(CryptoJS.enc.Utf8);
+    }
+  })
+  return dailyDataJson;
 }
 
 // 时间格式化
@@ -252,6 +305,26 @@ watch(currentPage, fetchDailyData, { immediate: true });
 
 .loading-cursor {
   cursor: pointer;
+}
+
+/* 眼睛图标容器 */
+.eye-toggle {
+  width: 40px;
+  height: 24px;
+  display: inline-block;
+  cursor: pointer;
+  transition: all 0.3s;
+  float: right;
+
+  /* 使用SVG作为背景图片 */
+  background-image: url("/assets/icon/mdi--eye-outline.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+/* 悬浮动画 */
+.eye-toggle:hover {
+  transform: scale(1.1);
 }
 
 </style>

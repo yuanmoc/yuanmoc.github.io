@@ -11,11 +11,15 @@ export const dailyListPlugin = (options) => (app) => ({
     // onInitialized 先执行，onPrepared再执行
     // onPrepared 会生成路由信息
     async onInitialized(app) {
+
+        const { password } = options;
+        const encryptedKey = CryptoJS.MD5(password).toString();
+
         // 获取页面内容，分成小组
         const articles = app.pages
             .filter(page => page.path.startsWith('/daily/') && page.path !== '/daily/')
             .reduce((resultArray, item, index) => {
-                return handlerPage(item).concat(resultArray || [])
+                return handlerPage(item, password, encryptedKey).concat(resultArray || [])
             }, [])
             .sort((a,b) =>
                 dateSorter(a.date, b.date)
@@ -33,16 +37,10 @@ export const dailyListPlugin = (options) => (app) => ({
             }, []);
 
         // 文章分组大小
-        await app.writeTemp('daily-num.js', `export const dailyNum = ${articles.length}`);
-        const encryptedKey = CryptoJS.MD5(app.options.title);
-        // // 加密保存文章信息
+        await app.writeTemp('daily.js', `export const dailyNum = ${articles.length};`);
         articles.forEach(async (group, groupIndex) => {
             const groupString = JSON.stringify(group);
-            const encrypted = CryptoJS.AES.encrypt(groupString, encryptedKey, {
-                mode: CryptoJS.mode.ECB,
-                padding: CryptoJS.pad.Pkcs7
-            });
-            await app.writeTemp(`${CryptoJS.MD5(groupIndex)}.js`, `export const dailyData = '${encrypted.toString()}'`);
+            await app.writeTemp(`${CryptoJS.MD5(groupIndex)}.js`, `export const dailyData = '${groupString}'`);
         })
 
         // 不需要再生成html和js页面了，移除
@@ -57,24 +55,33 @@ export const dailyListPlugin = (options) => (app) => ({
                 comment: false
             },
             // 设置 markdown 内容
-            content: `<DailyInfo />`,
+            content: `<DailyInfo :encryptedKey="'${encryptedKey}'"/>`,
         })
         // 把它添加到 `app.pages`
         app.pages.push(dailyPage)
     },
 })
 
-function handlerPage(page) {
+function handlerPage(page, password, encryptedKey) {
     let result = []
-    const regex = /daily\s+(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})([\s\S]*?)(?=daily|$)/g;
+    const regex = /daily\s+(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})(\s+password)?([\s\S]*?)(?=daily|$)/g;
     let match;
     let count = 0
     while ((match = regex.exec(page.contentRendered))!== null) {
         count++
+        let htmlContent = match[3].trim()
+        const key = !!match[2]? password : encryptedKey;
+        // 加密内容
+        htmlContent = CryptoJS.AES.encrypt(htmlContent, key, {
+            iv: key,
+            mode: CryptoJS.mode.ECB,
+            padding: CryptoJS.pad.Pkcs7
+        });
         result.push({
             id: formatDate(match[1]),
             date: match[1],
-            content: match[2].trim()
+            password: !!match[2],
+            content: htmlContent.toString()
         });
     }
     //  如果不能分隔，直接整个显示
@@ -82,6 +89,7 @@ function handlerPage(page) {
         result.push({
             id: formatDate(page.frontmatter.date),
             date: page.frontmatter.date,
+            password: false,
             content: page.contentRendered
         });
     }
