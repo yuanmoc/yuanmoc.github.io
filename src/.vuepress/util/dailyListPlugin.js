@@ -13,7 +13,7 @@ export const dailyListPlugin = (options) => (app) => ({
     async onInitialized(app) {
 
         const { password } = options;
-        const encryptedKey = CryptoJS.MD5(password).toString();
+        const encryptedKey = CryptoJS.SHA256(password).toString();
 
         // 获取页面内容，分成小组
         const articles = app.pages
@@ -40,7 +40,7 @@ export const dailyListPlugin = (options) => (app) => ({
         await app.writeTemp('daily.js', `export const dailyNum = ${articles.length};`);
         articles.forEach(async (group, groupIndex) => {
             const groupString = JSON.stringify(group);
-            await app.writeTemp(`${CryptoJS.MD5(groupIndex)}.js`, `export const dailyData = '${groupString}'`);
+            await app.writeTemp(`${CryptoJS.SHA256(groupIndex)}.js`, `export const dailyData = '${groupString}'`);
         })
 
         // 不需要再生成html和js页面了，移除

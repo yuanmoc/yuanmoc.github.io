@@ -91,7 +91,7 @@ const handleDecrypt = (article) => {
     return;
   }
   currentEncryptedArticles.value = article
-  if (props.encryptedKey === CryptoJS.MD5(password.value).toString()) {
+  if (props.encryptedKey === CryptoJS.SHA256(password.value).toString()) {
     // 已经输入密码，直接使用密码解密
     handlePasswordInput(password.value)
   } else {
@@ -162,7 +162,7 @@ const decodedArticles = async (index) => {
   if (index < 0 || index >= dailyNum.value) {
     return []
   }
-  const {dailyData} = await import(`@temp/${CryptoJS.MD5(index)}.js`)
+  const {dailyData} = await import(`@temp/${CryptoJS.SHA256(index)}.js`)
   const dailyDataJson = JSON.parse(dailyData)
   dailyDataJson.forEach(daily => {
     if(!daily.password) {

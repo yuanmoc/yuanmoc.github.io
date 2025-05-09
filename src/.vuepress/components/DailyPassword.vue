@@ -20,7 +20,7 @@ const isPasswordError = ref(false);
 const emit = defineEmits(['submitPassword', 'close']);
 
 const passwordInput = () => {
-  if (props.encryptedKey === CryptoJS.MD5(password.value).toString()) {
+  if (props.encryptedKey === CryptoJS.SHA256(password.value).toString()) {
     isPasswordError.value = false;
     emit('submitPassword', password.value);
   } else {

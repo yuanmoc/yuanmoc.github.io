@@ -39,6 +39,6 @@ export default defineUserConfig({
     galleryContainer,
     dateContainer,
     // 最后执行
-    dailyListPlugin({password: "524266"}),
+    dailyListPlugin({password: "668800"}),
   ],
 });
