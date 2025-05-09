@@ -1,8 +1,11 @@
-import { createPage } from 'vuepress/core'
-import { dateSorter } from "@vuepress/helper";
+import {createPage} from 'vuepress/core'
+import {dateSorter} from "@vuepress/helper";
 import {markdownContainerPlugin} from "@vuepress/plugin-markdown-container";
-import CryptoJS from 'crypto-js';
+import {ref} from "vue";
+import {encrypt, randomBase64, generatorKey, md5} from "./cryptoUtil.js";
 
+// 加密的密码列表
+const passList = ref({})
 
 export const dailyListPlugin = (options) => (app) => ({
     name: 'vuepress-daily-plugin',
@@ -13,13 +16,14 @@ export const dailyListPlugin = (options) => (app) => ({
     async onInitialized(app) {
 
         const { password } = options;
-        const encryptedKey = CryptoJS.SHA256(password).toString();
+        // 默认的解密密码
+        passList.value['default'] = randomBase64();
 
         // 获取页面内容，分成小组
         const articles = app.pages
             .filter(page => page.path.startsWith('/daily/') && page.path !== '/daily/')
             .reduce((resultArray, item, index) => {
-                return handlerPage(item, password, encryptedKey).concat(resultArray || [])
+                return handlerPage(item, password).concat(resultArray || [])
             }, [])
             .sort((a,b) =>
                 dateSorter(a.date, b.date)
@@ -40,7 +44,7 @@ export const dailyListPlugin = (options) => (app) => ({
         await app.writeTemp('daily.js', `export const dailyNum = ${articles.length};`);
         articles.forEach(async (group, groupIndex) => {
             const groupString = JSON.stringify(group);
-            await app.writeTemp(`${CryptoJS.SHA256(groupIndex)}.js`, `export const dailyData = '${groupString}'`);
+            await app.writeTemp(`${md5(groupIndex)}.js`, `export const dailyData = '${groupString}'`);
         })
 
         // 不需要再生成html和js页面了，移除
@@ -55,33 +59,50 @@ export const dailyListPlugin = (options) => (app) => ({
                 comment: false
             },
             // 设置 markdown 内容
-            content: `<DailyInfo :encryptedKey="'${encryptedKey}'"/>`,
+            content: `<DailyInfo :encryptedKeyObj="encryptedKeyObj"/>
+<script setup>
+const encryptedKeyObj = ${JSON.stringify(passList.value)};
+</script>
+`,
         })
         // 把它添加到 `app.pages`
         app.pages.push(dailyPage)
     },
 })
 
-function handlerPage(page, password, encryptedKey) {
+function handlerPage(page, password) {
     let result = []
-    const regex = /daily\s+(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})(\s+password)?([\s\S]*?)(?=daily|$)/g;
+    const regex = /daily\s+(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})(\s+password(:\s+\w*)?)?([\s\S]*?)(?=daily|$)/g;
     let match;
     let count = 0
     while ((match = regex.exec(page.contentRendered))!== null) {
+        // 1 时间
+        // 2 密码 password: 123
+        // 3 密码 : 123
+        // 4 内容
         count++
-        let htmlContent = match[3].trim()
-        const key = !!match[2]? password : encryptedKey;
+        let key = passList.value['default'];
+        if (!!match[2]) {
+            if (!!match[3]) {
+                key = match[3].replace(":", "").trim();
+                if (!key) {
+                    key = password
+                }
+            } else {
+                key = password
+            }
+        }
+        let htmlContent = match[4].trim()
+        const encryptedKey = generatorKey(key)
+        passList.value[encryptedKey] = ''
         // 加密内容
-        htmlContent = CryptoJS.AES.encrypt(htmlContent, key, {
-            iv: key,
-            mode: CryptoJS.mode.ECB,
-            padding: CryptoJS.pad.Pkcs7
-        });
+        htmlContent = encrypt(htmlContent, key)
         result.push({
             id: formatDate(match[1]),
             date: match[1],
             password: !!match[2],
-            content: htmlContent.toString()
+            content: htmlContent,
+            encryptedKey: encryptedKey
         });
     }
     //  如果不能分隔，直接整个显示
@@ -90,7 +111,8 @@ function handlerPage(page, password, encryptedKey) {
             id: formatDate(page.frontmatter.date),
             date: page.frontmatter.date,
             password: false,
-            content: page.contentRendered
+            content: encrypt(page.contentRendered, passList.value['default']),
+            encryptedKey: generatorKey(passList.value['default'])
         });
     }
     return result;

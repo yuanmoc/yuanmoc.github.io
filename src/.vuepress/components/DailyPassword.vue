@@ -2,7 +2,9 @@
     <div class="password-container">
       <div class="password-box">
         <span class="close-button" @click="closePasswordInput">&times;</span>
-        <input v-model="password" type="password" placeholder="输入密码显示" class="password-input">
+        <input v-model="password" type="password" placeholder="输入密码显示"
+               ref="passwordInputRef" class="password-input"
+               @keyup.enter="passwordInput">
         <div class="error-message">
             <p v-if="isPasswordError">密码错误，请重新输入。</p>
         </div>
@@ -12,15 +14,19 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
-import CryptoJS from 'crypto-js';
+import { ref, watch, onMounted } from 'vue';
+import {checkKeyEqual} from "../util/cryptoUtil.js";
 
+
+const passwordInputRef = ref(null);
 const password = ref('');
 const isPasswordError = ref(false);
 const emit = defineEmits(['submitPassword', 'close']);
 
+
 const passwordInput = () => {
-  if (props.encryptedKey === CryptoJS.SHA256(password.value).toString()) {
+  // 检验密码是事正确
+  if (checkKeyEqual(props.encryptedKey, password.value)) {
     isPasswordError.value = false;
     emit('submitPassword', password.value);
   } else {
@@ -41,6 +47,10 @@ const props = defineProps({
 watch(password, () => {
   isPasswordError.value = false;
 });
+
+onMounted(() => {
+  passwordInputRef.value.focus();
+})
 </script>
 
 <style scoped>

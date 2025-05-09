@@ -1,11 +1,11 @@
 <template>
   <div class="article-list-container">
-    <DailyPassword v-if="showDailyPassword" :encryptedKey="encryptedKey" @submitPassword="handlePasswordInput" @close="closePasswordInput"/>
+    <DailyPassword v-if="showDailyPassword" :encryptedKey="currentEncryptedArticles.encryptedKey" @submitPassword="handlePasswordInput" @close="closePasswordInput"/>
     <div class="vp-article-wrapper">
       <div v-for="article in displayedArticles" :key="article.id" class="vp-article-item">
         <div v-if="!article.password" v-html="article.content"></div>
         <div v-else>
-          &zwnj;写了又怕别人看到，直接6666星级加密！&zwnj;
+          &zwnj;写了又怕别人看不到，直接6666星级加密！&zwnj;
           <div class="eye-toggle" @click="handleDecrypt(article)"></div>
         </div>
         <div class="horizontal-line"></div>
@@ -27,9 +27,9 @@
 </template>
 
 <script setup>
-import {ref, onMounted, onUnmounted, watch} from 'vue';
-import CryptoJS from 'crypto-js';
-import { getLikes, updateLikes } from "../util/jsonstorage.js"
+import {onMounted, onUnmounted, ref, watch} from 'vue';
+import {getLikes, updateLikes} from "../util/jsonstorage.js"
+import {decrypted, generatorKey, md5} from "../util/cryptoUtil.js";
 
 // 页码
 const dailyNum = ref();
@@ -47,17 +47,16 @@ const isLiked = ref({});
 
 // 是否显示密码框
 const showDailyPassword = ref(false)
-// 输入的密码
-const password = ref('')
 // 当前解密内容
 const currentEncryptedArticles = ref()
 
 const props = defineProps({
-  encryptedKey: {
-    type: String,
+  encryptedKeyObj: {
+    type: Object,
     required: true
   }
 });
+const encryptedKeyObj = props.encryptedKeyObj
 
 onMounted(async () => {
   // 点赞数据
@@ -91,9 +90,10 @@ const handleDecrypt = (article) => {
     return;
   }
   currentEncryptedArticles.value = article
-  if (props.encryptedKey === CryptoJS.SHA256(password.value).toString()) {
+  const key = article.encryptedKey
+  if (encryptedKeyObj.hasOwnProperty(key) && encryptedKeyObj[key]) {
     // 已经输入密码，直接使用密码解密
-    handlePasswordInput(password.value)
+    handlePasswordInput(encryptedKeyObj[key])
   } else {
     // 弹出密码输入框进行验证
     showDailyPassword.value = true
@@ -101,15 +101,13 @@ const handleDecrypt = (article) => {
 }
 
 const handlePasswordInput = (pwd) => {
-  password.value = pwd;
-  if (currentEncryptedArticles.value.password ) {
-    const decrypted = CryptoJS.AES.decrypt(currentEncryptedArticles.value.content, password.value, {
-      iv: password.value,
-      mode: CryptoJS.mode.ECB,
-      padding: CryptoJS.pad.Pkcs7
-    });
-    currentEncryptedArticles.value.content = decrypted.toString(CryptoJS.enc.Utf8);
-    currentEncryptedArticles.value.password = false;
+  const key = generatorKey(pwd)
+  // 保存密码起来，后面匹配的密码直接解密，不需要再次输入
+  encryptedKeyObj[key] = pwd
+  if (currentEncryptedArticles.value.password && currentEncryptedArticles.value.encryptedKey === key) {
+    // 当前内容的encryptedKey，就进行解密
+      currentEncryptedArticles.value.content = decrypted(currentEncryptedArticles.value.content, pwd);
+      currentEncryptedArticles.value.password = false;
   }
   closePasswordInput()
 }
@@ -119,7 +117,6 @@ const closePasswordInput = () => {
 }
 
 const toggleLike = async id => {
-  // console.log("点赞功能尚未实现，没有找到可以使用的api接口！(可以更新/修改内容api接口，且可以跨域。)")
   if (isLiked.value[id]) {
     // 已经点赞过
     return
@@ -162,16 +159,12 @@ const decodedArticles = async (index) => {
   if (index < 0 || index >= dailyNum.value) {
     return []
   }
-  const {dailyData} = await import(`@temp/${CryptoJS.SHA256(index)}.js`)
+  const {dailyData} = await import(`@temp/${md5(index)}.js`)
   const dailyDataJson = JSON.parse(dailyData)
   dailyDataJson.forEach(daily => {
+    // 默认密码的解密显示
     if(!daily.password) {
-      const decrypted = CryptoJS.AES.decrypt(daily.content, props.encryptedKey, {
-        iv: props.encryptedKey,
-        mode: CryptoJS.mode.ECB,
-        padding: CryptoJS.pad.Pkcs7
-      });
-      daily.content = decrypted.toString(CryptoJS.enc.Utf8);
+      daily.content = decrypted(daily.content, encryptedKeyObj['default'])
     }
   })
   return dailyDataJson;
@@ -210,7 +203,7 @@ const handleScroll = () => {
   const scrollHeight = document.documentElement.scrollHeight || document.body.clientHeight;
 
   //可以设置>=就行，这里也可以设置距离底部一定距离，自定义，不一定非要到达底部
-    if( clientHeight + scrollTop + 50 >= scrollHeight) {
+    if( clientHeight + scrollTop + 80 >= scrollHeight) {
       // 接近底部，加载更多
       loadMoreArticles();
     }
@@ -222,7 +215,7 @@ const loadMoreArticles = async () => {
     currentPage.value++;
   }
   // 模拟加载延迟
-  await new Promise((resolve) => setTimeout(resolve, 500));
+  await new Promise((resolve) => setTimeout(resolve, 300));
 };
 
 // 监听数据修改（immediate: false 创建时不触发执行，数据变化才执行）
