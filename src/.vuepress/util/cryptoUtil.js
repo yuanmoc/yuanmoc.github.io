@@ -32,13 +32,13 @@ export const decrypted = (content, key) => {
 
 export const randomBase64 = () => {
     const wordArray = CryptoJS.lib.WordArray.random(16);
-    return wordArray.toString(CryptoJS.enc.Base64);
+    return md5(wordArray.toString(CryptoJS.enc.Base64));
 }
 
 export const generatorKey = (password) => {
-    return CryptoJS.MD5(sha256(password)).toString(CryptoJS.enc.Base64)
+    return md5(sha256(password))
 }
 
 export const checkKeyEqual = (key, password) => {
-    return CryptoJS.MD5(sha256(password)).toString(CryptoJS.enc.Base64) === key
+    return generatorKey(password) === key
 }
